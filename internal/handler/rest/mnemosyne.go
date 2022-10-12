@@ -1,4 +1,4 @@
-package handler
+package rest
 
 import (
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
