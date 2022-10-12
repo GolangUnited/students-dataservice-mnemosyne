@@ -1,9 +1,9 @@
 package mnemosyne
 
 import (
+	"context"
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
-	"github.com/gin-gonic/gin"
 )
 
 //go:generate mockgen -source=mnemosyne.go -destination=mocks/mnemosyne.go
@@ -18,7 +18,7 @@ func NewService(mnemosyne repository.Mnemosyne) *Service {
 	}
 }
 
-func (s *Service) Test(ctx *gin.Context, req mnemosyne.Request) (resp mnemosyne.Response, err error) {
+func (s *Service) Test(ctx context.Context, req mnemosyne.Request) (resp mnemosyne.Response, err error) {
 	_ = ctx
 	_ = req
 	resp = *mnemosyne.NewResponse()

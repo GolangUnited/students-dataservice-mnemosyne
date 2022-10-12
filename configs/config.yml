@@ -1,1 +1,2 @@
-port: 8000
+restPort: 8000
+grpcPort: 50051

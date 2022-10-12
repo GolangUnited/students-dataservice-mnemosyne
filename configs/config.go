@@ -5,7 +5,8 @@ import (
 )
 
 type Config struct {
-	Port string `mapstructure:"port"`
+	RestPort string `mapstructure:"restPort"`
+	GrpcPort int    `mapstructure:"grpcPort"`
 }
 
 func Init() (*Config, error) {
