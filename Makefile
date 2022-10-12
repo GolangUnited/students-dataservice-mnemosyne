@@ -22,3 +22,6 @@ start-container:
 		--env-file .env \
 		-p 8000:8000 \
 		neketsky/mnemosyne:v1.0.0
+
+buf:
+	buf generate

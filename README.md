@@ -8,3 +8,9 @@ http://localhost:8000/swagger/index.html
 ## Run Project
 
 Use ```make run``` to build and run docker containers with application itself
+
+## Build protobuf
+
+`go install github.com/bufbuild/buf@latest`
+
+Use ```make buf``` to build protobuf files
