@@ -11,6 +11,6 @@ Use ```make run``` to build and run docker containers with application itself
 
 ## Build protobuf
 
-`go install github.com/bufbuild/buf@latest`
+Install https://docs.buf.build/installation
 
 Use ```make buf``` to build protobuf files
