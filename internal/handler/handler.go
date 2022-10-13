@@ -1,4 +1,4 @@
-package grpc
+package handler
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 type Handler struct {
 	ctx      context.Context
 	services service.Service
-	proto.UnimplementedGreeterServer
+	proto.GreeterServer
 }
 
 func NewHandler(ctx context.Context, services *service.Service) *Handler {
