@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package helloworld;
+option go_package = "github.com/NEKETSKY/mnemosyne/proto/helloworld";
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}

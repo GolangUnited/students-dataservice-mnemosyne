@@ -2,26 +2,30 @@ package server
 
 import (
 	"context"
+	"fmt"
+	"github.com/NEKETSKY/mnemosyne/proto"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/pkg/errors"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"net/http"
-	"time"
 )
 
 type Rest struct {
 	httpServer *http.Server
 }
 
-func (r *Rest) Run(port string, handler http.Handler) error {
-	r.httpServer = &http.Server{
-		Addr:           ":" + port,
-		Handler:        handler,
-		MaxHeaderBytes: 1 << 20, // 1 MB
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+func (r *Rest) Run(ctx context.Context, restPort int, grpcPort int) (err error) {
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	err = proto.RegisterGreeterHandlerFromEndpoint(ctx, mux,
+		fmt.Sprintf(":%d", grpcPort), opts)
+	if err != nil {
+		return errors.Wrap(err, "failed to register greeter handler")
+	}
+	if err = http.ListenAndServe(fmt.Sprintf(":%d", restPort), mux); err != nil {
+		return errors.Wrap(err, "failed to serve")
 	}
 
-	return r.httpServer.ListenAndServe()
-}
-
-func (r *Rest) Shutdown(ctx context.Context) error {
-	return r.httpServer.Shutdown(ctx)
+	return
 }

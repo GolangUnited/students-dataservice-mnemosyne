@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github.com/NEKETSKY/mnemosyne/proto";
+import "google/api/annotations.proto";
+import "helloworld/helloworld.proto";
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (helloworld.HelloRequest) returns (helloworld.HelloReply) {
+    option (google.api.http) = {
+      post: "/mnemosyne"
+      body: "*"
+    };
+  }
+}

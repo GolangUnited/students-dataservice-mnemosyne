@@ -1,15 +1,15 @@
-package grpc
+package handler
 
 import (
 	"context"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
-	"github.com/NEKETSKY/mnemosyne/proto"
+	"github.com/NEKETSKY/mnemosyne/proto/helloworld"
 	"github.com/pkg/errors"
 	"log"
 )
 
 // SayHello implements helloworld.GreeterServer
-func (h *Handler) SayHello(ctx context.Context, in *proto.HelloRequest) (helloReply *proto.HelloReply, err error) {
+func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
 	_ = ctx
 
 	var req mnemosyne.Request
@@ -20,5 +20,5 @@ func (h *Handler) SayHello(ctx context.Context, in *proto.HelloRequest) (helloRe
 
 	log.Printf("Received: %v", in.GetName())
 	log.Printf("Version: %v", resp.Version)
-	return &proto.HelloReply{Message: "Hello " + in.GetName() + ". Version " + resp.Version}, nil
+	return &helloworld.HelloReply{Message: "Hello " + in.GetName() + ". Version " + resp.Version}, nil
 }

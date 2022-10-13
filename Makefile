@@ -24,4 +24,4 @@ start-container:
 		neketsky/mnemosyne:v1.0.0
 
 buf:
-	buf generate
+	cd ./proto && buf generate

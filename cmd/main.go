@@ -3,8 +3,7 @@ package main
 import (
 	"context"
 	"github.com/NEKETSKY/mnemosyne/configs"
-	"github.com/NEKETSKY/mnemosyne/internal/handler/grpc"
-	"github.com/NEKETSKY/mnemosyne/internal/handler/rest"
+	"github.com/NEKETSKY/mnemosyne/internal/handler"
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/internal/service"
 	"github.com/NEKETSKY/mnemosyne/models/server"
@@ -43,13 +42,12 @@ func main() {
 
 	repos := repository.NewRepository()
 	services := service.NewService(repos)
-	restHandlers := rest.NewHandler(ctx, services)
-	grpcHandlers := grpc.NewHandler(ctx, services)
+	handlers := handler.NewHandler(ctx, services)
 	quit := make(chan os.Signal, 1)
 
 	grpcServer := new(server.Grpc)
 	go func() {
-		if err = grpcServer.Run(cfg.GrpcPort, grpcHandlers); err != nil {
+		if err = grpcServer.Run(cfg.GrpcPort, handlers); err != nil {
 			sugar.Info(err.Error())
 			quit <- nil
 		}
@@ -57,7 +55,7 @@ func main() {
 
 	restServer := new(server.Rest)
 	go func() {
-		if err := restServer.Run(cfg.RestPort, restHandlers.InitRoutes()); err != nil {
+		if err = restServer.Run(ctx, cfg.RestPort, cfg.GrpcPort); err != nil {
 			sugar.Info(err.Error())
 			quit <- nil
 		}
@@ -68,8 +66,4 @@ func main() {
 	<-quit
 
 	sugar.Info("App Shutting Down")
-
-	if err := restServer.Shutdown(ctx); err != nil {
-		sugar.Info(err.Error())
-	}
 }
