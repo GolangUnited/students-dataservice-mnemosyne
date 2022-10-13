@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	_ "github.com/NEKETSKY/mnemosyne/docs"
 	"github.com/NEKETSKY/mnemosyne/internal/service"
 	"github.com/NEKETSKY/mnemosyne/proto"
 )
