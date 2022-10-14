@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 import "helloworld/helloworld.proto";
 
 // The greeting service definition.
-service Greeter {
+service Mnemosyne {
   // Sends a greeting
   rpc SayHello (helloworld.HelloRequest) returns (helloworld.HelloReply) {
     option (google.api.http) = {

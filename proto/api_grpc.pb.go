@@ -19,86 +19,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// GreeterClient is the client API for Greeter service.
+// MnemosyneClient is the client API for Mnemosyne service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GreeterClient interface {
+type MnemosyneClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 }
 
-type greeterClient struct {
+type mnemosyneClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGreeterClient(cc grpc.ClientConnInterface) GreeterClient {
-	return &greeterClient{cc}
+func NewMnemosyneClient(cc grpc.ClientConnInterface) MnemosyneClient {
+	return &mnemosyneClient{cc}
 }
 
-func (c *greeterClient) SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
+func (c *mnemosyneClient) SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
 	out := new(helloworld.HelloReply)
-	err := c.cc.Invoke(ctx, "/proto.Greeter/SayHello", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.Mnemosyne/SayHello", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GreeterServer is the server API for Greeter service.
-// All implementations should embed UnimplementedGreeterServer
+// MnemosyneServer is the server API for Mnemosyne service.
+// All implementations should embed UnimplementedMnemosyneServer
 // for forward compatibility
-type GreeterServer interface {
+type MnemosyneServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error)
 }
 
-// UnimplementedGreeterServer should be embedded to have forward compatible implementations.
-type UnimplementedGreeterServer struct {
+// UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
+type UnimplementedMnemosyneServer struct {
 }
 
-func (UnimplementedGreeterServer) SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
+func (UnimplementedMnemosyneServer) SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
 
-// UnsafeGreeterServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GreeterServer will
+// UnsafeMnemosyneServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MnemosyneServer will
 // result in compilation errors.
-type UnsafeGreeterServer interface {
-	mustEmbedUnimplementedGreeterServer()
+type UnsafeMnemosyneServer interface {
+	mustEmbedUnimplementedMnemosyneServer()
 }
 
-func RegisterGreeterServer(s grpc.ServiceRegistrar, srv GreeterServer) {
-	s.RegisterService(&Greeter_ServiceDesc, srv)
+func RegisterMnemosyneServer(s grpc.ServiceRegistrar, srv MnemosyneServer) {
+	s.RegisterService(&Mnemosyne_ServiceDesc, srv)
 }
 
-func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Mnemosyne_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(helloworld.HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GreeterServer).SayHello(ctx, in)
+		return srv.(MnemosyneServer).SayHello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Greeter/SayHello",
+		FullMethod: "/proto.Mnemosyne/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreeterServer).SayHello(ctx, req.(*helloworld.HelloRequest))
+		return srv.(MnemosyneServer).SayHello(ctx, req.(*helloworld.HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Greeter_ServiceDesc is the grpc.ServiceDesc for Greeter service.
+// Mnemosyne_ServiceDesc is the grpc.ServiceDesc for Mnemosyne service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Greeter_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.Greeter",
-	HandlerType: (*GreeterServer)(nil),
+var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.Mnemosyne",
+	HandlerType: (*MnemosyneServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SayHello",
-			Handler:    _Greeter_SayHello_Handler,
+			Handler:    _Mnemosyne_SayHello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
