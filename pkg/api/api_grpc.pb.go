@@ -4,11 +4,11 @@
 // - protoc             (unknown)
 // source: api.proto
 
-package proto
+package api
 
 import (
 	context "context"
-	helloworld "github.com/NEKETSKY/mnemosyne/proto/helloworld"
+	helloworld "github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -37,7 +37,7 @@ func NewMnemosyneClient(cc grpc.ClientConnInterface) MnemosyneClient {
 
 func (c *mnemosyneClient) SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
 	out := new(helloworld.HelloReply)
-	err := c.cc.Invoke(ctx, "/proto.Mnemosyne/SayHello", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/SayHello", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func _Mnemosyne_SayHello_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Mnemosyne/SayHello",
+		FullMethod: "/api.Mnemosyne/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MnemosyneServer).SayHello(ctx, req.(*helloworld.HelloRequest))
@@ -93,7 +93,7 @@ func _Mnemosyne_SayHello_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.Mnemosyne",
+	ServiceName: "api.Mnemosyne",
 	HandlerType: (*MnemosyneServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

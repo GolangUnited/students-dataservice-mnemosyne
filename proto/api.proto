@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package proto;
-option go_package = "github.com/NEKETSKY/mnemosyne/proto";
+package api;
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 import "google/api/annotations.proto"; // https://github.com/googleapis/googleapis
 import "protoc-gen-openapiv2/options/annotations.proto"; // https://github.com/grpc-ecosystem/grpc-gateway
 import "helloworld/helloworld.proto";
