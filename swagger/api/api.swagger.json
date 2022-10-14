@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "Greeter"
+      "name": "Mnemosyne"
     }
   ],
   "consumes": [
@@ -19,7 +19,7 @@
     "/mnemosyne": {
       "post": {
         "summary": "Sends a greeting",
-        "operationId": "Greeter_SayHello",
+        "operationId": "Mnemosyne_SayHello",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -46,7 +46,7 @@
           }
         ],
         "tags": [
-          "Greeter"
+          "Mnemosyne"
         ]
       }
     }
