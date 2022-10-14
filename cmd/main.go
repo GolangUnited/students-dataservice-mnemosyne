@@ -47,7 +47,7 @@ func main() {
 
 	grpcServer := new(server.Grpc)
 	go func() {
-		if err = grpcServer.Run(cfg.GrpcPort, handlers); err != nil {
+		if err = grpcServer.Run(ctx, cfg.GrpcPort, handlers); err != nil {
 			sugar.Info(err.Error())
 			quit <- nil
 		}
@@ -55,7 +55,7 @@ func main() {
 
 	restServer := new(server.Rest)
 	go func() {
-		if err = restServer.Run(ctx, cfg.RestPort, cfg.GrpcPort); err != nil {
+		if err = restServer.Run(ctx, cfg.GrpcPort, cfg.RestPort); err != nil {
 			sugar.Info(err.Error())
 			quit <- nil
 		}

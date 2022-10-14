@@ -9,7 +9,7 @@ import (
 type Handler struct {
 	ctx      context.Context
 	services service.Service
-	proto.GreeterServer
+	proto.MnemosyneServer
 }
 
 func NewHandler(ctx context.Context, services *service.Service) *Handler {

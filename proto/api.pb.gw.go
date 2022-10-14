@@ -32,7 +32,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_Greeter_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, client GreeterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Mnemosyne_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq helloworld.HelloRequest
 	var metadata runtime.ServerMetadata
 
@@ -49,7 +49,7 @@ func request_Greeter_SayHello_0(ctx context.Context, marshaler runtime.Marshaler
 
 }
 
-func local_request_Greeter_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, server GreeterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Mnemosyne_SayHello_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq helloworld.HelloRequest
 	var metadata runtime.ServerMetadata
 
@@ -66,13 +66,13 @@ func local_request_Greeter_SayHello_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-// RegisterGreeterHandlerServer registers the http handlers for service Greeter to "mux".
-// UnaryRPC     :call GreeterServer directly.
+// RegisterMnemosyneHandlerServer registers the http handlers for service Mnemosyne to "mux".
+// UnaryRPC     :call MnemosyneServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterGreeterHandlerFromEndpoint instead.
-func RegisterGreeterHandlerServer(ctx context.Context, mux *runtime.ServeMux, server GreeterServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterMnemosyneHandlerFromEndpoint instead.
+func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, server MnemosyneServer) error {
 
-	mux.Handle("POST", pattern_Greeter_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Mnemosyne_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -80,12 +80,12 @@ func RegisterGreeterHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.Greeter/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.Mnemosyne/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Greeter_SayHello_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Mnemosyne_SayHello_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -93,16 +93,16 @@ func RegisterGreeterHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 			return
 		}
 
-		forward_Greeter_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Mnemosyne_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterGreeterHandlerFromEndpoint is same as RegisterGreeterHandler but
+// RegisterMnemosyneHandlerFromEndpoint is same as RegisterMnemosyneHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterGreeterHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterMnemosyneHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -122,41 +122,41 @@ func RegisterGreeterHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeM
 		}()
 	}()
 
-	return RegisterGreeterHandler(ctx, mux, conn)
+	return RegisterMnemosyneHandler(ctx, mux, conn)
 }
 
-// RegisterGreeterHandler registers the http handlers for service Greeter to "mux".
+// RegisterMnemosyneHandler registers the http handlers for service Mnemosyne to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterGreeterHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterGreeterHandlerClient(ctx, mux, NewGreeterClient(conn))
+func RegisterMnemosyneHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterMnemosyneHandlerClient(ctx, mux, NewMnemosyneClient(conn))
 }
 
-// RegisterGreeterHandlerClient registers the http handlers for service Greeter
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "GreeterClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "GreeterClient"
+// RegisterMnemosyneHandlerClient registers the http handlers for service Mnemosyne
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "MnemosyneClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "MnemosyneClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "GreeterClient" to call the correct interceptors.
-func RegisterGreeterHandlerClient(ctx context.Context, mux *runtime.ServeMux, client GreeterClient) error {
+// "MnemosyneClient" to call the correct interceptors.
+func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, client MnemosyneClient) error {
 
-	mux.Handle("POST", pattern_Greeter_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Mnemosyne_SayHello_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.Greeter/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.Mnemosyne/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Greeter_SayHello_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Mnemosyne_SayHello_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Greeter_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Mnemosyne_SayHello_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -164,9 +164,9 @@ func RegisterGreeterHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 }
 
 var (
-	pattern_Greeter_SayHello_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"mnemosyne"}, ""))
+	pattern_Mnemosyne_SayHello_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"mnemosyne"}, ""))
 )
 
 var (
-	forward_Greeter_SayHello_0 = runtime.ForwardResponseMessage
+	forward_Mnemosyne_SayHello_0 = runtime.ForwardResponseMessage
 )
