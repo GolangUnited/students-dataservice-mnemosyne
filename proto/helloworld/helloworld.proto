@@ -2,9 +2,22 @@ syntax = "proto3";
 
 package helloworld;
 option go_package = "github.com/NEKETSKY/mnemosyne/proto/helloworld";
+import "protoc-gen-openapiv2/options/annotations.proto"; // https://github.com/grpc-ecosystem/grpc-gateway
 
 // The request message containing the user's name.
 message HelloRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "HelloRequest json schema"
+      description: "Intentionaly complicated message type to cover many features of Protobuf."
+      required: ["name"]
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway";
+      description: "Find out more about ABitOfEverything";
+    }
+    example: '{ "name": "Alice" }'
+  };
   string name = 1;
 }
 

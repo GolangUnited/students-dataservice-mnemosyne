@@ -1,13 +1,22 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api.proto",
-    "version": "version not set"
+    "title": "Mnemosyne App API",
+    "description": "API Server for Mnemosyne application",
+    "version": "1.0",
+    "contact": {
+      "name": "Bar"
+    }
   },
   "tags": [
     {
       "name": "Mnemosyne"
     }
+  ],
+  "host": "localhost:8000",
+  "schemes": [
+    "http",
+    "https"
   ],
   "consumes": [
     "application/json"
@@ -27,6 +36,17 @@
               "$ref": "#/definitions/helloworldHelloReply"
             }
           },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -37,7 +57,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "The request message containing the user's name.",
+            "description": "Intentionaly complicated message type to cover many features of Protobuf.",
             "in": "body",
             "required": true,
             "schema": {
@@ -63,12 +83,23 @@
     },
     "helloworldHelloRequest": {
       "type": "object",
+      "example": {
+        "name": "Alice"
+      },
       "properties": {
         "name": {
           "type": "string"
         }
       },
-      "description": "The request message containing the user's name."
+      "description": "Intentionaly complicated message type to cover many features of Protobuf.",
+      "title": "HelloRequest json schema",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "name"
+      ]
     },
     "protobufAny": {
       "type": "object",
@@ -97,5 +128,26 @@
         }
       }
     }
-  }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "name": "X-API-Key",
+      "in": "header",
+      "x-amazon-apigateway-authorizer": {
+        "authorizerResultTtlInSeconds": 60,
+        "type": "token"
+      },
+      "x-amazon-apigateway-authtype": "oauth2"
+    },
+    "BasicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": [],
+      "BasicAuth": []
+    }
+  ]
 }

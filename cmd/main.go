@@ -14,13 +14,6 @@ import (
 	"syscall"
 )
 
-// @title Mnemosyne App API
-// @version 1.0
-// @description API Server for Mnemosyne application
-
-// @host localhost:8000
-// @BasePath /
-
 func main() {
 	logger, _ := zap.NewProduction()
 	defer func(logger *zap.Logger) {
