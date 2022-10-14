@@ -10,11 +10,11 @@ message HelloRequest {
     json_schema: {
       title: "HelloRequest json schema"
       description: "Intentionaly complicated message type to cover many features of Protobuf."
-      required: ["name"]
+      required: "name"
     }
     external_docs: {
-      url: "https://github.com/grpc-ecosystem/grpc-gateway";
-      description: "Find out more about ABitOfEverything";
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
     }
     example: '{ "name": "Alice" }'
   };
