@@ -1,5 +1,5 @@
 ## See swagger for API endpoints
-http://localhost:8000/swagger/index.html
+http://localhost:8000/swagger/
 
 ## Requirements
 - go 1.19

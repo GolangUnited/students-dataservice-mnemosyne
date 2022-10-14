@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/NEKETSKY/mnemosyne/pkg/api"
 	"github.com/NEKETSKY/mnemosyne/pkg/log"
-	"github.com/NEKETSKY/mnemosyne/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
@@ -25,7 +25,7 @@ func (r *Rest) Run(ctx context.Context, grpcPort, restPort int) (err error) {
 
 	gwMux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err = proto.RegisterMnemosyneHandlerFromEndpoint(ctx, gwMux,
+	err = api.RegisterMnemosyneHandlerFromEndpoint(ctx, gwMux,
 		fmt.Sprintf(":%d", grpcPort), opts)
 	if err != nil {
 		return errors.Wrap(err, "failed to register greeter handler")

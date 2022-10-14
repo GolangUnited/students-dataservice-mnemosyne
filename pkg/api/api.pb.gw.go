@@ -2,18 +2,18 @@
 // source: api.proto
 
 /*
-Package proto is a reverse proxy.
+Package api is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package proto
+package api
 
 import (
 	"context"
 	"io"
 	"net/http"
 
-	"github.com/NEKETSKY/mnemosyne/proto/helloworld"
+	"github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
@@ -80,7 +80,7 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.Mnemosyne/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -144,7 +144,7 @@ func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.Mnemosyne/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/SayHello", runtime.WithHTTPPathPattern("/mnemosyne"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return

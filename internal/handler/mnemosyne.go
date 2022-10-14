@@ -3,7 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
-	"github.com/NEKETSKY/mnemosyne/proto/helloworld"
+	"github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	"github.com/pkg/errors"
 	"log"
 )
