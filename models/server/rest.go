@@ -16,9 +16,7 @@ import (
 
 const swaggerDir = "./swagger"
 
-type Rest struct {
-	httpServer *http.Server
-}
+type Rest struct{}
 
 func (r *Rest) Run(ctx context.Context, grpcPort, restPort int) (err error) {
 	logger := log.LoggerFromContext(ctx)
