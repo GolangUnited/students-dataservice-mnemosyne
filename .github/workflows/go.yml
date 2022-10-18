@@ -15,7 +15,7 @@ jobs:
         with:
           go-version: 1.19
 
-      - name: build
+      - name: Build
         run: go build -v ./...
 
   lint:
@@ -26,13 +26,13 @@ jobs:
         with:
           go-version: 1.19
 
-      - name: lint
+      - name: Lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
 
-      - name: protolint
-          uses: plexsystems/protolint-action@v0.4.0
+      - name: Protolint
+        uses: plexsystems/protolint-action@v0.7.0
 
   test:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
         with:
           go-version: 1.19
 
-      - name: test
+      - name: Test
         run: go test -v ./...
 
 
