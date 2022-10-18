@@ -1,8 +1,10 @@
+// protolint:disable MAX_LINE_LENGTH
+
 syntax = "proto3";
 
 package helloworld;
+import "protoc-gen-openapiv2/options/annotations.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/helloworld";
-import "protoc-gen-openapiv2/options/annotations.proto"; // https://github.com/grpc-ecosystem/grpc-gateway
 
 // The request message containing the user's name.
 message HelloRequest {

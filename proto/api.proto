@@ -1,21 +1,12 @@
+// protolint:disable MAX_LINE_LENGTH
+
 syntax = "proto3";
 
 package api;
-option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
-import "google/api/annotations.proto"; // https://github.com/googleapis/googleapis
-import "protoc-gen-openapiv2/options/annotations.proto"; // https://github.com/grpc-ecosystem/grpc-gateway
+import "google/api/annotations.proto";
 import "helloworld/helloworld.proto";
-
-// The greeting service definition.
-service Mnemosyne {
-  // Sends a greeting
-  rpc SayHello (helloworld.HelloRequest) returns (helloworld.HelloReply) {
-    option (google.api.http) = {
-      post: "/mnemosyne"
-      body: "*"
-    };
-  }
-}
+import "protoc-gen-openapiv2/options/annotations.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
@@ -100,3 +91,14 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     }
   }
 };
+
+// The greeting service definition.
+service Mnemosyne {
+  // Sends a greeting
+  rpc SayHello (helloworld.HelloRequest) returns (helloworld.HelloReply) {
+    option (google.api.http) = {
+      post: "/mnemosyne"
+      body: "*"
+    };
+  }
+}
