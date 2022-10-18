@@ -1,5 +1,3 @@
-// protolint:disable MAX_LINE_LENGTH
-
 syntax = "proto3";
 
 package api;
