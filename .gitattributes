@@ -59,3 +59,4 @@
 *.sql text eol=lf
 .htaccess text eol=lf
 *.sh text eol=lf
+*.proto text eol=lf
