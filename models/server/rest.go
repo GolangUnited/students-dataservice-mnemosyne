@@ -16,14 +16,24 @@ import (
 
 const swaggerDir = "./swagger"
 
-type Rest struct{}
+type Rest struct {
+	ctx        context.Context
+	restServer *http.Server
+}
 
-func (r *Rest) Run(ctx context.Context, grpcPort, restPort int) (err error) {
-	logger := log.LoggerFromContext(ctx)
+func NewRest(ctx context.Context) *Rest {
+	return &Rest{
+		ctx:        ctx,
+		restServer: &http.Server{},
+	}
+}
+
+func (r *Rest) Run(grpcPort, restPort int) (err error) {
+	logger := log.LoggerFromContext(r.ctx)
 
 	gwMux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err = api.RegisterMnemosyneHandlerFromEndpoint(ctx, gwMux,
+	err = api.RegisterMnemosyneHandlerFromEndpoint(r.ctx, gwMux,
 		fmt.Sprintf(":%d", grpcPort), opts)
 	if err != nil {
 		return errors.Wrap(err, "failed to register greeter handler")
@@ -39,12 +49,17 @@ func (r *Rest) Run(ctx context.Context, grpcPort, restPort int) (err error) {
 	mux.Handle("/swagger/", http.StripPrefix("/swagger/", fs))
 
 	logger.Info(fmt.Sprintf("Rest server is running on: %d", restPort))
-	restServer := &http.Server{Addr: fmt.Sprintf(":%d", restPort), Handler: mux}
-	if err = restServer.ListenAndServe(); err != nil {
-		return errors.Wrap(err, "failed to serve rest server")
+	r.restServer.Addr = fmt.Sprintf(":%d", restPort)
+	r.restServer.Handler = mux
+	if err = r.restServer.ListenAndServe(); err != nil {
+		return errors.Wrap(err, "serve rest server")
 	}
 
 	return
+}
+
+func (r Rest) RestServer() *http.Server {
+	return r.restServer
 }
 
 func handleSwaggerFile(mux *http.ServeMux) {
