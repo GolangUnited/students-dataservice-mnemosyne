@@ -9,8 +9,10 @@ import (
 	"github.com/NEKETSKY/mnemosyne/models/server"
 	"github.com/NEKETSKY/mnemosyne/pkg/log"
 	"go.uber.org/zap"
+	"google.golang.org/grpc"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 )
 
@@ -26,37 +28,54 @@ func main() {
 		sugar.Fatalf("error init config: %s", err.Error())
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	ctx = log.ContextWithLogger(ctx, logger)
-	defer func() {
-		stop()
-		sugar.Info("Context is stopped")
-	}()
+	defer cancel()
 
 	repos := repository.NewRepository()
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(ctx, services)
-	quit := make(chan os.Signal, 1)
 
-	grpcServer := new(server.Grpc)
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+
+	grpcService := grpc.NewServer()
+	grpcServer := server.NewGrpc(ctx, grpcService)
 	go func() {
-		if err = grpcServer.Run(ctx, cfg.GrpcPort, handlers); err != nil {
+		if err = grpcServer.Run(cfg.GrpcPort, handlers); err != nil {
 			sugar.Info(err.Error())
 			quit <- nil
 		}
 	}()
 
-	restServer := new(server.Rest)
+	restServer := server.NewRest(ctx)
 	go func() {
-		if err = restServer.Run(ctx, cfg.GrpcPort, cfg.RestPort); err != nil {
+		if err = restServer.Run(cfg.GrpcPort, cfg.RestPort); err != nil {
 			sugar.Info(err.Error())
 			quit <- nil
 		}
 	}()
 
 	sugar.Info("App Started")
-	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
-	<-quit
+
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		s := <-quit
+		sugar.Infof("Got signal %v, attempting graceful shutdown", s)
+		cancel()
+		sugar.Info("Context is stopped")
+		grpcService.GracefulStop()
+		sugar.Info("gRPC graceful stopped")
+		err = restServer.RestServer().Shutdown(ctx)
+		if err != nil {
+			sugar.Infof("error rest server shutdown: %s", err.Error())
+		} else {
+			sugar.Info("Rest server stopped")
+		}
+		wg.Done()
+	}()
+	wg.Wait()
 
 	sugar.Info("App Shutting Down")
 }
