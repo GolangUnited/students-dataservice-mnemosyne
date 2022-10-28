@@ -1,22 +1,23 @@
 package repository
 
 import (
+	"context"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
-	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 )
 
 //go:generate mockgen -source=repository.go -destination=mocks/repository.go
 
 type Mnemosyne interface {
-	Test(ctx *gin.Context) error
+	Test(ctx context.Context) error
 }
 
 type Repository struct {
 	Mnemosyne
 }
 
-func NewRepository() *Repository {
+func NewRepository(db *pgx.Conn) *Repository {
 	return &Repository{
-		Mnemosyne: mnemosyne.NewMnemosyne(),
+		Mnemosyne: mnemosyne.NewMnemosyne(db),
 	}
 }
