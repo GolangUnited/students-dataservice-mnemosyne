@@ -12,7 +12,6 @@ import (
 	"google.golang.org/grpc"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 )
 
@@ -58,24 +57,18 @@ func main() {
 
 	sugar.Info("App Started")
 
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
-		s := <-quit
-		sugar.Infof("Got signal %v, attempting graceful shutdown", s)
-		cancel()
-		sugar.Info("Context is stopped")
-		grpcService.GracefulStop()
-		sugar.Info("gRPC graceful stopped")
-		err = restServer.RestServer().Shutdown(ctx)
-		if err != nil {
-			sugar.Infof("error rest server shutdown: %s", err.Error())
-		} else {
-			sugar.Info("Rest server stopped")
-		}
-		wg.Done()
-	}()
-	wg.Wait()
+	s := <-quit
+	sugar.Infof("Got signal %v, attempting graceful shutdown", s)
+	cancel()
+	sugar.Info("Context is stopped")
+	grpcService.GracefulStop()
+	sugar.Info("gRPC graceful stopped")
+	err = restServer.RestServer().Shutdown(ctx)
+	if err != nil {
+		sugar.Infof("error rest server shutdown: %s", err.Error())
+	} else {
+		sugar.Info("Rest server stopped")
+	}
 
 	sugar.Info("App Shutting Down")
 }
