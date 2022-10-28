@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/NEKETSKY/mnemosyne/pkg/api"
-	"github.com/NEKETSKY/mnemosyne/pkg/log"
+	"github.com/NEKETSKY/mnemosyne/pkg/logger"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
@@ -29,8 +29,6 @@ func NewRest(ctx context.Context) *Rest {
 }
 
 func (r *Rest) Run(grpcPort, restPort int) (err error) {
-	logger := log.LoggerFromContext(r.ctx)
-
 	gwMux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	err = api.RegisterMnemosyneHandlerFromEndpoint(r.ctx, gwMux,

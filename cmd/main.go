@@ -7,31 +7,49 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/internal/service"
 	"github.com/NEKETSKY/mnemosyne/models/server"
-	"github.com/NEKETSKY/mnemosyne/pkg/log"
-	"go.uber.org/zap"
+	"github.com/NEKETSKY/mnemosyne/pkg/logger"
+	"github.com/jackc/pgx/v5"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 )
 
 func main() {
-	logger, _ := zap.NewProduction()
-	defer func(logger *zap.Logger) {
-		_ = logger.Sync()
-	}(logger)
-	sugar := logger.Sugar()
-
 	cfg, err := configs.Init()
 	if err != nil {
-		sugar.Fatalf("error init config: %s", err.Error())
+		logger.Fatalf("error init config: %s", err.Error())
 	}
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
-	ctx = log.ContextWithLogger(ctx, logger)
 	defer cancel()
 
-	repos := repository.NewRepository()
+	if err = godotenv.Load(); err != nil {
+		logger.Fatalf("error loading env variables: %s", err.Error())
+	}
+
+	db, err := repository.NewPostgresDB(ctx, repository.Config{
+		Host:     os.Getenv("POSTGRES_HOST"),
+		Port:     os.Getenv("POSTGRES_PORT"),
+		Username: os.Getenv("POSTGRES_USER"),
+		Password: os.Getenv("POSTGRES_PASSWORD"),
+		DBName:   os.Getenv("POSTGRES_DB_NAME"),
+		SslMode:  os.Getenv("POSTGRES_SSL"),
+	})
+	if err != nil {
+		logger.Fatalf("failed to initialize db: %s", err.Error())
+	}
+	defer func(db *pgx.Conn, ctx context.Context) {
+		err = db.Close(ctx)
+		if err != nil {
+			logger.Infos("error close db conn: %s", err.Error())
+		}
+	}(db, ctx)
+
+	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(ctx, services)
 
@@ -42,7 +60,7 @@ func main() {
 	grpcServer := server.NewGrpc(ctx, grpcService)
 	go func() {
 		if err = grpcServer.Run(cfg.GrpcPort, handlers); err != nil {
-			sugar.Info(err.Error())
+			logger.Info(err.Error())
 			quit <- nil
 		}
 	}()
@@ -50,25 +68,31 @@ func main() {
 	restServer := server.NewRest(ctx)
 	go func() {
 		if err = restServer.Run(cfg.GrpcPort, cfg.RestPort); err != nil {
-			sugar.Info(err.Error())
+			logger.Info(err.Error())
 			quit <- nil
 		}
 	}()
 
-	sugar.Info("App Started")
+	logger.Info("App Started")
 
-	s := <-quit
-	sugar.Infof("Got signal %v, attempting graceful shutdown", s)
-	cancel()
-	sugar.Info("Context is stopped")
-	grpcService.GracefulStop()
-	sugar.Info("gRPC graceful stopped")
-	err = restServer.RestServer().Shutdown(ctx)
-	if err != nil {
-		sugar.Infof("error rest server shutdown: %s", err.Error())
-	} else {
-		sugar.Info("Rest server stopped")
-	}
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		s := <-quit
+		logger.Infof("Got signal %v, attempting graceful shutdown", s)
+		cancel()
+		logger.Info("Context is stopped")
+		grpcService.GracefulStop()
+		logger.Info("gRPC graceful stopped")
+		err = restServer.RestServer().Shutdown(ctx)
+		if err != nil {
+			logger.Infof("error rest server shutdown: %s", err.Error())
+		} else {
+			logger.Info("Rest server stopped")
+		}
+		wg.Done()
+	}()
+	wg.Wait()
 
-	sugar.Info("App Shutting Down")
+	logger.Info("App Shutting Down")
 }
