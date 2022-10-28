@@ -15,13 +15,14 @@ test-coverage:
 	go tool cover -func cover.out | grep total | awk '{print $3}'
 
 build-image:
-	docker build -t neketsky/mnemosyne:v1.0.0 .
+	docker build -t mnemosyne/app:v1.0.0 .
 
 start-container:
 	docker run \
 		--env-file .env \
 		-p 8000:8000 \
-		neketsky/mnemosyne:v1.0.0
+		-p 50051:50051 \
+		mnemosyne/app:v1.0.0
 
 buf:
 	cd ./proto && buf generate

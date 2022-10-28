@@ -1,20 +1,27 @@
-FROM golang:1.19.1-alpine3.15 AS builder
+FROM golang:1.19.2-alpine3.16 AS builder
 
 RUN go version
 
-COPY . /github.com/NEKETSKY/mnemosyne/
-WORKDIR /github.com/NEKETSKY/mnemosyne/
+COPY . /mnemosyne/
+WORKDIR /mnemosyne/
 
 RUN go mod download
-RUN GOOS=linux go build -o ./.bin/app ./cmd/main.go
+RUN GOOS=linux go build -o ./.bin/mnemosyne ./cmd/main.go
+
+FROM migrate/migrate AS migrate
 
 FROM alpine:latest
 
-WORKDIR /root/
+WORKDIR /app
 
-COPY --from=0 /github.com/NEKETSKY/mnemosyne/.bin/app .
-COPY --from=0 /github.com/NEKETSKY/mnemosyne/configs/config.yml configs/config.yml
+COPY --from=builder /mnemosyne/.bin/mnemosyne .
+COPY --from=builder /mnemosyne/swagger swagger/
+COPY --from=builder /mnemosyne/configs/config.yml configs/config.yml
+RUN touch .env
 
-EXPOSE 8000
+COPY --from=builder /mnemosyne/migrations/*.sql migrations/
+COPY --from=builder /mnemosyne/app.sh .
 
-CMD ["./app"]
+COPY --from=migrate /migrate .
+
+CMD /app/app.sh
