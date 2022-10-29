@@ -7,8 +7,8 @@ create table if not exists RESUME (
     City varchar(20),
     Time_Zone varchar(10),
     Mentors_Note text,
-    Created_At timestamp,
-    Updated_At timestamp,
+    Created_At timestamp not null default (now()),
+    Updated_At timestamp not null default (now()),
     Deleted boolean default false
 ) ;
 commit;

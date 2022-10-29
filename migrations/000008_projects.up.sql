@@ -2,12 +2,12 @@ BEGIN;
 
 CREATE TABLE if not exists projects (
     id serial PRIMARY KEY,
-    name varchar(30),
-    description text,
-    External_doc inet,
+    name varchar(30) not null,
+    description text not null,
+    External_doc inet not null,
     Mentor_id uuid references Users(id),
-    Created_At timestamp,
-    Updated_At timestamp,
+    Created_At timestamp not null default (now()),
+    Updated_At timestamp not null default (now()),
     Deleted boolean default false
 );
 
