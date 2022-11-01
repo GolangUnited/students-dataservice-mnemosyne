@@ -6,6 +6,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/handler"
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/internal/service"
+	"github.com/NEKETSKY/mnemosyne/migrations"
 	"github.com/NEKETSKY/mnemosyne/models/server"
 	"github.com/NEKETSKY/mnemosyne/pkg/logger"
 	"github.com/jackc/pgx/v5"
@@ -31,14 +32,15 @@ func main() {
 		logger.Fatalf("error loading env variables: %s", err.Error())
 	}
 
-	db, err := repository.NewPostgresDB(ctx, repository.Config{
+	dbCfg := repository.Config{
 		Host:     os.Getenv("POSTGRES_HOST"),
 		Port:     os.Getenv("POSTGRES_PORT"),
 		Username: os.Getenv("POSTGRES_USER"),
 		Password: os.Getenv("POSTGRES_PASSWORD"),
 		DBName:   os.Getenv("POSTGRES_DB_NAME"),
 		SslMode:  os.Getenv("POSTGRES_SSL"),
-	})
+	}
+	db, err := repository.NewPostgresDB(ctx, dbCfg)
 	if err != nil {
 		logger.Fatalf("failed to initialize db: %s", err.Error())
 	}
@@ -48,6 +50,11 @@ func main() {
 			logger.Infos("error close db conn: %s", err.Error())
 		}
 	}(db, ctx)
+
+	err = migrations.MigrateUp(ctx, dbCfg)
+	if err != nil {
+		logger.Fatalf("error init db migrate: %s", err.Error())
+	}
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
