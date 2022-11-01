@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/NEKETSKY/mnemosyne/internal/handler"
 	"github.com/NEKETSKY/mnemosyne/pkg/api"
-	"github.com/NEKETSKY/mnemosyne/pkg/log"
+	"github.com/NEKETSKY/mnemosyne/pkg/logger"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"net"
@@ -24,7 +24,6 @@ func NewGrpc(ctx context.Context, grpcService *grpc.Server) *Grpc {
 }
 
 func (g *Grpc) Run(port int, handler *handler.Handler) (err error) {
-	logger := log.LoggerFromContext(g.ctx)
 	api.RegisterMnemosyneServer(g.grpcService, handler)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {

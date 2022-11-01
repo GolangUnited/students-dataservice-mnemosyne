@@ -26,3 +26,6 @@ start-container:
 
 buf:
 	cd ./proto && buf generate
+
+migrate-create:
+	migrate create -dir ./migrations -ext sql -seq migrate
