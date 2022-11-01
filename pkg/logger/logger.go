@@ -1,39 +1,32 @@
 package logger
 
-import (
-	"log"
-
-	"go.uber.org/zap"
-)
-
 var (
-	logger *zap.Logger
+	logger ILogger
 )
 
 func init() {
-	localLogger, err := zap.NewProduction()
-	if err != nil {
-		log.Fatal("logger init", err)
-	}
-
-	logger = localLogger
+	logger = New()
 }
 
-func Info(msg string, fields ...zap.Field) {
-	logger.Info(msg, fields...)
+type ILogger interface {
+	Infos(args ...interface{})
+	Info(msg string)
+	Infof(template string, args ...interface{})
+	Fatalf(template string, args ...interface{})
+}
+
+func Info(msg string) {
+	logger.Info(msg)
 }
 
 func Infos(args ...interface{}) {
-	sugar := logger.Sugar()
-	sugar.Info(args...)
+	logger.Infos(args...)
 }
 
 func Infof(template string, args ...interface{}) {
-	sugar := logger.Sugar()
-	sugar.Infof(template, args...)
+	logger.Infof(template, args...)
 }
 
 func Fatalf(template string, args ...interface{}) {
-	sugar := logger.Sugar()
-	sugar.Fatalf(template, args...)
+	logger.Fatalf(template, args...)
 }
