@@ -1,8 +1,8 @@
 BEGIN;
 
-CREATE TABLE Student_teams (
-    Student_ID uuid references Users(ID),
-    Team_ID integer references Teams(ID)
+CREATE TABLE student_teams (
+    student_id integer references users(id),
+    team_id integer references teams(id)
 );
 
 COMMIT;

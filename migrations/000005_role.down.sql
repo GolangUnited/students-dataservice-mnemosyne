@@ -1,3 +1,3 @@
 begin;
-DROP TABLE IF EXISTS Roles cascade;
+DROP TABLE IF EXISTS roles cascade;
 commit;

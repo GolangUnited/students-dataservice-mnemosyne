@@ -1,3 +1,3 @@
 begin;
-DROP TABLE IF EXISTS Student_teams;
+DROP TABLE IF EXISTS student_teams;
 commit;

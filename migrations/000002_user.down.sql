@@ -1,3 +1,3 @@
 begin;
-drop table if exists Users CASCADE;
+drop table if exists users CASCADE;
 commit;

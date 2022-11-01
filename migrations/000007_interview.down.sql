@@ -1,3 +1,3 @@
 begin;
-drop table if exists Interview;
+drop table if exists interview;
 commit;

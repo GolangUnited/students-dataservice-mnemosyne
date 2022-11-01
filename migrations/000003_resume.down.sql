@@ -1,3 +1,3 @@
 begin;
-drop table if exists Resume;
+drop table if exists resume;
 commit;

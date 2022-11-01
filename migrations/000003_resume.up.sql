@@ -1,14 +1,14 @@
 begin;
-create table if not exists RESUME (
-    User_ID uuid primary key references Users(ID),
-    Experience text,
-    Uploaded_Resume inet,
-    Country varchar(20),
-    City varchar(20),
-    Time_Zone varchar(10),
-    Mentors_Note text,
-    Created_At timestamp not null default (now()),
-    Updated_At timestamp not null default (now()),
-    Deleted boolean default false
+create table if not exists resume(
+    user_id integer primary key references users(id),
+    experience text,
+    uploaded_resume text,
+    country varchar(20),
+    city varchar(20),
+    time_zone varchar(10),
+    mentors_note text,
+    created_at timestamp not null default (now()),
+    updated_at timestamp not null default (now()),
+    deleted boolean default false
 ) ;
 commit;

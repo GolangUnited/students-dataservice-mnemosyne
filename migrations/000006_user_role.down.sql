@@ -1,3 +1,3 @@
 begin;
-DROP TABLE IF EXISTS User_Role;
+DROP TABLE IF EXISTS user_role;
 commit;

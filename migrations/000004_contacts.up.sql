@@ -1,12 +1,12 @@
 begin;
-create table if not exists Contacts (
-    User_ID uuid primary key references Users(ID),
-    Email varchar(30) not null,
-    Telegram varchar(20) not null,
-    Discord varchar(20) not null,
-    Communication_Channel varchar(10),
-    Created_At timestamp not null default (now()),
-    Updated_At timestamp not null default (now()),
-    Deleted boolean default false
+create table if not exists сontacts (
+    user_id integer primary key references users(id),
+    email varchar(255) not null,
+    telegram varchar(255) not null,
+    discord varchar(255) not null,
+    communication_channel varchar(10),
+    created_at timestamp not null default (now()),
+    updated_at timestamp not null default (now()),
+    deleted boolean default false
 ) ;
 commit;

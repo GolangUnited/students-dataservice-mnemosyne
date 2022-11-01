@@ -1,8 +1,8 @@
 BEGIN;
 
-CREATE TABLE if not exists Roles (
+CREATE TABLE if not exists roles (
     id serial PRIMARY KEY,
-    Name varchar(20) not null
+    name varchar(255) not null
 );
 
 COMMIT;

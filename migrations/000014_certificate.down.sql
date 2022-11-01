@@ -1,3 +1,3 @@
 begin;
-DROP TABLE IF EXISTS Certificates;
+DROP TABLE IF EXISTS certificates;
 commit;

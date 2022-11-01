@@ -1,8 +1,8 @@
 BEGIN;
 
-CREATE TABLE Student_groups (
-    Student_ID uuid references Users(ID),
-    Group_ID integer references groups(ID)
+CREATE TABLE student_groups (
+    student_id integer references users(id),
+    group_id integer references groups(id)
 );
 
 COMMIT;

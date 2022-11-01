@@ -2,16 +2,16 @@ BEGIN;
 
 CREATE TABLE if not exists lessons (
     id serial PRIMARY KEY,
-    presentation inet,
-    video inet,
-    date timestamp not null,
-    homework inet,
-    lecturer_id uuid references users(id),
+    presentation text,
+    video text,
+    lesson_date timestamp not null,
+    homework text,
+    lecturer_id integer references users(id),
     group_id integer references groups(id),
-    Language varchar(5) not null,
-    Created_At timestamp not null default (now()),
-    Updated_At timestamp not null default (now()),
-    Deleted boolean default false
+    language varchar(5) not null,
+    created_at timestamp not null default (now()),
+    updated_at timestamp not null default (now()),
+    deleted boolean default false
 );
 
 COMMIT;

@@ -1,10 +1,10 @@
 BEGIN;
 
-CREATE TABLE Certificates (
+CREATE TABLE certificates (
     id serial PRIMARY KEY,
-    User_id uuid references Users(id),
-    Issue_date timestamp not null,
-    Expire_date timestamp not null
+    user_id integer references users(id),
+    issue_date timestamp not null,
+    expire_date timestamp not null
 );
 
 COMMIT;

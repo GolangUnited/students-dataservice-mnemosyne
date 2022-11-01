@@ -1,3 +1,3 @@
 begin;
-drop table if exists Contacts;
+drop table if exists сontacts cascade;
 commit;
