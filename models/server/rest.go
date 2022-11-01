@@ -21,6 +21,7 @@ type Rest struct {
 	restServer *http.Server
 }
 
+// NewRest created new rest server
 func NewRest(ctx context.Context) *Rest {
 	return &Rest{
 		ctx:        ctx,
@@ -28,6 +29,7 @@ func NewRest(ctx context.Context) *Rest {
 	}
 }
 
+// Run rest server with handle swagger
 func (r *Rest) Run(grpcPort, restPort int) (err error) {
 	gwMux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
@@ -56,10 +58,12 @@ func (r *Rest) Run(grpcPort, restPort int) (err error) {
 	return
 }
 
+// RestServer return created rest server
 func (r Rest) RestServer() *http.Server {
 	return r.restServer
 }
 
+// handleSwaggerFile bind swagger handler with json
 func handleSwaggerFile(mux *http.ServeMux) {
 	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, req *http.Request) {
 		errorMessage := []byte("Failed to open swagger file.")

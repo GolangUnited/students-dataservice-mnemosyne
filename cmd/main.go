@@ -19,11 +19,13 @@ import (
 )
 
 func main() {
+	// init config
 	cfg, err := configs.Init()
 	if err != nil {
 		logger.Fatalf("error init config: %s", err.Error())
 	}
 
+	// init context
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
@@ -31,6 +33,7 @@ func main() {
 		logger.Fatalf("error loading env variables: %s", err.Error())
 	}
 
+	// init postgres db
 	dbCfg := repository.Config{
 		Host:     os.Getenv("POSTGRES_HOST"),
 		Port:     os.Getenv("POSTGRES_PORT"),
@@ -50,6 +53,7 @@ func main() {
 		}
 	}(db, ctx)
 
+	// init migrations
 	err = migrations.MigrateUp(ctx, dbCfg)
 	if err != nil {
 		logger.Fatalf("error init db migrate: %s", err.Error())
@@ -62,6 +66,7 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 
+	// run grpc server
 	grpcService := grpc.NewServer()
 	grpcServer := server.NewGrpc(ctx, grpcService)
 	go func() {
@@ -71,6 +76,7 @@ func main() {
 		}
 	}()
 
+	// run rest server
 	restServer := server.NewRest(ctx)
 	go func() {
 		if err = restServer.Run(cfg.GrpcPort, cfg.RestPort); err != nil {
@@ -81,6 +87,7 @@ func main() {
 
 	logger.Info("App Started")
 
+	// graceful shutdown
 	s := <-quit
 	logger.Infof("Got signal %v, attempting graceful shutdown", s)
 	cancel()

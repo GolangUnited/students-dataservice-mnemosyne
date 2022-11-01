@@ -15,6 +15,7 @@ import (
 //go:embed *.sql
 var schemaFs embed.FS
 
+// MigrateUp exec migrate up on run instance
 func MigrateUp(ctx context.Context, cfg repository.Config) (err error) {
 	_ = ctx
 

@@ -9,6 +9,7 @@ type Config struct {
 	GrpcPort int `mapstructure:"grpcPort"`
 }
 
+// Init config from yml file
 func Init() (*Config, error) {
 	mainViper := viper.New()
 	mainViper.AddConfigPath("configs")
