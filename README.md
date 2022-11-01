@@ -22,3 +22,7 @@ Use ```make run``` to build and run docker containers with application itself
 Use ```make buf``` to build protobuf files
 
 [BloomRPC](https://github.com/bloomrpc/bloomrpc) - client for send gRPC requests
+
+## Endpoints
+
+https://docs.google.com/spreadsheets/d/1--GgKECVO1CZut9QbEl9GInljdKJ68VsQJj74Hfo8lE/edit#gid=82299691
