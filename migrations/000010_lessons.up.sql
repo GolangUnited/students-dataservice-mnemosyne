@@ -3,7 +3,7 @@ BEGIN;
 CREATE TABLE if not exists lessons (
     id serial PRIMARY KEY,
     presentation text,
-    video text,
+    video_link text,
     lesson_date timestamp not null,
     homework text,
     lecturer_id integer references users(id),
