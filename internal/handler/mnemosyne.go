@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-// SayHello implements helloworld.GreeterServer
+// SayHello implements api.MnemosyneServer
 func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
 	_ = ctx
 
