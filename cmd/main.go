@@ -9,7 +9,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/migrations"
 	"github.com/NEKETSKY/mnemosyne/models/server"
 	"github.com/NEKETSKY/mnemosyne/pkg/logger"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v4"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
@@ -54,7 +54,7 @@ func main() {
 	}(db, ctx)
 
 	// init migrations
-	err = migrations.MigrateUp(ctx, dbCfg)
+	err = migrations.MigrateUp(ctx, db.Config())
 	if err != nil {
 		logger.Fatalf("error init db migrate: %s", err.Error())
 	}

@@ -4,19 +4,19 @@ import (
 	"context"
 	"database/sql"
 	"embed"
-	"fmt"
-	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/pkg/logger"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/pgx"
+	mpgx "github.com/golang-migrate/migrate/v4/database/pgx"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
+	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/stdlib"
 )
 
 //go:embed *.sql
 var schemaFs embed.FS
 
 // MigrateUp exec migrate up on run instance
-func MigrateUp(ctx context.Context, cfg repository.Config) (err error) {
+func MigrateUp(ctx context.Context, cfg *pgx.ConnConfig) (err error) {
 	_ = ctx
 
 	d, err := iofs.New(schemaFs, ".") // Get migrations from sql folder
@@ -24,23 +24,19 @@ func MigrateUp(ctx context.Context, cfg repository.Config) (err error) {
 		return
 	}
 
-	db, err := sql.Open("pgx", fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
-		cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.SslMode))
-	if err != nil {
-		return
-	}
+	db := stdlib.OpenDB(*cfg)
 	defer func(db *sql.DB) {
 		err = db.Close()
 		if err != nil {
 			logger.Infof("migrate close db: %s", err.Error())
 		}
 	}(db)
-	driver, err := pgx.WithInstance(db, &pgx.Config{})
+	driver, err := mpgx.WithInstance(db, &mpgx.Config{})
 	if err != nil {
 		return
 	}
 
-	m, err := migrate.NewWithInstance("iofs", d, cfg.DBName, driver)
+	m, err := migrate.NewWithInstance("iofs", d, cfg.Database, driver)
 	if err != nil {
 		return
 	}
