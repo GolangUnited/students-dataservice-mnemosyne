@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/NEKETSKY/mnemosyne/pkg/api v0.0.0-00010101000000-000000000000
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	github.com/jackc/pgx/v5 v5.0.3
 	github.com/joho/godotenv v1.4.0

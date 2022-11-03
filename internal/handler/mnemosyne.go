@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"github.com/NEKETSKY/mnemosyne/models/auth"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	"github.com/pkg/errors"
@@ -10,7 +11,8 @@ import (
 
 // SayHello implements helloworld.GreeterServer
 func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
-	_ = ctx
+	user := auth.GetUser(ctx)
+	_ = user
 
 	var req mnemosyne.Request
 	resp, err := h.services.Mnemosyne.Test(ctx, req)
