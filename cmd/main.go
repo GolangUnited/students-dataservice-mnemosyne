@@ -88,8 +88,7 @@ func main() {
 	logger.Info("App Started")
 
 	// graceful shutdown
-	s := <-quit
-	logger.Infof("Got signal %v, attempting graceful shutdown", s)
+	logger.Infof("Got signal %v, attempting graceful shutdown", <-quit)
 	cancel()
 	logger.Info("Context is stopped")
 	grpcService.GracefulStop()

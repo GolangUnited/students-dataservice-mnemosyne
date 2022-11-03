@@ -24,14 +24,14 @@ services:
   db:
     image: postgres:14.5
     restart: always
-    volumes:
+#    volumes:
 #      - ./.database/postgres/data:/var/lib/postgresql/data
-      - ./migrations/entrypoint:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_HOST=localhost
       - POSTGRES_DB_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
     ports:
       - "5436:5432"
     healthcheck:

@@ -8,7 +8,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/pkg/logger"
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/postgres"
+	"github.com/golang-migrate/migrate/v4/database/pgx"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 )
 
@@ -24,17 +24,23 @@ func MigrateUp(ctx context.Context, cfg repository.Config) (err error) {
 		return
 	}
 
-	db, err := sql.Open("postgres", fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
+	db, err := sql.Open("pgx", fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.SslMode))
 	if err != nil {
 		return
 	}
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	defer func(db *sql.DB) {
+		err = db.Close()
+		if err != nil {
+			logger.Infof("migrate close db: %s", err.Error())
+		}
+	}(db)
+	driver, err := pgx.WithInstance(db, &pgx.Config{})
 	if err != nil {
 		return
 	}
 
-	m, err := migrate.NewWithInstance("iofs", d, "postgres", driver)
+	m, err := migrate.NewWithInstance("iofs", d, cfg.DBName, driver)
 	if err != nil {
 		return
 	}
