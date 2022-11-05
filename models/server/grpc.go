@@ -10,6 +10,7 @@ import (
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"net"
 )
 
@@ -37,6 +38,7 @@ func (g *Grpc) Run(port int, handler *handler.Handler) (err error) {
 		return errors.Wrap(err, "failed to listen")
 	}
 	logger.Info(fmt.Sprintf("gRPC server is listening on: %d", port))
+	reflection.Register(g.grpcService)
 	if err = g.grpcService.Serve(lis); err != nil {
 		return errors.Wrap(err, "failed to serve")
 	}
