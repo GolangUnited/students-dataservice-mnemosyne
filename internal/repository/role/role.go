@@ -21,16 +21,15 @@ func (r *RoleRepository) GetAllRoles(ctx context.Context) (roles []database.Role
 	if err != nil {
 		return nil, err
 	}
-	result := make([]database.Role, 0)
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
 			return nil, err
 		}
 		role := database.Role{Id: int(values[0].(int32)), Name: values[1].(string)}
-		result = append(result, role)
+		roles = append(roles, role)
 	}
-	return result, err
+	return roles, err
 }
 
 func (r *RoleRepository) GetUserRoles(ctx context.Context, userId int) (roles []database.Role, err error) {
@@ -38,16 +37,15 @@ func (r *RoleRepository) GetUserRoles(ctx context.Context, userId int) (roles []
 	if err != nil {
 		return nil, err
 	}
-	result := make([]database.Role, 0)
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
 			return nil, err
 		}
 		role := database.Role{Id: int(values[0].(int32)), Name: values[1].(string)}
-		result = append(result, role)
+		roles = append(roles, role)
 	}
-	return result, err
+	return roles, err
 }
 
 func (r *RoleRepository) DeleteUserRole(ctx context.Context, userId int, roleId int) (err error) {
