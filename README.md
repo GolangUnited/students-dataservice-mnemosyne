@@ -30,9 +30,15 @@ Use ```make buf``` to build protobuf files
 
 [BloomRPC](https://github.com/bloomrpc/bloomrpc) - client for send gRPC requests
 
+
+## Endpoints
+
+https://docs.google.com/spreadsheets/d/1--GgKECVO1CZut9QbEl9GInljdKJ68VsQJj74Hfo8lE/edit#gid=82299691
+
 ## See swagger for API endpoints
 http://localhost:8000/swagger/
 
 ## Requirements
 - go 1.19
 - docker & docker-compose
+
