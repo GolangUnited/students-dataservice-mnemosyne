@@ -16,6 +16,7 @@ type Grpc struct {
 	grpcService *grpc.Server
 }
 
+// NewGrpc created new grpc server
 func NewGrpc(ctx context.Context, grpcService *grpc.Server) *Grpc {
 	return &Grpc{
 		ctx:         ctx,
@@ -23,6 +24,7 @@ func NewGrpc(ctx context.Context, grpcService *grpc.Server) *Grpc {
 	}
 }
 
+// Run grpc on port with handler
 func (g *Grpc) Run(port int, handler *handler.Handler) (err error) {
 	api.RegisterMnemosyneServer(g.grpcService, handler)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))

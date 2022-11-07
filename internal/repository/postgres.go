@@ -6,6 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
+// Config represents postgres connect config
 type Config struct {
 	Host     string
 	Port     string
@@ -15,6 +16,7 @@ type Config struct {
 	SslMode  string
 }
 
+// NewPostgresDB created postgres pgx connection
 func NewPostgresDB(ctx context.Context, cfg Config) (*pgx.Conn, error) {
 	db, err := pgx.Connect(ctx, fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
 		cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.SslMode))
