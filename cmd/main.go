@@ -66,9 +66,9 @@ func main() {
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 
 	// run grpc server
-	grpcServer := server.NewGrpc(ctx)
+	grpcServer := server.NewGrpc(ctx, handlers)
 	go func() {
-		if err = grpcServer.Run(cfg.GrpcPort, handlers); err != nil {
+		if err = grpcServer.Run(cfg.GrpcPort); err != nil {
 			logger.Info(err.Error())
 			quit <- nil
 		}

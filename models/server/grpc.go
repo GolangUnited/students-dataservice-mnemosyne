@@ -17,24 +17,26 @@ import (
 type Grpc struct {
 	ctx         context.Context
 	grpcService *grpc.Server
+	handler     *handler.Handler
 }
 
 // NewGrpc created new grpc server
-func NewGrpc(ctx context.Context) *Grpc {
+func NewGrpc(ctx context.Context, handler *handler.Handler) *Grpc {
 	return &Grpc{
 		ctx: ctx,
+		// grpc middleware
+		grpcService: grpc.NewServer(
+			grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+				grpc_auth.UnaryServerInterceptor(handler.Auth),
+			)),
+		),
+		handler: handler,
 	}
 }
 
 // Run grpc on port with handler
-func (g *Grpc) Run(port int, handler *handler.Handler) (err error) {
-	// grpc middleware
-	g.grpcService = grpc.NewServer(
-		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-			grpc_auth.UnaryServerInterceptor(handler.Auth),
-		)),
-	)
-	api.RegisterMnemosyneServer(g.grpcService, handler)
+func (g *Grpc) Run(port int) (err error) {
+	api.RegisterMnemosyneServer(g.grpcService, g.handler)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		return errors.Wrap(err, "failed to listen")
