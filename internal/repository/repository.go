@@ -18,8 +18,8 @@ type Mnemosyne interface {
 type Role interface {
 	GetAllRoles(ctx context.Context) (roles []database.Role, err error)
 	GetUserRoles(ctx context.Context, userId int) (roles []database.Role, err error)
-	DeleteUserRole(ctx context.Context, userId int, roleId int) (err error)
-	AddUserRole(ctx context.Context, userId int, roleId int) (err error)
+	DeleteUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error)
+	AddUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error)
 }
 
 type Repository struct {
