@@ -11,9 +11,6 @@
   "tags": [
     {
       "name": "Mnemosyne"
-    },
-    {
-      "name": "UserMess"
     }
   ],
   "host": "localhost:8000",
@@ -28,223 +25,6 @@
     "application/json"
   ],
   "paths": {
-    "/api.UserMess/CreateUser": {
-      "post": {
-        "operationId": "UserMess_CreateUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userEmail"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": "The basic message containing the primary information about a user.",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userUser"
-            }
-          }
-        ],
-        "tags": [
-          "UserMess"
-        ]
-      }
-    },
-    "/api.UserMess/DeleteUser": {
-      "post": {
-        "operationId": "UserMess_DeleteUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userEmpty"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userEmail"
-            }
-          }
-        ],
-        "tags": [
-          "UserMess"
-        ]
-      }
-    },
-    "/api.UserMess/GetAllUsers": {
-      "post": {
-        "operationId": "UserMess_GetAllUsers",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userAllUsers"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userEmpty"
-            }
-          }
-        ],
-        "tags": [
-          "UserMess"
-        ]
-      }
-    },
-    "/api.UserMess/GetUser": {
-      "post": {
-        "operationId": "UserMess_GetUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userUser"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userEmail"
-            }
-          }
-        ],
-        "tags": [
-          "UserMess"
-        ]
-      }
-    },
-    "/api.UserMess/UpdateUser": {
-      "post": {
-        "operationId": "UserMess_UpdateUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userEmail"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": "The basic message containing the primary information about a user.",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userUser"
-            }
-          }
-        ],
-        "tags": [
-          "UserMess"
-        ]
-      }
-    },
     "/mnemosyne": {
       "post": {
         "summary": "Sends a greeting",
@@ -289,9 +69,219 @@
           "Mnemosyne"
         ]
       }
+    },
+    "/user/all": {
+      "get": {
+        "summary": "Get all existing users",
+        "operationId": "Mnemosyne_GetAllUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUsers"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/user/new": {
+      "post": {
+        "summary": "Create new user",
+        "operationId": "Mnemosyne_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userEmail"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a user.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/user/update": {
+      "post": {
+        "summary": "Update user's data",
+        "operationId": "Mnemosyne_UpdateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userEmail"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a user.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/user/{email}": {
+      "get": {
+        "summary": "Get user by email",
+        "operationId": "Mnemosyne_GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "delete": {
+        "summary": "Delete user by email",
+        "operationId": "Mnemosyne_DeleteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
     }
   },
   "definitions": {
+    "commonEmpty": {
+      "type": "object",
+      "title": "under construction ;)"
+    },
     "helloworldHelloReply": {
       "type": "object",
       "properties": {
@@ -348,18 +338,6 @@
         }
       }
     },
-    "userAllUsers": {
-      "type": "object",
-      "properties": {
-        "users": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/userUser"
-          }
-        }
-      },
-      "title": "The basic message containing information about all users from db"
-    },
     "userEmail": {
       "type": "object",
       "properties": {
@@ -368,10 +346,6 @@
         }
       },
       "title": "Basic response containing email of the user"
-    },
-    "userEmpty": {
-      "type": "object",
-      "title": "under construction ;)"
     },
     "userUser": {
       "type": "object",
@@ -423,6 +397,18 @@
         "city",
         "timeZone"
       ]
+    },
+    "userUsers": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/userUser"
+          }
+        }
+      },
+      "title": "The basic message containing information about all users from db"
     }
   },
   "securityDefinitions": {

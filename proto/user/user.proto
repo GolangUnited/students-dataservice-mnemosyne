@@ -25,7 +25,7 @@ message User {
   string time_zone = 11;
 }
 //The basic message containing information about all users from db
-message AllUsers {
+message Users {
   repeated User users = 1;
 }
 //Basic response containing email of the user

@@ -5,6 +5,7 @@ import "google/api/annotations.proto";
 import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
+import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
@@ -100,12 +101,42 @@ service Mnemosyne {
       body: "*"
     };
   }
+
+  //Create new user
+  rpc CreateUser (user.User) returns (user.Email){
+    option (google.api.http) = {
+      post: "/user/new"
+      body: "*"
+    };
+  };
+  
+  //Get all existing users 
+  rpc GetAllUsers (common.Empty) returns (user.Users){
+    option (google.api.http) = {
+      get: "/user/all"
+    };
+  };
+
+  //Get user by email
+  rpc GetUser (user.Email) returns (user.User){
+    option (google.api.http) = {
+      get: "/user/{email}"     
+    };
+  };
+
+  //Update user's data
+  rpc UpdateUser (user.User) returns (user.Email){
+    option (google.api.http) = {
+      post: "/user/update"
+      body: "*"
+    };
+  };
+
+  //Delete user by email
+  rpc DeleteUser (user.Email) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/user/{email}"
+    };
+  }; 
 }
 
-service UserMess {
-  rpc CreateUser (user.User) returns (user.Email);
-  rpc GetAllUsers (user.Empty) returns (user.AllUsers);
-  rpc GetUser (user.Email) returns (user.User);
-  rpc UpdateUser (user.User) returns (user.Email);
-  rpc DeleteUser (user.Email) returns (user.Empty) ; 
-}
