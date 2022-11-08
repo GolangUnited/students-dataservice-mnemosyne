@@ -11,7 +11,7 @@ message User {
       title: "User json schema"     
       required: ["last_name","first_name","email", "language", "english_level","photo","country","city","time_zone"]
     }
-  };
+  }; 
   string last_name = 1 ;
   string first_name = 2 ;
   optional string middle_name = 3;
@@ -24,11 +24,13 @@ message User {
   string city = 10;
   string time_zone = 11;
 }
-
+//The basic message containing information about all users from db
 message AllUsers {
   repeated User users = 1;
 }
+//Basic response containing email of the user
 message Email{
   string email = 1;
 }
+//under construction ;)
 message Empty {}

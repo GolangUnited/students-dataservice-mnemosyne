@@ -59,6 +59,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "The basic message containing the primary information about a user.",
             "in": "body",
             "required": true,
             "schema": {
@@ -121,7 +122,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userAll_users"
+              "$ref": "#/definitions/userAllUsers"
             }
           },
           "403": {
@@ -231,6 +232,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "The basic message containing the primary information about a user.",
             "in": "body",
             "required": true,
             "schema": {
@@ -346,7 +348,7 @@
         }
       }
     },
-    "userAll_users": {
+    "userAllUsers": {
       "type": "object",
       "properties": {
         "users": {
@@ -355,7 +357,8 @@
             "$ref": "#/definitions/userUser"
           }
         }
-      }
+      },
+      "title": "The basic message containing information about all users from db"
     },
     "userEmail": {
       "type": "object",
@@ -363,10 +366,12 @@
         "email": {
           "type": "string"
         }
-      }
+      },
+      "title": "Basic response containing email of the user"
     },
     "userEmpty": {
-      "type": "object"
+      "type": "object",
+      "title": "under construction ;)"
     },
     "userUser": {
       "type": "object",
@@ -405,6 +410,7 @@
           "type": "string"
         }
       },
+      "description": "The basic message containing the primary information about a user.",
       "title": "User json schema",
       "required": [
         "lastName",
