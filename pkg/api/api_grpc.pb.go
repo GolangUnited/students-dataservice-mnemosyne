@@ -9,6 +9,7 @@ package api
 import (
 	context "context"
 	helloworld "github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
+	user "github.com/NEKETSKY/mnemosyne/pkg/api/user"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -99,6 +100,234 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SayHello",
 			Handler:    _Mnemosyne_SayHello_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "api.proto",
+}
+
+// UserMessClient is the client API for UserMess service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type UserMessClient interface {
+	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error)
+	GetAllUsers(ctx context.Context, in *user.Empty, opts ...grpc.CallOption) (*user.AllUsers, error)
+	GetUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error)
+	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error)
+	DeleteUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.Empty, error)
+}
+
+type userMessClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewUserMessClient(cc grpc.ClientConnInterface) UserMessClient {
+	return &userMessClient{cc}
+}
+
+func (c *userMessClient) CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error) {
+	out := new(user.Email)
+	err := c.cc.Invoke(ctx, "/api.UserMess/CreateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMessClient) GetAllUsers(ctx context.Context, in *user.Empty, opts ...grpc.CallOption) (*user.AllUsers, error) {
+	out := new(user.AllUsers)
+	err := c.cc.Invoke(ctx, "/api.UserMess/GetAllUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMessClient) GetUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error) {
+	out := new(user.User)
+	err := c.cc.Invoke(ctx, "/api.UserMess/GetUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMessClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error) {
+	out := new(user.Email)
+	err := c.cc.Invoke(ctx, "/api.UserMess/UpdateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMessClient) DeleteUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.Empty, error) {
+	out := new(user.Empty)
+	err := c.cc.Invoke(ctx, "/api.UserMess/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// UserMessServer is the server API for UserMess service.
+// All implementations should embed UnimplementedUserMessServer
+// for forward compatibility
+type UserMessServer interface {
+	CreateUser(context.Context, *user.User) (*user.Email, error)
+	GetAllUsers(context.Context, *user.Empty) (*user.AllUsers, error)
+	GetUser(context.Context, *user.Email) (*user.User, error)
+	UpdateUser(context.Context, *user.User) (*user.Email, error)
+	DeleteUser(context.Context, *user.Email) (*user.Empty, error)
+}
+
+// UnimplementedUserMessServer should be embedded to have forward compatible implementations.
+type UnimplementedUserMessServer struct {
+}
+
+func (UnimplementedUserMessServer) CreateUser(context.Context, *user.User) (*user.Email, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedUserMessServer) GetAllUsers(context.Context, *user.Empty) (*user.AllUsers, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
+}
+func (UnimplementedUserMessServer) GetUser(context.Context, *user.Email) (*user.User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedUserMessServer) UpdateUser(context.Context, *user.User) (*user.Email, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedUserMessServer) DeleteUser(context.Context, *user.Email) (*user.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+}
+
+// UnsafeUserMessServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserMessServer will
+// result in compilation errors.
+type UnsafeUserMessServer interface {
+	mustEmbedUnimplementedUserMessServer()
+}
+
+func RegisterUserMessServer(s grpc.ServiceRegistrar, srv UserMessServer) {
+	s.RegisterService(&UserMess_ServiceDesc, srv)
+}
+
+func _UserMess_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserMessServer).CreateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.UserMess/CreateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserMessServer).CreateUser(ctx, req.(*user.User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserMess_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserMessServer).GetAllUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.UserMess/GetAllUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserMessServer).GetAllUsers(ctx, req.(*user.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserMess_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Email)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserMessServer).GetUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.UserMess/GetUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserMessServer).GetUser(ctx, req.(*user.Email))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserMess_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserMessServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.UserMess/UpdateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserMessServer).UpdateUser(ctx, req.(*user.User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserMess_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Email)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserMessServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.UserMess/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserMessServer).DeleteUser(ctx, req.(*user.Email))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// UserMess_ServiceDesc is the grpc.ServiceDesc for UserMess service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var UserMess_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.UserMess",
+	HandlerType: (*UserMessServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateUser",
+			Handler:    _UserMess_CreateUser_Handler,
+		},
+		{
+			MethodName: "GetAllUsers",
+			Handler:    _UserMess_GetAllUsers_Handler,
+		},
+		{
+			MethodName: "GetUser",
+			Handler:    _UserMess_GetUser_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _UserMess_UpdateUser_Handler,
+		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _UserMess_DeleteUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

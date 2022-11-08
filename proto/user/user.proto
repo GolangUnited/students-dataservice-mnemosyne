@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package user;
+import "protoc-gen-openapiv2/options/annotations.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
+
+// The basic message containing the primary information about a user.
+message User {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "User json schema"     
+      required: ["last_name","first_name","email", "language", "english_level","photo","country","city","time_zone"]
+    }
+  };
+  string last_name = 1 ;
+  string first_name = 2 ;
+  optional string middle_name = 3;
+  string email = 4;
+  string language = 5;
+  string english_level = 6;
+  string photo = 7;
+  string experience = 8;
+  string country = 9;
+  string city = 10;
+  string time_zone = 11;
+}
+
+message AllUsers {
+  repeated User users = 1;
+}
+message Email{
+  string email = 1;
+}
+message Empty {}
