@@ -17,17 +17,13 @@ func NewRoleRepository(db *pgx.Conn) *RoleRepository {
 }
 
 func (r *RoleRepository) GetAllRoles(ctx context.Context) (roles []database.Role, err error) {
-	rows, err := r.db.Query(ctx, AllRolesQuery)
+	rows, _ := r.db.Query(ctx, AllRolesQuery)
 	if err != nil {
 		return nil, err
 	}
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			return nil, err
-		}
-		role := database.Role{Id: int(values[0].(int32)), Name: values[1].(string)}
-		roles = append(roles, role)
+	roles, err = pgx.CollectRows(rows, pgx.RowToStructByPos[database.Role])
+	if err != nil {
+		return nil, err
 	}
 	return roles, err
 }
@@ -37,26 +33,22 @@ func (r *RoleRepository) GetUserRoles(ctx context.Context, userId int) (roles []
 	if err != nil {
 		return nil, err
 	}
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			return nil, err
-		}
-		role := database.Role{Id: int(values[0].(int32)), Name: values[1].(string)}
-		roles = append(roles, role)
+	roles, err = pgx.CollectRows(rows, pgx.RowToStructByPos[database.Role])
+	if err != nil {
+		return nil, err
 	}
 	return roles, err
 }
 
-func (r *RoleRepository) DeleteUserRole(ctx context.Context, userId int, roleId int) (err error) {
-	_, err = r.db.Query(ctx, DeleteRoleForUserQuery, userId, roleId)
+func (r *RoleRepository) DeleteUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error) {
+	_, err = r.db.Query(ctx, DeleteRoleForUserQuery, userId, roleCode)
 	if err != nil {
 		return err
 	}
 	return err
 }
-func (r *RoleRepository) AddUserRole(ctx context.Context, userId int, roleId int) (err error) {
-	_, err = r.db.Query(ctx, AddRoleForUserQuery, userId, roleId)
+func (r *RoleRepository) AddUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error) {
+	_, err = r.db.Query(ctx, AddRoleForUserQuery, userId, roleCode)
 	if err != nil {
 		return err
 	}
