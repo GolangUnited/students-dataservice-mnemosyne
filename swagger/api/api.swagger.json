@@ -69,9 +69,217 @@
           "Mnemosyne"
         ]
       }
+    },
+    "/user": {
+      "post": {
+        "summary": "Create new user",
+        "operationId": "Mnemosyne_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a user.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "put": {
+        "summary": "Update user's data",
+        "operationId": "Mnemosyne_UpdateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a user.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/user/all": {
+      "get": {
+        "summary": "Get all existing users",
+        "operationId": "Mnemosyne_GetAllUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUsers"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "operationId": "Mnemosyne_GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "delete": {
+        "summary": "Delete user by id",
+        "operationId": "Mnemosyne_DeleteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
     }
   },
   "definitions": {
+    "commonEmpty": {
+      "type": "object",
+      "title": "transitory message for rpc methods that temporary get or return nothing"
+    },
     "helloworldHelloReply": {
       "type": "object",
       "properties": {
@@ -127,6 +335,84 @@
           }
         }
       }
+    },
+    "userId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "title": "Id json schema",
+      "required": [
+        "id"
+      ]
+    },
+    "userUser": {
+      "type": "object",
+      "properties": {
+        "lastName": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "middleName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "englishLevel": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        },
+        "experience": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "description": "The basic message containing the primary information about a user.",
+      "title": "User json schema",
+      "required": [
+        "lastName",
+        "firstName",
+        "email",
+        "language",
+        "englishLevel",
+        "photo",
+        "country",
+        "city",
+        "timeZone"
+      ]
+    },
+    "userUsers": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/userUser"
+          }
+        }
+      },
+      "title": "Users json schema",
+      "required": [
+        "users"
+      ]
     }
   },
   "securityDefinitions": {

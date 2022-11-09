@@ -4,6 +4,8 @@ package api;
 import "google/api/annotations.proto";
 import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "user/user.proto";
+import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
@@ -99,4 +101,42 @@ service Mnemosyne {
       body: "*"
     };
   }
+
+  //Create new user
+  rpc CreateUser (user.User) returns (user.Id){
+    option (google.api.http) = {
+      post: "/user"
+      body: "*"
+    };
+  };
+  
+  //Get all existing users 
+  rpc GetAllUsers (common.Empty) returns (user.Users){
+    option (google.api.http) = {
+      get: "/user/all"
+    };
+  };
+
+  //Get user by id
+  rpc GetUser (user.Id) returns (user.User){
+    option (google.api.http) = {
+      get: "/user/{id}"     
+    };
+  };
+
+  //Update user's data
+  rpc UpdateUser (user.User) returns (user.Id){
+    option (google.api.http) = {
+      put: "/user"
+      body: "*"
+    };
+  };
+
+  //Delete user by id
+  rpc DeleteUser (user.Id) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/user/{id}"
+    };
+  }; 
 }
+
