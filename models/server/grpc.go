@@ -50,6 +50,6 @@ func (g *Grpc) Run(port int) (err error) {
 	return
 }
 
-func (g *Grpc) Service() *grpc.Server {
-	return g.grpcService
+func (g *Grpc) GracefulStop() {
+	g.grpcService.GracefulStop()
 }

@@ -89,7 +89,7 @@ func main() {
 	logger.Infof("Got signal %v, attempting graceful shutdown", <-quit)
 	cancel()
 	logger.Info("Context is stopped")
-	grpcServer.Service().GracefulStop()
+	grpcServer.GracefulStop()
 	logger.Info("gRPC graceful stopped")
 	err = restServer.RestServer().Shutdown(ctx)
 	if err != nil {
