@@ -103,9 +103,9 @@ service Mnemosyne {
   }
 
   //Create new user
-  rpc CreateUser (user.User) returns (user.Email){
+  rpc CreateUser (user.User) returns (user.Id){
     option (google.api.http) = {
-      post: "/user/new"
+      post: "/user"
       body: "*"
     };
   };
@@ -118,14 +118,14 @@ service Mnemosyne {
   };
 
   //Get user by email
-  rpc GetUser (user.Email) returns (user.User){
+  rpc GetUser (user.Id) returns (user.User){
     option (google.api.http) = {
-      get: "/user/{email}"     
+      get: "/user/{id}"     
     };
   };
 
   //Update user's data
-  rpc UpdateUser (user.User) returns (user.Email){
+  rpc UpdateUser (user.User) returns (user.Id){
     option (google.api.http) = {
       post: "/user/update"
       body: "*"
@@ -133,9 +133,9 @@ service Mnemosyne {
   };
 
   //Delete user by email
-  rpc DeleteUser (user.Email) returns (common.Empty){
+  rpc DeleteUser (user.Id) returns (common.Empty){
     option (google.api.http) = {
-      delete: "/user/{email}"
+      delete: "/user/{id}"
     };
   }; 
 }

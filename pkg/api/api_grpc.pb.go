@@ -28,15 +28,15 @@ type MnemosyneClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 	// Create new user
-	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error)
+	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
 	// Get all existing users
 	GetAllUsers(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*user.Users, error)
 	// Get user by email
-	GetUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error)
+	GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
 	// Update user's data
-	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error)
+	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
 	// Delete user by email
-	DeleteUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*common.Empty, error)
+	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
 type mnemosyneClient struct {
@@ -56,8 +56,8 @@ func (c *mnemosyneClient) SayHello(ctx context.Context, in *helloworld.HelloRequ
 	return out, nil
 }
 
-func (c *mnemosyneClient) CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error) {
-	out := new(user.Email)
+func (c *mnemosyneClient) CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error) {
+	out := new(user.Id)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (c *mnemosyneClient) GetAllUsers(ctx context.Context, in *common.Empty, opt
 	return out, nil
 }
 
-func (c *mnemosyneClient) GetUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error) {
+func (c *mnemosyneClient) GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error) {
 	out := new(user.User)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetUser", in, out, opts...)
 	if err != nil {
@@ -83,8 +83,8 @@ func (c *mnemosyneClient) GetUser(ctx context.Context, in *user.Email, opts ...g
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Email, error) {
-	out := new(user.Email)
+func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error) {
+	out := new(user.Id)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ..
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*common.Empty, error) {
+func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
 	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUser", in, out, opts...)
 	if err != nil {
@@ -108,15 +108,15 @@ type MnemosyneServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error)
 	// Create new user
-	CreateUser(context.Context, *user.User) (*user.Email, error)
+	CreateUser(context.Context, *user.User) (*user.Id, error)
 	// Get all existing users
 	GetAllUsers(context.Context, *common.Empty) (*user.Users, error)
 	// Get user by email
-	GetUser(context.Context, *user.Email) (*user.User, error)
+	GetUser(context.Context, *user.Id) (*user.User, error)
 	// Update user's data
-	UpdateUser(context.Context, *user.User) (*user.Email, error)
+	UpdateUser(context.Context, *user.User) (*user.Id, error)
 	// Delete user by email
-	DeleteUser(context.Context, *user.Email) (*common.Empty, error)
+	DeleteUser(context.Context, *user.Id) (*common.Empty, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -126,19 +126,19 @@ type UnimplementedMnemosyneServer struct {
 func (UnimplementedMnemosyneServer) SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
-func (UnimplementedMnemosyneServer) CreateUser(context.Context, *user.User) (*user.Email, error) {
+func (UnimplementedMnemosyneServer) CreateUser(context.Context, *user.User) (*user.Id, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedMnemosyneServer) GetAllUsers(context.Context, *common.Empty) (*user.Users, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
-func (UnimplementedMnemosyneServer) GetUser(context.Context, *user.Email) (*user.User, error) {
+func (UnimplementedMnemosyneServer) GetUser(context.Context, *user.Id) (*user.User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*user.Email, error) {
+func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*user.Id, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Email) (*common.Empty, error) {
+func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 
@@ -208,7 +208,7 @@ func _Mnemosyne_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _Mnemosyne_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(user.Email)
+	in := new(user.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -220,7 +220,7 @@ func _Mnemosyne_GetUser_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/api.Mnemosyne/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).GetUser(ctx, req.(*user.Email))
+		return srv.(MnemosyneServer).GetUser(ctx, req.(*user.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -244,7 +244,7 @@ func _Mnemosyne_UpdateUser_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _Mnemosyne_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(user.Email)
+	in := new(user.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -256,7 +256,7 @@ func _Mnemosyne_DeleteUser_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/api.Mnemosyne/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeleteUser(ctx, req.(*user.Email))
+		return srv.(MnemosyneServer).DeleteUser(ctx, req.(*user.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }

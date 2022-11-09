@@ -70,6 +70,51 @@
         ]
       }
     },
+    "/user": {
+      "post": {
+        "summary": "Create new user",
+        "operationId": "Mnemosyne_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a user.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userUser"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
     "/user/all": {
       "get": {
         "summary": "Get all existing users",
@@ -104,51 +149,6 @@
         ]
       }
     },
-    "/user/new": {
-      "post": {
-        "summary": "Create new user",
-        "operationId": "Mnemosyne_CreateUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userEmail"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": "The basic message containing the primary information about a user.",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userUser"
-            }
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
     "/user/update": {
       "post": {
         "summary": "Update user's data",
@@ -157,7 +157,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userEmail"
+              "$ref": "#/definitions/userId"
             }
           },
           "403": {
@@ -194,7 +194,7 @@
         ]
       }
     },
-    "/user/{email}": {
+    "/user/{id}": {
       "get": {
         "summary": "Get user by email",
         "operationId": "Mnemosyne_GetUser",
@@ -225,7 +225,7 @@
         },
         "parameters": [
           {
-            "name": "email",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -265,7 +265,7 @@
         },
         "parameters": [
           {
-            "name": "email",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -280,7 +280,7 @@
   "definitions": {
     "commonEmpty": {
       "type": "object",
-      "title": "under construction ;)"
+      "title": "transitory message for rpc methods that temporary get or return nothing"
     },
     "helloworldHelloReply": {
       "type": "object",
@@ -338,14 +338,17 @@
         }
       }
     },
-    "userEmail": {
+    "userId": {
       "type": "object",
       "properties": {
-        "email": {
+        "id": {
           "type": "string"
         }
       },
-      "title": "Basic response containing email of the user"
+      "title": "Id json schema",
+      "required": [
+        "id"
+      ]
     },
     "userUser": {
       "type": "object",
@@ -408,7 +411,10 @@
           }
         }
       },
-      "title": "The basic message containing information about all users from db"
+      "title": "Users json schema",
+      "required": [
+        "users"
+      ]
     }
   },
   "securityDefinitions": {

@@ -26,11 +26,21 @@ message User {
 }
 //The basic message containing information about all users from db
 message Users {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Users json schema"     
+      required: ["users"]
+    }
+  }; 
   repeated User users = 1;
 }
-//Basic response containing email of the user
-message Email{
-  string email = 1;
+//Basic request/response containing id of the user
+message Id{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Id json schema"     
+      required: ["id"]
+    }
+  }; 
+    string id = 1;
 }
-//under construction ;)
-message Empty {}
