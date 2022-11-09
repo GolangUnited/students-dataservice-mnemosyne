@@ -132,7 +132,7 @@ service Mnemosyne {
     };
   };
 
-  //Delete user by email
+  //Delete user by id
   rpc DeleteUser (user.Id) returns (common.Empty){
     option (google.api.http) = {
       delete: "/user/{id}"
