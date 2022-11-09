@@ -50,6 +50,7 @@ func (g *Grpc) Run(port int) (err error) {
 	return
 }
 
+// GracefulStop grpc service
 func (g *Grpc) GracefulStop() {
 	g.grpcService.GracefulStop()
 }

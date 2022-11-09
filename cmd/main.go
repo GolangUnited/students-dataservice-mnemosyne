@@ -91,7 +91,7 @@ func main() {
 	logger.Info("Context is stopped")
 	grpcServer.GracefulStop()
 	logger.Info("gRPC graceful stopped")
-	err = restServer.RestServer().Shutdown(ctx)
+	err = restServer.Shutdown()
 	if err != nil {
 		logger.Infof("error rest server shutdown: %s", err.Error())
 	} else {
