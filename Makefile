@@ -11,5 +11,8 @@ test-coverage:
 buf:
 	cd ./proto && buf generate
 
+buf-lint:
+	buf lint
+
 migrate-create:
 	migrate create -dir ./migrations -ext sql -seq migrate

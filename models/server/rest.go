@@ -58,9 +58,9 @@ func (r *Rest) Run(grpcPort, restPort int) (err error) {
 	return
 }
 
-// RestServer return created rest server
-func (r Rest) RestServer() *http.Server {
-	return r.restServer
+// Shutdown rest server
+func (r Rest) Shutdown() error {
+	return r.restServer.Shutdown(r.ctx)
 }
 
 // handleSwaggerFile bind swagger handler with json

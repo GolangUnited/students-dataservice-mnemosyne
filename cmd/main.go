@@ -12,7 +12,6 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"google.golang.org/grpc"
 	"os"
 	"os/signal"
 	"syscall"
@@ -67,10 +66,9 @@ func main() {
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 
 	// run grpc server
-	grpcService := grpc.NewServer()
-	grpcServer := server.NewGrpc(ctx, grpcService)
+	grpcServer := server.NewGrpc(ctx, handlers)
 	go func() {
-		if err = grpcServer.Run(cfg.GrpcPort, handlers); err != nil {
+		if err = grpcServer.Run(cfg.GrpcPort); err != nil {
 			logger.Info(err.Error())
 			quit <- nil
 		}
@@ -91,9 +89,9 @@ func main() {
 	logger.Infof("Got signal %v, attempting graceful shutdown", <-quit)
 	cancel()
 	logger.Info("Context is stopped")
-	grpcService.GracefulStop()
+	grpcServer.GracefulStop()
 	logger.Info("gRPC graceful stopped")
-	err = restServer.RestServer().Shutdown(ctx)
+	err = restServer.Shutdown()
 	if err != nil {
 		logger.Infof("error rest server shutdown: %s", err.Error())
 	} else {
