@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package common;
+import "protoc-gen-openapiv2/options/annotations.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/common";
+
+//transitory message for rpc methods that temporary get or return nothing
+message Empty {}
