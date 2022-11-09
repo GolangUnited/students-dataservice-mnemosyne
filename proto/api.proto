@@ -117,7 +117,7 @@ service Mnemosyne {
     };
   };
 
-  //Get user by email
+  //Get user by id
   rpc GetUser (user.Id) returns (user.User){
     option (google.api.http) = {
       get: "/user/{id}"     
