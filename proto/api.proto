@@ -127,7 +127,7 @@ service Mnemosyne {
   //Update user's data
   rpc UpdateUser (user.User) returns (user.Id){
     option (google.api.http) = {
-      post: "/user/update"
+      put: "/user"
       body: "*"
     };
   };
