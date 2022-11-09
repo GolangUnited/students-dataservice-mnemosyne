@@ -31,11 +31,11 @@ type MnemosyneClient interface {
 	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
 	// Get all existing users
 	GetAllUsers(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*user.Users, error)
-	// Get user by email
+	// Get user by id
 	GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
 	// Update user's data
 	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
-	// Delete user by email
+	// Delete user by id
 	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
@@ -111,11 +111,11 @@ type MnemosyneServer interface {
 	CreateUser(context.Context, *user.User) (*user.Id, error)
 	// Get all existing users
 	GetAllUsers(context.Context, *common.Empty) (*user.Users, error)
-	// Get user by email
+	// Get user by id
 	GetUser(context.Context, *user.Id) (*user.User, error)
 	// Update user's data
 	UpdateUser(context.Context, *user.User) (*user.Id, error)
-	// Delete user by email
+	// Delete user by id
 	DeleteUser(context.Context, *user.Id) (*common.Empty, error)
 }
 

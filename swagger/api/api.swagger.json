@@ -113,44 +113,8 @@
         "tags": [
           "Mnemosyne"
         ]
-      }
-    },
-    "/user/all": {
-      "get": {
-        "summary": "Get all existing users",
-        "operationId": "Mnemosyne_GetAllUsers",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userUsers"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
-    "/user/update": {
-      "post": {
+      },
+      "put": {
         "summary": "Update user's data",
         "operationId": "Mnemosyne_UpdateUser",
         "responses": {
@@ -194,9 +158,43 @@
         ]
       }
     },
+    "/user/all": {
+      "get": {
+        "summary": "Get all existing users",
+        "operationId": "Mnemosyne_GetAllUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUsers"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
     "/user/{id}": {
       "get": {
-        "summary": "Get user by email",
+        "summary": "Get user by id",
         "operationId": "Mnemosyne_GetUser",
         "responses": {
           "200": {
@@ -236,7 +234,7 @@
         ]
       },
       "delete": {
-        "summary": "Delete user by email",
+        "summary": "Delete user by id",
         "operationId": "Mnemosyne_DeleteUser",
         "responses": {
           "200": {
