@@ -27,6 +27,5 @@ func (s *Service) Test(ctx context.Context, req mnemosyne.Request) (resp mnemosy
 	_ = ctx
 	_ = req
 	resp = *mnemosyne.NewResponse()
-	_, _ = s.role.GetUserRoles(ctx, 1)
 	return
 }
