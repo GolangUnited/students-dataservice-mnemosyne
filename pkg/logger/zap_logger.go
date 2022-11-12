@@ -10,7 +10,7 @@ type ZapLogger struct {
 	localLogger *zap.Logger
 }
 
-func New() *ZapLogger {
+func NewZapLogger() *ZapLogger {
 	localLogger, err := zap.NewProduction()
 	if err != nil {
 		log.Fatal("logger init", err)

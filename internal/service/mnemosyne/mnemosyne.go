@@ -3,6 +3,7 @@ package mnemosyne
 import (
 	"context"
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
+	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
@@ -11,14 +12,14 @@ import (
 // Service implemented Mnemosyne interface
 type Service struct {
 	mnemosyne repository.Mnemosyne
-	role      repository.Role
+	reposRole repository.Role
 }
 
 // NewService created Service struct
-func NewService(mnemosyne repository.Mnemosyne, role repository.Role) *Service {
+func NewService(mnemosyne repository.Mnemosyne, reposRole repository.Role) *Service {
 	return &Service{
 		mnemosyne: mnemosyne,
-		role:      role,
+		reposRole: reposRole,
 	}
 }
 
@@ -27,5 +28,15 @@ func (s *Service) Test(ctx context.Context, req mnemosyne.Request) (resp mnemosy
 	_ = ctx
 	_ = req
 	resp = *mnemosyne.NewResponse()
+	return
+}
+
+// GetUserRoles get all user roles
+func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []database.Role, err error) {
+	userRoles, err = s.reposRole.GetUserRoles(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+
 	return
 }
