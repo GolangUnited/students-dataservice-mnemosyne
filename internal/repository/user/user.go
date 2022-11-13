@@ -12,6 +12,9 @@ import (
 type UserRepository struct {
 	db *pgx.Conn
 }
+type id struct {
+	userid int
+}
 
 func NewUserRepository(db *pgx.Conn) *UserRepository {
 	return &UserRepository{
@@ -25,12 +28,11 @@ func (u *UserRepository) AddUser(ctx context.Context, user database.User) (userI
 	if err != nil {
 		return 0, errors.Wrap(err, "couldn't insert the new user's information")
 	}
-	for rows.Next() {
-		err = rows.Scan(&userId)
-		if err != nil {
-			return 0, errors.Wrap(err, "couldn't get the id of new the user")
-		}
+	ids, err := pgx.CollectRows(rows, pgx.RowToStructByPos[id])
+	if err != nil {
+		return 0, errors.Wrap(err, "couldn't get the id of new the user")
 	}
+	userId = ids[0].userid
 	return
 }
 

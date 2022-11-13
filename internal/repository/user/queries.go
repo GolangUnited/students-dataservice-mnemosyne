@@ -1,7 +1,7 @@
 package user
 
 const AddUser = `
-	INSERT INTO user (last_name, first_name, middle_name, email, language,english_level,photo)
+	INSERT INTO users (last_name, first_name, middle_name, email, language,english_level,photo)
 	VALUES ($1, $2, $3, $4, $5, $6, $7)
 	RETURNING id
 `
