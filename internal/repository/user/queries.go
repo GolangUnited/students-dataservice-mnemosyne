@@ -22,25 +22,25 @@ const GetAllUsers = `
 	FROM users
 	`
 const UpdateUserById = `
-	UPDATE users u 
-	SET u.last_name = $1, 
-		u.first_name = $2, 
-		u.middle_name = $3,
-		u.language = $4, 
-		u.english_level = $5, 
-		u.photo = $6, 
-		u.updated_at = $7
-	WHERE u.id = $8
+	UPDATE users
+	SET last_name = $1, 
+		first_name = $2, 
+		middle_name = $3,
+		language = $4, 
+		english_level = $5, 
+		photo = $6, 
+		updated_at = $7
+	WHERE id = $8
 `
 const ActivateById = `
-	UPDATE users u 
-	SET u.deleted = false,
-		u.updated_at = $2
-	WHERE u.id = $1
+	UPDATE users 
+	SET deleted = false,
+		updated_at = $2
+	WHERE id = $1
 `
 const DeactivateById = `
-	UPDATE users u 
-	SET u.deleted = true,
-	u.updated_at = $2
-	WHERE u.id = $1
+	UPDATE users 
+	SET deleted = true,
+	updated_at = $2
+	WHERE id = $1
 `
