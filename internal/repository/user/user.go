@@ -28,7 +28,7 @@ func (u *UserRepository) AddUser(ctx context.Context, user database.User) (userI
 	if err != nil {
 		return 0, errors.Wrap(err, "couldn't insert the new user's information")
 	}
-	ids, err := pgx.CollectRows(rows, pgx.RowToStructByPos[id])
+	ids, err := pgx.CollectRows(rows, pgx.RowToStructByName[id])
 	if err != nil {
 		return 0, errors.Wrap(err, "couldn't get the id of new the user")
 	}
@@ -41,7 +41,7 @@ func (u *UserRepository) GetAllUsers(ctx context.Context) (users []database.User
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get users from db")
 	}
-	users, err = pgx.CollectRows(rows, pgx.RowToStructByPos[database.User])
+	users, err = pgx.CollectRows(rows, pgx.RowToStructByName[database.User])
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to collect rows ")
 	}
@@ -55,7 +55,7 @@ func (u *UserRepository) GetUserById(ctx context.Context, userId int) (user data
 		return database.User{}, errors.Wrap(err, "unable to get user by id from the db")
 	}
 
-	users, err := pgx.CollectRows(rows, pgx.RowToStructByPos[database.User])
+	users, err := pgx.CollectRows(rows, pgx.RowToStructByName[database.User])
 	if err != nil {
 		return database.User{}, errors.Wrap(err, "GetUserById CollectRows error")
 	}
@@ -70,7 +70,7 @@ func (u *UserRepository) GetUserByEmail(ctx context.Context, userEmail string) (
 		return database.User{}, errors.Wrap(err, "unable to get user by email from the db")
 	}
 
-	users, err := pgx.CollectRows(rows, pgx.RowToStructByPos[database.User])
+	users, err := pgx.CollectRows(rows, pgx.RowToStructByName[database.User])
 	if err != nil {
 		return database.User{}, errors.Wrap(err, "GetUserByEmail CollectRows error")
 	}
