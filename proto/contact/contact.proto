@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package contact;
+import "protoc-gen-openapiv2/options/annotations.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
+
+// The basic message containing the primary information about a user.
+message Contact {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Contact json schema"
+      required: ["email", "telegram", "discord","communicationChannel"]
+    }
+  };
+  string email = 1 ;
+  string telegram = 2 ;
+  string discord = 3;
+  string communicationChannel = 4;
+}
+//The basic message containing information about all contacts from db
+message Contacts {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Contacts json schema"
+      required: ["contacts"]
+    }
+  };
+  repeated Contact contacts = 1;
+}
+//Basic request/response containing id of the contact
+message Id{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Id json schema"
+      required: ["id"]
+    }
+  };
+  string id = 1;
+}
