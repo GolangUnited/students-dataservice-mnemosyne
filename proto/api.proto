@@ -5,7 +5,6 @@ import "google/api/annotations.proto";
 import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
-import "contact/contact.proto";
 import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
@@ -112,7 +111,7 @@ service Mnemosyne {
   };
   
   //Get all existing users 
-  rpc GetAllUsers (common.Empty) returns (user.Users){
+  rpc GetUsers (user.Options) returns (user.Users){
     option (google.api.http) = {
       get: "/user/all"
     };
@@ -126,7 +125,7 @@ service Mnemosyne {
   };
 
   //Update user's data
-  rpc UpdateUser (user.User) returns (user.Id){
+  rpc UpdateUser (user.Id) returns (user.Id){
     option (google.api.http) = {
       put: "/user"
       body: "*"
@@ -141,7 +140,7 @@ service Mnemosyne {
   };
 
   //Create new contact
-  rpc CreateContact (contact.Contact) returns (contact.Id){
+  rpc CreateContact (user.Contact) returns (user.Id){
     option (google.api.http) = {
       post: "/contact"
       body: "*"
@@ -149,21 +148,21 @@ service Mnemosyne {
   };
 
   //Get all existing contacts
-  rpc GetAllContacts (common.Empty) returns (contact.Contacts){
+  rpc GetAllContacts (common.Empty) returns (user.Contact){
     option (google.api.http) = {
       get: "/contact/all"
     };
   };
 
   //Get contact by ID
-  rpc GetContact (contact.Id) returns (contact.Contact){
+  rpc GetContact (user.Id) returns (user.Contact){
     option (google.api.http) = {
       get: "/contact/{id}"
     };
   };
 
   //Update contact's data
-  rpc UpdateContact (contact.Contact) returns (contact.Id){
+  rpc UpdateContact (user.Contact) returns (user.Id){
     option (google.api.http) = {
       put: "/contact"
       body: "*"
@@ -171,7 +170,7 @@ service Mnemosyne {
   };
 
   //Delete contacts by ID
-  rpc DeleteContact (contact.Id) returns (common.Empty){
+  rpc DeleteContact (user.Id) returns (common.Empty){
     option (google.api.http) = {
       delete: "/contact/{id}"
     };
