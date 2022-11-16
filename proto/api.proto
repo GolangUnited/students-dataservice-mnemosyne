@@ -113,7 +113,7 @@ service Mnemosyne {
   //Get all existing users 
   rpc GetUsers (user.Options) returns (user.Users){
     option (google.api.http) = {
-      get: "/user/all"
+      get: "/user"
     };
   };
 
@@ -125,7 +125,7 @@ service Mnemosyne {
   };
 
   //Update user's data
-  rpc UpdateUser (user.Id) returns (user.Id){
+  rpc UpdateUser (user.User) returns (user.Id){
     option (google.api.http) = {
       put: "/user"
       body: "*"
@@ -139,21 +139,6 @@ service Mnemosyne {
     };
   };
 
-  //Create new contact
-  rpc CreateContact (user.Contact) returns (user.Id){
-    option (google.api.http) = {
-      post: "/contact"
-      body: "*"
-    };
-  };
-
-  //Get all existing contacts
-  rpc GetAllContacts (common.Empty) returns (user.Contact){
-    option (google.api.http) = {
-      get: "/contact/all"
-    };
-  };
-
   //Get contact by ID
   rpc GetContact (user.Id) returns (user.Contact){
     option (google.api.http) = {
@@ -162,7 +147,7 @@ service Mnemosyne {
   };
 
   //Update contact's data
-  rpc UpdateContact (user.Contact) returns (user.Id){
+  rpc UpdateContact (user.UpdateContact) returns (user.Id){
     option (google.api.http) = {
       put: "/contact"
       body: "*"

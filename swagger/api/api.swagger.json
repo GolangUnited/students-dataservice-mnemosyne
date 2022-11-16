@@ -26,48 +26,6 @@
   ],
   "paths": {
     "/contact": {
-      "post": {
-        "summary": "Create new contact",
-        "operationId": "Mnemosyne_CreateContact",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userId"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userContact"
-            }
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      },
       "put": {
         "summary": "Update contact's data",
         "operationId": "Mnemosyne_UpdateContact",
@@ -102,44 +60,10 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/userContact"
+              "$ref": "#/definitions/userUpdateContact"
             }
           }
         ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
-    "/contact/all": {
-      "get": {
-        "summary": "Get all existing contacts",
-        "operationId": "Mnemosyne_GetAllContacts",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userContact"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
         "tags": [
           "Mnemosyne"
         ]
@@ -273,6 +197,52 @@
       }
     },
     "/user": {
+      "get": {
+        "summary": "Get all existing users",
+        "operationId": "Mnemosyne_GetUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userUsers"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "withContacts",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "withResume",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
       "post": {
         "summary": "Create new user",
         "operationId": "Mnemosyne_CreateUser",
@@ -347,59 +317,12 @@
         "parameters": [
           {
             "name": "body",
+            "description": "The basic message containing the primary information about a user.",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/userId"
+              "$ref": "#/definitions/userUser"
             }
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
-    "/user/all": {
-      "get": {
-        "summary": "Get all existing users",
-        "operationId": "Mnemosyne_GetUsers",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userUsers"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "withContacts",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "withResume",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
           }
         ],
         "tags": [
@@ -582,6 +505,17 @@
       "required": [
         "id"
       ]
+    },
+    "userUpdateContact": {
+      "type": "object",
+      "properties": {
+        "contact": {
+          "$ref": "#/definitions/userContact"
+        },
+        "id": {
+          "$ref": "#/definitions/userId"
+        }
+      }
     },
     "userUser": {
       "type": "object",
