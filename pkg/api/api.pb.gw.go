@@ -328,7 +328,7 @@ func local_request_Mnemosyne_GetContact_0(ctx context.Context, marshaler runtime
 }
 
 func request_Mnemosyne_UpdateContact_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq user.UpdateContact
+	var protoReq user.Contact
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -337,6 +337,23 @@ func request_Mnemosyne_UpdateContact_0(ctx context.Context, marshaler runtime.Ma
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := client.UpdateContact(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -345,7 +362,7 @@ func request_Mnemosyne_UpdateContact_0(ctx context.Context, marshaler runtime.Ma
 }
 
 func local_request_Mnemosyne_UpdateContact_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq user.UpdateContact
+	var protoReq user.Contact
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -354,6 +371,23 @@ func local_request_Mnemosyne_UpdateContact_0(ctx context.Context, marshaler runt
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.UpdateContact(ctx, &protoReq)
@@ -602,7 +636,7 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/UpdateContact", runtime.WithHTTPPathPattern("/contact"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/UpdateContact", runtime.WithHTTPPathPattern("/contact/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -845,7 +879,7 @@ func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/UpdateContact", runtime.WithHTTPPathPattern("/contact"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/UpdateContact", runtime.WithHTTPPathPattern("/contact/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -901,7 +935,7 @@ var (
 
 	pattern_Mnemosyne_GetContact_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"contact", "id"}, ""))
 
-	pattern_Mnemosyne_UpdateContact_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"contact"}, ""))
+	pattern_Mnemosyne_UpdateContact_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"contact", "id"}, ""))
 
 	pattern_Mnemosyne_DeleteContact_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"contact", "id"}, ""))
 )

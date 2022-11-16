@@ -40,7 +40,7 @@ type MnemosyneClient interface {
 	// Get contact by ID
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(ctx context.Context, in *user.UpdateContact, opts ...grpc.CallOption) (*user.Id, error)
+	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*user.Id, error)
 	// Delete contacts by ID
 	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 }
@@ -116,7 +116,7 @@ func (c *mnemosyneClient) GetContact(ctx context.Context, in *user.Id, opts ...g
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.UpdateContact, opts ...grpc.CallOption) (*user.Id, error) {
+func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*user.Id, error) {
 	out := new(user.Id)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateContact", in, out, opts...)
 	if err != nil {
@@ -153,7 +153,7 @@ type MnemosyneServer interface {
 	// Get contact by ID
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(context.Context, *user.UpdateContact) (*user.Id, error)
+	UpdateContact(context.Context, *user.Contact) (*user.Id, error)
 	// Delete contacts by ID
 	DeleteContact(context.Context, *user.Id) (*common.Empty, error)
 }
@@ -183,7 +183,7 @@ func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*comm
 func (UnimplementedMnemosyneServer) GetContact(context.Context, *user.Id) (*user.Contact, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContact not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.UpdateContact) (*user.Id, error) {
+func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*user.Id, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateContact not implemented")
 }
 func (UnimplementedMnemosyneServer) DeleteContact(context.Context, *user.Id) (*common.Empty, error) {
@@ -328,7 +328,7 @@ func _Mnemosyne_GetContact_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _Mnemosyne_UpdateContact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(user.UpdateContact)
+	in := new(user.Contact)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -340,7 +340,7 @@ func _Mnemosyne_UpdateContact_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: "/api.Mnemosyne/UpdateContact",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).UpdateContact(ctx, req.(*user.UpdateContact))
+		return srv.(MnemosyneServer).UpdateContact(ctx, req.(*user.Contact))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -25,50 +25,6 @@
     "application/json"
   ],
   "paths": {
-    "/contact": {
-      "put": {
-        "summary": "Update contact's data",
-        "operationId": "Mnemosyne_UpdateContact",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/userId"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/userUpdateContact"
-            }
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
     "/contact/{id}": {
       "get": {
         "summary": "Get contact by ID",
@@ -144,6 +100,71 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "put": {
+        "summary": "Update contact's data",
+        "operationId": "Mnemosyne_UpdateContact",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "telegram": {
+                  "type": "string"
+                },
+                "discord": {
+                  "type": "string"
+                },
+                "communicationChannel": {
+                  "type": "string"
+                }
+              },
+              "title": "Contact json schema",
+              "required": [
+                "telegram",
+                "discord",
+                "communicationChannel"
+              ]
+            }
           }
         ],
         "tags": [
@@ -477,6 +498,9 @@
     "userContact": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string"
+        },
         "telegram": {
           "type": "string"
         },
@@ -505,17 +529,6 @@
       "required": [
         "id"
       ]
-    },
-    "userUpdateContact": {
-      "type": "object",
-      "properties": {
-        "contact": {
-          "$ref": "#/definitions/userContact"
-        },
-        "id": {
-          "$ref": "#/definitions/userId"
-        }
-      }
     },
     "userUser": {
       "type": "object",

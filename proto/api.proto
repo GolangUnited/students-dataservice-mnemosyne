@@ -147,9 +147,9 @@ service Mnemosyne {
   };
 
   //Update contact's data
-  rpc UpdateContact (user.UpdateContact) returns (user.Id){
+  rpc UpdateContact (user.Contact) returns (user.Id){
     option (google.api.http) = {
-      put: "/contact"
+      put: "/contact/{id}"
       body: "*"
     };
   };

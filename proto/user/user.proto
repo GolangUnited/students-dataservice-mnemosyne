@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package user;
 import "protoc-gen-openapiv2/options/annotations.proto";
+
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
 
 
@@ -17,9 +18,10 @@ message Contact {
       required: ["telegram", "discord","communicationChannel"]
     }
   };
-  string telegram = 1 ;
-  string discord = 2;
-  string communicationChannel = 3;
+  string id = 1;
+  string telegram = 2;
+  string discord = 3;
+  string communicationChannel = 4;
 }
 
 // The basic message containing the primary information about a user.
@@ -63,8 +65,4 @@ message Id{
     }
   }; 
     string id = 1;
-}
-message UpdateContact {
-  Contact contact = 1;
-  Id id = 2;
 }
