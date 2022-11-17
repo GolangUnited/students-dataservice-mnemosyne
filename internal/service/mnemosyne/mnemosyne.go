@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
+	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
@@ -30,5 +31,15 @@ func (s *Service) Test(ctx context.Context, req mnemosyne.Request) (resp mnemosy
 	_ = ctx
 	_ = req
 	resp = *mnemosyne.NewResponse()
+	return
+}
+
+// GetUserRoles get all user roles
+func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []database.Role, err error) {
+	userRoles, err = s.reposRole.GetUserRoles(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+
 	return
 }

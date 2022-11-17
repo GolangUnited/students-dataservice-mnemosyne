@@ -2,7 +2,8 @@ package handler
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/auth"
+	"github.com/NEKETSKY/mnemosyne/pkg/auth"
+	"github.com/NEKETSKY/mnemosyne/pkg/logger"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -21,12 +22,21 @@ func (h *Handler) Auth(ctx context.Context) (context.Context, error) {
 				return nil, status.Error(codes.InvalidArgument, userIdArg+" not correct")
 			}
 
-			// todo: fill roles by userId from repository
-			var roles []string
+			userRoles, err := h.services.GetUserRoles(ctx, int(userId))
+			if err != nil {
+				logger.Infof("get user (%d) roles error: %s", userId, err.Error())
+				return nil, status.Error(codes.PermissionDenied, "user is not defined")
+			}
+			if len(userRoles) == 0 {
+				logger.Infof("user (%d) not found", userId)
+				return nil, status.Error(codes.PermissionDenied, "user not found")
+			}
+
 			ctx = auth.SetUser(ctx, auth.User{
-				Id:    userId,
-				Roles: roles,
+				Id:    int(userId),
+				Roles: userRoles,
 			})
+
 			return ctx, nil
 		}
 	}
