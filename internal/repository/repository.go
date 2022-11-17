@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+
 	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
+	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/jackc/pgx/v5"
 )
@@ -22,9 +24,20 @@ type Role interface {
 	AddUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error)
 }
 
+type User interface {
+	AddUser(ctx context.Context, user database.User) (userId int, err error)
+	GetAllUsers(ctx context.Context) (users []database.User, err error)
+	GetUserById(ctx context.Context, userId int) (user database.User, err error)
+	GetUserByEmail(ctx context.Context, userEmail string) (user database.User, err error)
+	UpdateUserById(ctx context.Context, user database.User) (err error)
+	ActivateUserById(ctx context.Context, userId int) (err error)
+	DeactivateUserById(ctx context.Context, userId int) (err error)
+}
+
 type Repository struct {
 	Mnemosyne
 	Role
+	User
 }
 
 // NewRepository created Repository struct
@@ -32,5 +45,6 @@ func NewRepository(db *pgx.Conn) *Repository {
 	return &Repository{
 		Mnemosyne: mnemosyne.NewMnemosyne(db),
 		Role:      role.NewRoleRepository(db),
+		User:      user.NewUserRepository(db),
 	}
 }

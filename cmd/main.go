@@ -2,6 +2,10 @@ package main
 
 import (
 	"context"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/NEKETSKY/mnemosyne/configs"
 	"github.com/NEKETSKY/mnemosyne/internal/handler"
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
@@ -12,9 +16,6 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 func main() {
