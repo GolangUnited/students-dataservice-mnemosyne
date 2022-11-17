@@ -12,9 +12,10 @@ import (
 type UserRepository struct {
 	db *pgx.Conn
 }
-type id struct {
-	userid int
-}
+
+// type id struct {
+// 	userid int
+// }
 
 func NewUserRepository(db *pgx.Conn) *UserRepository {
 	return &UserRepository{
@@ -24,15 +25,16 @@ func NewUserRepository(db *pgx.Conn) *UserRepository {
 
 // Add new user to db using struct User
 func (u *UserRepository) AddUser(ctx context.Context, user database.User) (userId int, err error) {
-	rows, err := u.db.Query(ctx, AddUser, user.LastName, user.FirstName, user.MiddleName, user.Email, user.Language, user.EnglishLevel, user.Photo)
+	row := u.db.QueryRow(ctx, AddUser, user.LastName, user.FirstName, user.MiddleName, user.Email, user.Language, user.EnglishLevel, user.Photo)
 	if err != nil {
 		return 0, errors.Wrap(err, "couldn't insert the new user's information")
 	}
-	ids, err := pgx.CollectRows(rows, pgx.RowToStructByName[id])
+	err = row.Scan(&userId)
+	//userId, err = pgx.CollectOneRow(row, pgx.RowToStructByName[id])
 	if err != nil {
 		return 0, errors.Wrap(err, "couldn't get the id of new the user")
 	}
-	userId = ids[0].userid
+
 	return
 }
 
@@ -55,26 +57,25 @@ func (u *UserRepository) GetUserById(ctx context.Context, userId int) (user data
 		return database.User{}, errors.Wrap(err, "unable to get user by id from the db")
 	}
 
-	users, err := pgx.CollectRows(rows, pgx.RowToStructByName[database.User])
+	user, err = pgx.CollectOneRow(rows, pgx.RowToStructByName[database.User])
 	if err != nil {
 		return database.User{}, errors.Wrap(err, "GetUserById CollectRows error")
 	}
-	user = users[0]
 	return
 }
 
 func (u *UserRepository) GetUserByEmail(ctx context.Context, userEmail string) (user database.User, err error) {
 
-	rows, err := u.db.Query(ctx, GetUserById, userEmail)
+	rows, err := u.db.Query(ctx, GetUserByEmail, userEmail)
 	if err != nil {
 		return database.User{}, errors.Wrap(err, "unable to get user by email from the db")
 	}
 
-	users, err := pgx.CollectRows(rows, pgx.RowToStructByName[database.User])
+	user, err = pgx.CollectOneRow(rows, pgx.RowToStructByName[database.User])
 	if err != nil {
 		return database.User{}, errors.Wrap(err, "GetUserByEmail CollectRows error")
 	}
-	user = users[0]
+
 	return
 }
 
