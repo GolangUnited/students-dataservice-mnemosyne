@@ -152,6 +152,8 @@ service Mnemosyne {
   rpc UpdateContact (user.Contact) returns (user.Id){
     option (google.api.http) = {
       put: "/contact/{id}"
+    };
+  };
 
   //  INTERVIEW
   //Create new interview
@@ -190,7 +192,8 @@ service Mnemosyne {
   rpc DeleteContact (user.Id) returns (common.Empty){
     option (google.api.http) = {
       delete: "/contact/{id}"
-
+    };
+  };
   //Delete interview by id
   rpc DeleteInterview (interview.Id) returns (common.Empty){
     option (google.api.http) = {

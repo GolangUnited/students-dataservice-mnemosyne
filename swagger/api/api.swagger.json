@@ -25,15 +25,181 @@
     "application/json"
   ],
   "paths": {
-
     "/contact/{id}": {
       "get": {
         "summary": "Get contact by ID",
         "operationId": "Mnemosyne_GetContact",
-
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userContact"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "delete": {
+        "summary": "Delete contacts by ID",
+        "operationId": "Mnemosyne_DeleteContact",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "put": {
+        "summary": "Update contact's data",
+        "operationId": "Mnemosyne_UpdateContact",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "telegram",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "discord",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "communicationChannel",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
     "/interview": {
+      "get": {
+        "summary": "Get all existing interviews",
+        "operationId": "Mnemosyne_GetInterviews",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/interviewInterview"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
       "post": {
-        "summary": "Create new user",
+        "summary": "INTERVIEW\nCreate new interview",
         "operationId": "Mnemosyne_CreateInterview",
         "responses": {
           "200": {
@@ -76,46 +242,9 @@
         ]
       }
     },
-    "/interview/all": {
-      "get": {
-        "summary": "INTERVIEW\nGet all existing users",
-        "operationId": "Mnemosyne_GetAllInterviews",
-
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-
-              "$ref": "#/definitions/userContact"
-              "$ref": "#/definitions/interviewInterview"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
     "/interview/{id}": {
       "get": {
-        "summary": "Get user by id",
+        "summary": "Get interview by id",
         "operationId": "Mnemosyne_GetInterview",
         "responses": {
           "200": {
@@ -155,11 +284,7 @@
         ]
       },
       "delete": {
-
-        "summary": "Delete contacts by ID",
-        "operationId": "Mnemosyne_DeleteContact",
-
-        "summary": "Delete user by id",
+        "summary": "Delete interview by id",
         "operationId": "Mnemosyne_DeleteInterview",
         "responses": {
           "200": {
@@ -199,22 +324,13 @@
         ]
       },
       "put": {
-
-        "summary": "Update contact's data",
-        "operationId": "Mnemosyne_UpdateContact",
-
-        "summary": "Update user's data",
+        "summary": "Update interview data",
         "operationId": "Mnemosyne_UpdateInterview",
-
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-
-              "$ref": "#/definitions/userId"
-
               "$ref": "#/definitions/interviewId"
-
             }
           },
           "403": {
@@ -240,12 +356,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-
-            "type": "string"
-
             "type": "integer",
             "format": "int64"
-
           },
           {
             "name": "body",
@@ -254,23 +366,6 @@
             "schema": {
               "type": "object",
               "properties": {
-
-                "telegram": {
-                  "type": "string"
-                },
-                "discord": {
-                  "type": "string"
-                },
-                "communicationChannel": {
-                  "type": "string"
-                }
-              },
-              "title": "Contact json schema",
-              "required": [
-                "telegram",
-                "discord",
-                "communicationChannel"
-
                 "interviewerId": {
                   "type": "integer",
                   "format": "int64"
@@ -315,7 +410,6 @@
                 "determinedEnglishLevel",
                 "mainTask",
                 "question"
-
               ]
             }
           }
