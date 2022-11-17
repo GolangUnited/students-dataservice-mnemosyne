@@ -73,7 +73,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/commonEmpty"
+              "$ref": "#/definitions/helloworldHelloReply"
             }
           },
           "403": {
@@ -113,7 +113,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userId"
+              "$ref": "#/definitions/helloworldHelloReply"
             }
           },
           "403": {
@@ -290,7 +290,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/commonEmpty"
+              "$ref": "#/definitions/helloworldHelloReply"
             }
           },
           "403": {
@@ -330,7 +330,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/interviewId"
+              "$ref": "#/definitions/helloworldHelloReply"
             }
           },
           "403": {
@@ -561,7 +561,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userId"
+              "$ref": "#/definitions/helloworldHelloReply"
             }
           },
           "403": {
@@ -646,7 +646,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/commonEmpty"
+              "$ref": "#/definitions/helloworldHelloReply"
             }
           },
           "403": {
@@ -682,10 +682,6 @@
     }
   },
   "definitions": {
-    "commonEmpty": {
-      "type": "object",
-      "title": "transitory message for rpc methods that temporary get or return nothing"
-    },
     "helloworldHelloReply": {
       "type": "object",
       "properties": {

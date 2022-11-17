@@ -35,13 +35,13 @@ type MnemosyneClient interface {
 	// Get user by id
 	GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
 	// Update user's data
-	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
+	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 	// Delete user by id
-	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 	// Get contact by ID
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*user.Id, error)
+	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 	//	INTERVIEW
 	//
 	// Create new interview
@@ -51,11 +51,11 @@ type MnemosyneClient interface {
 	// Get interview by id
 	GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.Interview, error)
 	// Update interview data
-	UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*interview.Id, error)
+	UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 	// Delete contacts by ID
-	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 	// Delete interview by id
-	DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 }
 
 type mnemosyneClient struct {
@@ -102,8 +102,8 @@ func (c *mnemosyneClient) GetUser(ctx context.Context, in *user.Id, opts ...grpc
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error) {
-	out := new(user.Id)
+func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
+	out := new(helloworld.HelloReply)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -111,8 +111,8 @@ func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ..
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
-	out := new(common.Empty)
+func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
+	out := new(helloworld.HelloReply)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -129,8 +129,8 @@ func (c *mnemosyneClient) GetContact(ctx context.Context, in *user.Id, opts ...g
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*user.Id, error) {
-	out := new(user.Id)
+func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
+	out := new(helloworld.HelloReply)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateContact", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -165,8 +165,8 @@ func (c *mnemosyneClient) GetInterview(ctx context.Context, in *interview.Id, op
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*interview.Id, error) {
-	out := new(interview.Id)
+func (c *mnemosyneClient) UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
+	out := new(helloworld.HelloReply)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateInterview", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -174,8 +174,8 @@ func (c *mnemosyneClient) UpdateInterview(ctx context.Context, in *interview.Int
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
-	out := new(common.Empty)
+func (c *mnemosyneClient) DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
+	out := new(helloworld.HelloReply)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteContact", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -183,8 +183,8 @@ func (c *mnemosyneClient) DeleteContact(ctx context.Context, in *user.Id, opts .
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*common.Empty, error) {
-	out := new(common.Empty)
+func (c *mnemosyneClient) DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
+	out := new(helloworld.HelloReply)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteInterview", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -205,13 +205,13 @@ type MnemosyneServer interface {
 	// Get user by id
 	GetUser(context.Context, *user.Id) (*user.User, error)
 	// Update user's data
-	UpdateUser(context.Context, *user.User) (*user.Id, error)
+	UpdateUser(context.Context, *user.User) (*helloworld.HelloReply, error)
 	// Delete user by id
-	DeleteUser(context.Context, *user.Id) (*common.Empty, error)
+	DeleteUser(context.Context, *user.Id) (*helloworld.HelloReply, error)
 	// Get contact by ID
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(context.Context, *user.Contact) (*user.Id, error)
+	UpdateContact(context.Context, *user.Contact) (*helloworld.HelloReply, error)
 	//	INTERVIEW
 	//
 	// Create new interview
@@ -221,11 +221,11 @@ type MnemosyneServer interface {
 	// Get interview by id
 	GetInterview(context.Context, *interview.Id) (*interview.Interview, error)
 	// Update interview data
-	UpdateInterview(context.Context, *interview.Interview) (*interview.Id, error)
+	UpdateInterview(context.Context, *interview.Interview) (*helloworld.HelloReply, error)
 	// Delete contacts by ID
-	DeleteContact(context.Context, *user.Id) (*common.Empty, error)
+	DeleteContact(context.Context, *user.Id) (*helloworld.HelloReply, error)
 	// Delete interview by id
-	DeleteInterview(context.Context, *interview.Id) (*common.Empty, error)
+	DeleteInterview(context.Context, *interview.Id) (*helloworld.HelloReply, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -244,16 +244,16 @@ func (UnimplementedMnemosyneServer) GetUsers(context.Context, *user.Options) (*u
 func (UnimplementedMnemosyneServer) GetUser(context.Context, *user.Id) (*user.User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*user.Id, error) {
+func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*common.Empty, error) {
+func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedMnemosyneServer) GetContact(context.Context, *user.Id) (*user.Contact, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContact not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*user.Id, error) {
+func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateContact not implemented")
 }
 func (UnimplementedMnemosyneServer) CreateInterview(context.Context, *interview.Interview) (*interview.Id, error) {
@@ -265,13 +265,13 @@ func (UnimplementedMnemosyneServer) GetInterviews(context.Context, *common.Empty
 func (UnimplementedMnemosyneServer) GetInterview(context.Context, *interview.Id) (*interview.Interview, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInterview not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateInterview(context.Context, *interview.Interview) (*interview.Id, error) {
+func (UnimplementedMnemosyneServer) UpdateInterview(context.Context, *interview.Interview) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateInterview not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteContact(context.Context, *user.Id) (*common.Empty, error) {
+func (UnimplementedMnemosyneServer) DeleteContact(context.Context, *user.Id) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteContact not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteInterview(context.Context, *interview.Id) (*common.Empty, error) {
+func (UnimplementedMnemosyneServer) DeleteInterview(context.Context, *interview.Id) (*helloworld.HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteInterview not implemented")
 }
 
