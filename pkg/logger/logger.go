@@ -5,7 +5,7 @@ var (
 )
 
 func init() {
-	logger = New()
+	logger = NewZapLogger()
 }
 
 type ILogger interface {

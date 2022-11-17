@@ -5,6 +5,7 @@ import "google/api/annotations.proto";
 import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
+import "interview/interview.proto";
 import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
@@ -139,6 +140,7 @@ service Mnemosyne {
     };
   };
 
+
   //Get contact by ID
   rpc GetContact (user.Id) returns (user.Contact){
     option (google.api.http) = {
@@ -150,14 +152,50 @@ service Mnemosyne {
   rpc UpdateContact (user.Contact) returns (user.Id){
     option (google.api.http) = {
       put: "/contact/{id}"
+
+  //  INTERVIEW
+  //Create new interview
+  rpc CreateInterview (interview.Interview) returns (interview.Id){
+    option (google.api.http) = {
+      post: "/interview"
       body: "*"
     };
   };
+
+  //Get all existing interviews
+  rpc GetInterviews (common.Empty) returns (interview.Interview){
+    option (google.api.http) = {
+      get: "/interview"
+    };
+  };
+
+  //Get interview by id
+  rpc GetInterview (interview.Id) returns (interview.Interview){
+    option (google.api.http) = {
+      get: "/interview/{id}"
+    };
+  };
+
+  //Update interview data
+  rpc UpdateInterview (interview.Interview) returns (interview.Id){
+    option (google.api.http) = {
+      put: "/interview/{id}"
+
+      body: "*"
+    };
+  };
+
 
   //Delete contacts by ID
   rpc DeleteContact (user.Id) returns (common.Empty){
     option (google.api.http) = {
       delete: "/contact/{id}"
+
+  //Delete interview by id
+  rpc DeleteInterview (interview.Id) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/interview/{id}"
+
     };
   };
 }
