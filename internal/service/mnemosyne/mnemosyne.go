@@ -12,16 +12,16 @@ import (
 // Service implemented Mnemosyne interface
 type Service struct {
 	mnemosyne repository.Mnemosyne
-	role      repository.Role
-	user      repository.User
+	reposRole repository.Role
+	reposUser repository.User
 }
 
 // NewService created Service struct
-func NewService(mnemosyne repository.Mnemosyne, role repository.Role, user repository.User) *Service {
+func NewService(mnemosyne repository.Mnemosyne, reposRole repository.Role, reposUser repository.User) *Service {
 	return &Service{
 		mnemosyne: mnemosyne,
-		role:      role,
-		user:      user,
+		reposRole: reposRole,
+		reposUser: reposUser,
 	}
 }
 
