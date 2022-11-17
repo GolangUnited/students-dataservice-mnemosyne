@@ -73,7 +73,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
+              "type": "boolean"
             }
           },
           "403": {
@@ -113,7 +113,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
+              "type": "boolean"
             }
           },
           "403": {
@@ -290,7 +290,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
+              "type": "boolean"
             }
           },
           "403": {
@@ -330,7 +330,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
+              "type": "boolean"
             }
           },
           "403": {
@@ -561,7 +561,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
+              "type": "boolean"
             }
           },
           "403": {
@@ -646,7 +646,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
+              "type": "boolean"
             }
           },
           "403": {

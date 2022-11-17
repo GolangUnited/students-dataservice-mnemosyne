@@ -127,7 +127,7 @@ service Mnemosyne {
   };
 
   //Update user's data
-  rpc UpdateUser (user.User) returns (helloworld.HelloReply){
+  rpc UpdateUser (user.User) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       put: "/user"
       body: "*"
@@ -135,7 +135,7 @@ service Mnemosyne {
   };
 
   //Delete user by id
-  rpc DeleteUser (user.Id) returns (helloworld.HelloReply){
+  rpc DeleteUser (user.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/user/{id}"
     };
@@ -150,7 +150,7 @@ service Mnemosyne {
   };
 
   //Update contact's data
-  rpc UpdateContact (user.Contact) returns (helloworld.HelloReply){
+  rpc UpdateContact (user.Contact) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       put: "/contact/{id}"
     };
@@ -180,7 +180,7 @@ service Mnemosyne {
   };
 
   //Update interview data
-  rpc UpdateInterview (interview.Interview) returns (helloworld.HelloReply){
+  rpc UpdateInterview (interview.Interview) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       put: "/interview/{id}"
 
@@ -190,13 +190,13 @@ service Mnemosyne {
 
 
   //Delete contacts by ID
-  rpc DeleteContact (user.Id) returns (helloworld.HelloReply){
+  rpc DeleteContact (user.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/contact/{id}"
     };
   };
   //Delete interview by id
-  rpc DeleteInterview (interview.Id) returns (helloworld.HelloReply){
+  rpc DeleteInterview (interview.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/interview/{id}"
 
