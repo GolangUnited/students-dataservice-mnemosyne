@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package api;
 import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
 import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
@@ -112,9 +113,9 @@ service Mnemosyne {
   };
   
   //Get all existing users 
-  rpc GetAllUsers (common.Empty) returns (user.Users){
+  rpc GetUsers (user.Options) returns (user.Users){
     option (google.api.http) = {
-      get: "/user/all"
+      get: "/user"
     };
   };
 
@@ -126,7 +127,7 @@ service Mnemosyne {
   };
 
   //Update user's data
-  rpc UpdateUser (user.User) returns (user.Id){
+  rpc UpdateUser (user.User) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       put: "/user"
       body: "*"
@@ -134,9 +135,24 @@ service Mnemosyne {
   };
 
   //Delete user by id
-  rpc DeleteUser (user.Id) returns (common.Empty){
+  rpc DeleteUser (user.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/user/{id}"
+    };
+  };
+
+
+  //Get contact by ID
+  rpc GetContact (user.Id) returns (user.Contact){
+    option (google.api.http) = {
+      get: "/contact/{id}"
+    };
+  };
+
+  //Update contact's data
+  rpc UpdateContact (user.Contact) returns (google.protobuf.BoolValue){
+    option (google.api.http) = {
+      put: "/contact/{id}"
     };
   };
 
@@ -164,18 +180,28 @@ service Mnemosyne {
   };
 
   //Update interview data
-  rpc UpdateInterview (interview.Interview) returns (interview.Id){
+  rpc UpdateInterview (interview.Interview) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       put: "/interview/{id}"
+
       body: "*"
     };
   };
 
+
+  //Delete contacts by ID
+  rpc DeleteContact (user.Id) returns (google.protobuf.BoolValue){
+    option (google.api.http) = {
+      delete: "/contact/{id}"
+    };
+  };
   //Delete interview by id
-  rpc DeleteInterview (interview.Id) returns (common.Empty){
+  rpc DeleteInterview (interview.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/interview/{id}"
+
     };
   };
 }
+
 
