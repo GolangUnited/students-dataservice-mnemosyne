@@ -29,33 +29,32 @@ const _ = grpc.SupportPackageIsVersion7
 type MnemosyneClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
-	// Create new user
+	//Create new user
 	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
-	// Get all existing users
+	//Get all existing users
 	GetUsers(ctx context.Context, in *user.Options, opts ...grpc.CallOption) (*user.Users, error)
-	// Get user by id
+	//Get user by id
 	GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
-	// Update user's data
+	//Update user's data
 	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Delete user by id
+	//Delete user by id
 	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Get contact by ID
+	//Get contact by ID
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
-	// Update contact's data
+	//Update contact's data
 	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//	INTERVIEW
-	//
-	// Create new interview
+	//  INTERVIEW
+	//Create new interview
 	CreateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*interview.Id, error)
-	// Get all existing interviews
+	//Get all existing interviews
 	GetInterviews(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*interview.Interview, error)
-	// Get interview by id
+	//Get interview by id
 	GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.Interview, error)
-	// Update interview data
+	//Update interview data
 	UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Delete contacts by ID
+	//Delete contacts by ID
 	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Delete interview by id
+	//Delete interview by id
 	DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 }
 
@@ -199,33 +198,32 @@ func (c *mnemosyneClient) DeleteInterview(ctx context.Context, in *interview.Id,
 type MnemosyneServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error)
-	// Create new user
+	//Create new user
 	CreateUser(context.Context, *user.User) (*user.Id, error)
-	// Get all existing users
+	//Get all existing users
 	GetUsers(context.Context, *user.Options) (*user.Users, error)
-	// Get user by id
+	//Get user by id
 	GetUser(context.Context, *user.Id) (*user.User, error)
-	// Update user's data
+	//Update user's data
 	UpdateUser(context.Context, *user.User) (*wrapperspb.BoolValue, error)
-	// Delete user by id
+	//Delete user by id
 	DeleteUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
-	// Get contact by ID
+	//Get contact by ID
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
-	// Update contact's data
+	//Update contact's data
 	UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error)
-	//	INTERVIEW
-	//
-	// Create new interview
+	//  INTERVIEW
+	//Create new interview
 	CreateInterview(context.Context, *interview.Interview) (*interview.Id, error)
-	// Get all existing interviews
+	//Get all existing interviews
 	GetInterviews(context.Context, *common.Empty) (*interview.Interview, error)
-	// Get interview by id
+	//Get interview by id
 	GetInterview(context.Context, *interview.Id) (*interview.Interview, error)
-	// Update interview data
+	//Update interview data
 	UpdateInterview(context.Context, *interview.Interview) (*wrapperspb.BoolValue, error)
-	// Delete contacts by ID
+	//Delete contacts by ID
 	DeleteContact(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
-	// Delete interview by id
+	//Delete interview by id
 	DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error)
 }
 
