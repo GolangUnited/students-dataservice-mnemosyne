@@ -24,6 +24,17 @@ message Contact {
   string communicationChannel = 4;
 }
 
+message Resume {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Resume json schema"
+      required: ["users"]
+    }
+  };
+  string id = 1;
+  User users = 2;
+}
+
 // The basic message containing the primary information about a user.
 message User {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {

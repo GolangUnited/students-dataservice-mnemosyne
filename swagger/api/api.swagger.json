@@ -464,6 +464,224 @@
         ]
       }
     },
+    "/resume/{id}": {
+      "get": {
+        "summary": "Get resume by ID",
+        "operationId": "Mnemosyne_GetResume",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/userResume"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "delete": {
+        "summary": "Delete resume by ID",
+        "operationId": "Mnemosyne_DeleteResume",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "put": {
+        "summary": "Update resume data",
+        "operationId": "Mnemosyne_UpdateResume",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "users.lastName",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.firstName",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.middleName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "users.email",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.language",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.englishLevel",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.photo",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.experience",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "users.country",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.city",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.timeZone",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.contact.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "users.contact.telegram",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.contact.discord",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "users.contact.communicationChannel",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
     "/user": {
       "get": {
         "summary": "Get all existing users",
@@ -838,6 +1056,21 @@
       "title": "Id json schema",
       "required": [
         "id"
+      ]
+    },
+    "userResume": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "users": {
+          "$ref": "#/definitions/userUser"
+        }
+      },
+      "title": "Resume json schema",
+      "required": [
+        "users"
       ]
     },
     "userUser": {
