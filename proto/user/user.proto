@@ -15,7 +15,9 @@ message Contact {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Contact json schema"
-      required: ["telegram", "discord","communicationChannel"]
+      required: "telegram"
+      required: "discord"
+      required: "communicationChannel"
     }
   };
   string id = 1;
@@ -28,8 +30,16 @@ message Contact {
 message User {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
-      title: "User json schema"     
-      required: ["last_name","first_name","email", "language", "english_level","photo","country","city","time_zone"]
+      title: "User json schema"
+      required: "last_name"
+      required: "first_name"
+      required: "email"
+      required: "language"
+      required: "english_level"
+      required: "photo"
+      required: "country"
+      required: "city"
+      required: "time_zone"
     }
   };
   string id = 1;
@@ -51,7 +61,7 @@ message Users {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Users json schema"     
-      required: ["users"]
+      required: "users"
     }
   }; 
   repeated User users = 1;
@@ -61,7 +71,7 @@ message Id{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Id json schema"     
-      required: ["id"]
+      required: "id"
     }
   }; 
     string id = 1;
