@@ -5,6 +5,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	"github.com/NEKETSKY/mnemosyne/pkg/auth"
+	"github.com/NEKETSKY/mnemosyne/pkg/file"
 	"github.com/NEKETSKY/mnemosyne/pkg/operations"
 	"github.com/pkg/errors"
 	"log"
@@ -17,6 +18,8 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 
 	access := operations.CheckAccess(ctx, "view_all_students")
 	_ = access
+
+	_, _ = file.Save("mytest.txt", []byte("mytest"))
 
 	var req mnemosyne.Request
 	resp, err := h.services.Mnemosyne.Test(ctx, req)
