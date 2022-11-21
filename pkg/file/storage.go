@@ -19,7 +19,7 @@ type StorageFile struct {
 }
 
 func NewStorageFile() *StorageFile {
-	rel := "./"
+	rel := ""
 	if err := godotenv.Load(".env"); err != nil {
 		rel = "./../../"
 		if err = godotenv.Load(rel + ".env"); err != nil {

@@ -19,7 +19,8 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 	access := operations.CheckAccess(ctx, "view_all_students")
 	_ = access
 
-	_, _ = file.Save("mytest.txt", []byte("mytest"))
+	f, _ := file.Save("mytest.txt", []byte("mytest"))
+	_ = f
 
 	var req mnemosyne.Request
 	resp, err := h.services.Mnemosyne.Test(ctx, req)
