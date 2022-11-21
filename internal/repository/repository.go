@@ -26,7 +26,7 @@ type Role interface {
 
 type User interface {
 	AddUser(ctx context.Context, user database.User) (userId int, err error)
-	GetAllUsers(ctx context.Context) (users []database.User, err error)
+	GetUsers(ctx context.Context) (users []database.User, err error)
 	GetUserById(ctx context.Context, userId int) (user database.User, err error)
 	GetUserByEmail(ctx context.Context, userEmail string) (user database.User, err error)
 	UpdateUserById(ctx context.Context, user database.User) (err error)

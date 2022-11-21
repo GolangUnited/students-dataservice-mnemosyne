@@ -43,3 +43,13 @@ func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []dat
 
 	return
 }
+
+func (s *Service) AddUser(ctx context.Context, user database.User) (id int, err error) {
+	id, err = s.reposUser.AddUser(ctx, user)
+	return
+}
+
+func (s *Service) GetUsers(ctx context.Context) (users []database.User, err error) {
+	users, err = s.reposUser.GetUsers(ctx)
+	return
+}

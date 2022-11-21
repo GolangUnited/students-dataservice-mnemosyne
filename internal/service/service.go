@@ -15,6 +15,8 @@ import (
 type Mnemosyne interface {
 	Test(context.Context, model.Request) (model.Response, error)
 	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
+	AddUser(ctx context.Context, user database.User) (id int, err error)
+	GetUsers(ctx context.Context) (users []database.User, err error)
 }
 
 // Service represents service level

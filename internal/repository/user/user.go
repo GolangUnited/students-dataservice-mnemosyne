@@ -38,7 +38,7 @@ func (u *UserRepository) AddUser(ctx context.Context, user database.User) (userI
 	return
 }
 
-func (u *UserRepository) GetAllUsers(ctx context.Context) (users []database.User, err error) {
+func (u *UserRepository) GetUsers(ctx context.Context) (users []database.User, err error) {
 	rows, _ := u.db.Query(ctx, GetAllUsers)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get users from db")
