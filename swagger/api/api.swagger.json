@@ -581,99 +581,15 @@
             "type": "string"
           },
           {
-            "name": "users.id",
+            "name": "uploadedResume",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "users.lastName",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.firstName",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.middleName",
+            "name": "mentorsNote",
             "in": "query",
             "required": false,
-            "type": "string"
-          },
-          {
-            "name": "users.email",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.language",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.englishLevel",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.photo",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.experience",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "users.country",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.city",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.timeZone",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.contact.id",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "users.contact.telegram",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.contact.discord",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "users.contact.communicationChannel",
-            "in": "query",
-            "required": true,
             "type": "string"
           }
         ],
@@ -1064,13 +980,17 @@
         "id": {
           "type": "string"
         },
-        "users": {
-          "$ref": "#/definitions/userUser"
+        "uploadedResume": {
+          "type": "string"
+        },
+        "mentorsNote": {
+          "type": "string"
         }
       },
       "title": "Resume json schema",
       "required": [
-        "users"
+        "uploadedResume",
+        "mentorsNote"
       ]
     },
     "userUser": {
