@@ -43,6 +43,10 @@ type MnemosyneClient interface {
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
 	// Update contact's data
 	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	// Get resume by ID
+	GetResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Resume, error)
+	// Update resume data
+	UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 	//	INTERVIEW
 	//
 	// Create new interview
@@ -55,6 +59,8 @@ type MnemosyneClient interface {
 	UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 	// Delete contacts by ID
 	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	// Delete resume by ID
+	DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 	// Delete interview by id
 	DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 }
@@ -139,6 +145,24 @@ func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, o
 	return out, nil
 }
 
+func (c *mnemosyneClient) GetResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Resume, error) {
+	out := new(user.Resume)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
+	out := new(wrapperspb.BoolValue)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *mnemosyneClient) CreateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*interview.Id, error) {
 	out := new(interview.Id)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateInterview", in, out, opts...)
@@ -184,6 +208,15 @@ func (c *mnemosyneClient) DeleteContact(ctx context.Context, in *user.Id, opts .
 	return out, nil
 }
 
+func (c *mnemosyneClient) DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
+	out := new(wrapperspb.BoolValue)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *mnemosyneClient) DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
 	out := new(wrapperspb.BoolValue)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteInterview", in, out, opts...)
@@ -213,6 +246,10 @@ type MnemosyneServer interface {
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
 	// Update contact's data
 	UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error)
+	// Get resume by ID
+	GetResume(context.Context, *user.Id) (*user.Resume, error)
+	// Update resume data
+	UpdateResume(context.Context, *user.Resume) (*wrapperspb.BoolValue, error)
 	//	INTERVIEW
 	//
 	// Create new interview
@@ -225,6 +262,8 @@ type MnemosyneServer interface {
 	UpdateInterview(context.Context, *interview.Interview) (*wrapperspb.BoolValue, error)
 	// Delete contacts by ID
 	DeleteContact(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
+	// Delete resume by ID
+	DeleteResume(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
 	// Delete interview by id
 	DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error)
 }
@@ -257,6 +296,12 @@ func (UnimplementedMnemosyneServer) GetContact(context.Context, *user.Id) (*user
 func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateContact not implemented")
 }
+func (UnimplementedMnemosyneServer) GetResume(context.Context, *user.Id) (*user.Resume, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetResume not implemented")
+}
+func (UnimplementedMnemosyneServer) UpdateResume(context.Context, *user.Resume) (*wrapperspb.BoolValue, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateResume not implemented")
+}
 func (UnimplementedMnemosyneServer) CreateInterview(context.Context, *interview.Interview) (*interview.Id, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateInterview not implemented")
 }
@@ -271,6 +316,9 @@ func (UnimplementedMnemosyneServer) UpdateInterview(context.Context, *interview.
 }
 func (UnimplementedMnemosyneServer) DeleteContact(context.Context, *user.Id) (*wrapperspb.BoolValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteContact not implemented")
+}
+func (UnimplementedMnemosyneServer) DeleteResume(context.Context, *user.Id) (*wrapperspb.BoolValue, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteResume not implemented")
 }
 func (UnimplementedMnemosyneServer) DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteInterview not implemented")
@@ -431,6 +479,42 @@ func _Mnemosyne_UpdateContact_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mnemosyne_GetResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetResume(ctx, req.(*user.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_UpdateResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Resume)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).UpdateResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/UpdateResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).UpdateResume(ctx, req.(*user.Resume))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Mnemosyne_CreateInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(interview.Interview)
 	if err := dec(in); err != nil {
@@ -521,6 +605,24 @@ func _Mnemosyne_DeleteContact_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mnemosyne_DeleteResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeleteResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeleteResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeleteResume(ctx, req.(*user.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Mnemosyne_DeleteInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(interview.Id)
 	if err := dec(in); err != nil {
@@ -579,6 +681,14 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_UpdateContact_Handler,
 		},
 		{
+			MethodName: "GetResume",
+			Handler:    _Mnemosyne_GetResume_Handler,
+		},
+		{
+			MethodName: "UpdateResume",
+			Handler:    _Mnemosyne_UpdateResume_Handler,
+		},
+		{
 			MethodName: "CreateInterview",
 			Handler:    _Mnemosyne_CreateInterview_Handler,
 		},
@@ -597,6 +707,10 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteContact",
 			Handler:    _Mnemosyne_DeleteContact_Handler,
+		},
+		{
+			MethodName: "DeleteResume",
+			Handler:    _Mnemosyne_DeleteResume_Handler,
 		},
 		{
 			MethodName: "DeleteInterview",
