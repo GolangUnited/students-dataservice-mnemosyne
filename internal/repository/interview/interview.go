@@ -38,7 +38,7 @@ func (i *InterviewRepository) AddInterview(ctx context.Context, interview databa
 	}
 	err = row.Scan(&interviewId)
 	if err != nil {
-		return 0, errors.Wrap(err, "couldn't get the id of new the user")
+		return 0, errors.Wrap(err, "AddInterview error while query executing")
 	}
 	return
 }
