@@ -33,7 +33,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/certificateCertificate"
+              "$ref": "#/definitions/certificateCertificates"
             }
           },
           "403": {
@@ -897,6 +897,21 @@
         "userId",
         "issueDate",
         "expireDate"
+      ]
+    },
+    "certificateCertificates": {
+      "type": "object",
+      "properties": {
+        "Certificates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/certificateCertificate"
+          }
+        }
+      },
+      "title": "Certificates json schema",
+      "required": [
+        "Certificates"
       ]
     },
     "certificateId": {

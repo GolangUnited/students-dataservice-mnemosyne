@@ -214,18 +214,12 @@ service Mnemosyne {
   };
 
   //Get all existing certificates
-  rpc GetCertificates (certificate.Filter) returns (certificate.Certificate){
+  rpc GetCertificates (certificate.Filter) returns (certificate.Certificates){
     option (google.api.http) = {
       get: "/certificate"
     };
   };
 
-  //  //Get certificate by id
-  //  rpc GetCertificate (certificate.Id) returns (certificate.Certificate){
-  //    option (google.api.http) = {
-  //      get: "/certificate/{id}"
-  //    };
-  //  };
 
   //Update certificate data
   rpc UpdateCertificate (certificate.Certificate) returns (google.protobuf.BoolValue){

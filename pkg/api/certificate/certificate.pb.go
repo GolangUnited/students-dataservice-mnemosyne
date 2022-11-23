@@ -94,7 +94,7 @@ func (x *Certificate) GetExpireDate() string {
 	return ""
 }
 
-//The basic message containing information about all certificates from db
+// The basic message containing information about all certificates from db
 type Certificates struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -142,7 +142,7 @@ func (x *Certificates) GetCertificates() []*Certificate {
 	return nil
 }
 
-//Basic request/response containing id of the certificate
+// Basic request/response containing id of the certificate
 type Id struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

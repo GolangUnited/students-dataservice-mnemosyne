@@ -10,7 +10,9 @@ message Certificate {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Certificate json schema"
-      required: ["user_id", "issue_date", "expire_date"]
+      required: "user_id"
+      required: "issue_date"
+      required: "expire_date"
     }
   };
   string id = 1;
@@ -24,7 +26,7 @@ message Certificates {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Certificates json schema"
-      required: ["Certificates"]
+      required: "Certificates"
     }
   };
   repeated Certificate Certificates = 1;
@@ -34,7 +36,7 @@ message Id{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Id json schema"
-      required: ["id"]
+      required: "id"
     }
   };
   string id = 1;

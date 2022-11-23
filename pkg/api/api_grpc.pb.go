@@ -63,7 +63,7 @@ type MnemosyneClient interface {
 	// Create new certificate
 	CreateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*certificate.Id, error)
 	// Get all existing certificates
-	GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificate, error)
+	GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error)
 	// Update certificate data
 	UpdateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 	// Delete certificate by id
@@ -213,8 +213,8 @@ func (c *mnemosyneClient) CreateCertificate(ctx context.Context, in *certificate
 	return out, nil
 }
 
-func (c *mnemosyneClient) GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificate, error) {
-	out := new(certificate.Certificate)
+func (c *mnemosyneClient) GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error) {
+	out := new(certificate.Certificates)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetCertificates", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -279,7 +279,7 @@ type MnemosyneServer interface {
 	// Create new certificate
 	CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error)
 	// Get all existing certificates
-	GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificate, error)
+	GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error)
 	// Update certificate data
 	UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error)
 	// Delete certificate by id
@@ -335,7 +335,7 @@ func (UnimplementedMnemosyneServer) DeleteInterview(context.Context, *interview.
 func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCertificate not implemented")
 }
-func (UnimplementedMnemosyneServer) GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificate, error) {
+func (UnimplementedMnemosyneServer) GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCertificates not implemented")
 }
 func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error) {
