@@ -2,7 +2,6 @@ package mnemosyne
 
 import (
 	"context"
-
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
@@ -12,17 +11,19 @@ import (
 
 // Service implemented Mnemosyne interface
 type Service struct {
-	mnemosyne repository.Mnemosyne
-	reposRole repository.Role
-	reposUser repository.User
+	mnemosyne      repository.Mnemosyne
+	reposRole      repository.Role
+	reposUser      repository.User
+	reposInterview repository.Interview
 }
 
 // NewService created Service struct
-func NewService(mnemosyne repository.Mnemosyne, reposRole repository.Role, reposUser repository.User) *Service {
+func NewService(mnemosyne repository.Mnemosyne, reposRole repository.Role, reposUser repository.User, reposInterview repository.Interview) *Service {
 	return &Service{
-		mnemosyne: mnemosyne,
-		reposRole: reposRole,
-		reposUser: reposUser,
+		mnemosyne:      mnemosyne,
+		reposRole:      reposRole,
+		reposUser:      reposUser,
+		reposInterview: reposInterview,
 	}
 }
 
