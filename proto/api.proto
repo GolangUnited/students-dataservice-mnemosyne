@@ -7,6 +7,7 @@ import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
 import "interview/interview.proto";
+import "certificate/certificate.proto";
 import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
@@ -111,8 +112,8 @@ service Mnemosyne {
       body: "*"
     };
   };
-  
-  //Get all existing users 
+
+  //Get all existing users
   rpc GetUsers (user.Options) returns (user.Users){
     option (google.api.http) = {
       get: "/user"
@@ -122,7 +123,7 @@ service Mnemosyne {
   //Get user by id
   rpc GetUser (user.Id) returns (user.User){
     option (google.api.http) = {
-      get: "/user/{id}"     
+      get: "/user/{id}"
     };
   };
 
@@ -218,6 +219,38 @@ service Mnemosyne {
     option (google.api.http) = {
       delete: "/interview/{id}"
 
+    };
+  };
+
+  //  Certificate
+  //Create new certificate
+  rpc CreateCertificate (certificate.Certificate) returns (certificate.Id){
+    option (google.api.http) = {
+      post: "/certificate"
+      body: "*"
+    };
+  };
+
+  //Get all existing certificates
+  rpc GetCertificates (certificate.Filter) returns (certificate.Certificates){
+    option (google.api.http) = {
+      get: "/certificate"
+    };
+  };
+
+
+  //Update certificate data
+  rpc UpdateCertificate (certificate.Certificate) returns (google.protobuf.BoolValue){
+    option (google.api.http) = {
+      put: "/certificate/{id}"
+      body: "*"
+    };
+  };
+
+  //Delete certificate by id
+  rpc DeleteCertificate (certificate.Id) returns (google.protobuf.BoolValue){
+    option (google.api.http) = {
+      delete: "/certificate/{id}"
     };
   };
 }

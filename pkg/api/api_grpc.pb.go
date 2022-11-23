@@ -8,6 +8,7 @@ package api
 
 import (
 	context "context"
+	certificate "github.com/NEKETSKY/mnemosyne/pkg/api/certificate"
 	common "github.com/NEKETSKY/mnemosyne/pkg/api/common"
 	helloworld "github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	interview "github.com/NEKETSKY/mnemosyne/pkg/api/interview"
@@ -63,6 +64,16 @@ type MnemosyneClient interface {
 	DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 	// Delete interview by id
 	DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	//	Certificate
+	//
+	// Create new certificate
+	CreateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*certificate.Id, error)
+	// Get all existing certificates
+	GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error)
+	// Update certificate data
+	UpdateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	// Delete certificate by id
+	DeleteCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
 }
 
 type mnemosyneClient struct {
@@ -226,6 +237,42 @@ func (c *mnemosyneClient) DeleteInterview(ctx context.Context, in *interview.Id,
 	return out, nil
 }
 
+func (c *mnemosyneClient) CreateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*certificate.Id, error) {
+	out := new(certificate.Id)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error) {
+	out := new(certificate.Certificates)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetCertificates", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
+	out := new(wrapperspb.BoolValue)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeleteCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
+	out := new(wrapperspb.BoolValue)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MnemosyneServer is the server API for Mnemosyne service.
 // All implementations should embed UnimplementedMnemosyneServer
 // for forward compatibility
@@ -266,6 +313,16 @@ type MnemosyneServer interface {
 	DeleteResume(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
 	// Delete interview by id
 	DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error)
+	//	Certificate
+	//
+	// Create new certificate
+	CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error)
+	// Get all existing certificates
+	GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error)
+	// Update certificate data
+	UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error)
+	// Delete certificate by id
+	DeleteCertificate(context.Context, *certificate.Id) (*wrapperspb.BoolValue, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -322,6 +379,18 @@ func (UnimplementedMnemosyneServer) DeleteResume(context.Context, *user.Id) (*wr
 }
 func (UnimplementedMnemosyneServer) DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteInterview not implemented")
+}
+func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCertificate not implemented")
+}
+func (UnimplementedMnemosyneServer) GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCertificates not implemented")
+}
+func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCertificate not implemented")
+}
+func (UnimplementedMnemosyneServer) DeleteCertificate(context.Context, *certificate.Id) (*wrapperspb.BoolValue, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCertificate not implemented")
 }
 
 // UnsafeMnemosyneServer may be embedded to opt out of forward compatibility for this service.
@@ -641,6 +710,78 @@ func _Mnemosyne_DeleteInterview_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mnemosyne_CreateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(certificate.Certificate)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).CreateCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/CreateCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).CreateCertificate(ctx, req.(*certificate.Certificate))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_GetCertificates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(certificate.Filter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetCertificates(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetCertificates",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetCertificates(ctx, req.(*certificate.Filter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_UpdateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(certificate.Certificate)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).UpdateCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/UpdateCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).UpdateCertificate(ctx, req.(*certificate.Certificate))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeleteCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(certificate.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeleteCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeleteCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeleteCertificate(ctx, req.(*certificate.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mnemosyne_ServiceDesc is the grpc.ServiceDesc for Mnemosyne service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -715,6 +856,22 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteInterview",
 			Handler:    _Mnemosyne_DeleteInterview_Handler,
+		},
+		{
+			MethodName: "CreateCertificate",
+			Handler:    _Mnemosyne_CreateCertificate_Handler,
+		},
+		{
+			MethodName: "GetCertificates",
+			Handler:    _Mnemosyne_GetCertificates_Handler,
+		},
+		{
+			MethodName: "UpdateCertificate",
+			Handler:    _Mnemosyne_UpdateCertificate_Handler,
+		},
+		{
+			MethodName: "DeleteCertificate",
+			Handler:    _Mnemosyne_DeleteCertificate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

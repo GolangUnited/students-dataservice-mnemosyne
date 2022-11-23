@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package certificate;
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/any.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/certificate";
+
+// The basic message containing the primary information about a certificate.
+message Certificate {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Certificate json schema"
+      required: "user_id"
+      required: "issue_date"
+      required: "expire_date"
+    }
+  };
+  string id = 1;
+  string user_id = 2;
+  string issue_date = 3;
+  string expire_date = 4;
+
+}
+//The basic message containing information about all certificates from db
+message Certificates {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Certificates json schema"
+      required: "Certificates"
+    }
+  };
+  repeated Certificate Certificates = 1;
+}
+//Basic request/response containing id of the certificate
+message Id{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Id json schema"
+      required: "id"
+    }
+  };
+  string id = 1;
+}
+
+message Filter{
+  string user_id = 1;
+}

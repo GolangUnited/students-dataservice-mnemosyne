@@ -28,7 +28,8 @@ message Resume {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Resume json schema"
-      required: ["uploaded_resume", "mentors_note"]
+      required: "uploaded_resume"
+      required: "mentors_note"
     }
   };
   string id = 1;
