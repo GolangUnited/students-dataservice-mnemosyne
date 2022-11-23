@@ -17,6 +17,10 @@ type Mnemosyne interface {
 	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
 	AddUser(ctx context.Context, user database.User) (id int, err error)
 	GetUsers(ctx context.Context) (users []database.User, err error)
+	GetUserById(ctx context.Context, id int) (user database.User, err error)
+	GetUserByEmail(ctx context.Context, email string) (user database.User, err error)
+	UpdateUser(ctx context.Context, user database.User) (ok bool, err error)
+	DeleteUser(ctx context.Context, id int) (ok bool, err error)
 }
 
 // Service represents service level

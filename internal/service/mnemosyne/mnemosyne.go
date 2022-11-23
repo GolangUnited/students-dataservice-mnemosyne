@@ -53,3 +53,27 @@ func (s *Service) GetUsers(ctx context.Context) (users []database.User, err erro
 	users, err = s.reposUser.GetUsers(ctx)
 	return
 }
+
+func (s *Service) GetUserById(ctx context.Context, id int) (user database.User, err error) {
+	user, err = s.reposUser.GetUserById(ctx, id)
+	return
+}
+
+func (s *Service) GetUserByEmail(ctx context.Context, email string) (user database.User, err error) {
+	user, err = s.reposUser.GetUserByEmail(ctx, email)
+	return
+}
+func (s *Service) UpdateUser(ctx context.Context, user database.User) (ok bool, err error) {
+	err = s.reposUser.UpdateUserById(ctx, user)
+	if err == nil {
+		ok = true
+	}
+	return
+}
+func (s *Service) DeleteUser(ctx context.Context, id int) (ok bool, err error) {
+	err = s.reposUser.DeactivateUserById(ctx, id)
+	if err == nil {
+		ok = true
+	}
+	return
+}

@@ -38,60 +38,65 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 
 // Create new user
 func (h *Handler) CreateUser(ctx context.Context, in *user.User) (userId *user.Id, err error) {
-	var engLevel strings.Builder
-	for index, value := range in.EnglishLevel {
-		if index > 2 {
-			break
-		}
-		engLevel.WriteRune(value)
-	}
+	dbUser, _ := protoUserToDbUser(in)
 
-	id, err := h.services.Mnemosyne.AddUser(ctx, db.User{
-		LastName:     in.LastName,
-		FirstName:    in.FirstName,
-		MiddleName:   *in.MiddleName,
-		Email:        in.Email,
-		Language:     in.Language,
-		EnglishLevel: engLevel.String(),
-		Photo:        in.Photo,
-	})
+	id, err := h.services.Mnemosyne.AddUser(ctx, *dbUser)
 
 	userId = &(user.Id{Id: strconv.Itoa(id)})
 	return
 }
 
 // Get all existing users
-func (h *Handler) GetUsers(ctx context.Context, in *user.Options) (users *user.Users, err error) {
+func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *user.Users, err error) {
+
 	dbUsers, err := h.services.Mnemosyne.GetUsers(ctx)
 	var structUsers []*user.User
 	for _, value := range dbUsers {
-		structUser := &(user.User{Id: strconv.Itoa(value.Id),
-			LastName:     value.LastName,
-			FirstName:    value.FirstName,
-			MiddleName:   &value.MiddleName,
-			Email:        value.Email,
-			Language:     value.Language,
-			EnglishLevel: value.EnglishLevel,
-			Photo:        value.Photo,
-		})
+		structUser := dbUserToProtoUser(&value)
 		structUsers = append(structUsers, structUser)
 	}
-	users = &user.Users{Users: structUsers}
+	users.Users = structUsers
 	return
 }
 
 // Get user by id
-func (h *Handler) GetUser(ctx context.Context, in *user.Id) (user *user.User, err error) {
+func (h *Handler) GetUserById(ctx context.Context, in *user.Id) (user *user.User, err error) {
+	innerId, innerErr := strconv.Atoi(in.Id)
+	if innerErr != nil {
+		return nil, errors.Wrap(innerErr, "invalid user's id value")
+	}
+	innerUser, err := h.services.Mnemosyne.GetUserById(ctx, innerId)
+	user = dbUserToProtoUser(&innerUser)
+	return
+}
+
+// Get user by email
+func (h *Handler) GetUserByEmail(ctx context.Context, in *user.Email) (user *user.User, err error) {
+	innerUser, err := h.services.Mnemosyne.GetUserByEmail(ctx, in.Email)
+	user = dbUserToProtoUser(&innerUser)
 	return
 }
 
 // Update user's data
 func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (ok *wrapperspb.BoolValue, err error) {
+	innerUser, err := protoUserToDbUser(in)
+	if err != nil {
+		ok.Value = false
+		return
+	}
+	ok.Value, err = h.services.Mnemosyne.UpdateUser(ctx, *innerUser)
 	return
 }
 
 // Delete user by id
 func (h *Handler) DeleteUser(ctx context.Context, in *user.Id) (ok *wrapperspb.BoolValue, err error) {
+	innerId, innerErr := strconv.Atoi(in.Id)
+	if innerErr != nil {
+		err = errors.Wrap(innerErr, "invalid user's id value")
+		ok.Value = false
+		return
+	}
+	ok.Value, err = h.services.Mnemosyne.DeleteUser(ctx, innerId)
 	return
 }
 
@@ -102,5 +107,43 @@ func (h *Handler) GetContact(ctx context.Context, in *user.Id) (contact *user.Co
 
 // Update contact's data
 func (h *Handler) UpdateContact(ctx context.Context, in *user.Contact) (ok *wrapperspb.BoolValue, err error) {
+	return
+}
+
+func dbUserToProtoUser(d *db.User) (u *user.User) {
+	u = &(user.User{Id: strconv.Itoa(d.Id),
+		LastName:     d.LastName,
+		FirstName:    d.FirstName,
+		MiddleName:   &d.MiddleName,
+		Email:        d.Email,
+		Language:     d.Language,
+		EnglishLevel: d.EnglishLevel,
+		Photo:        d.Photo,
+	})
+	return
+}
+func protoUserToDbUser(u *user.User) (d *db.User, err error) {
+	var innerId int
+	innerId, err = strconv.Atoi(u.Id)
+	if err != nil {
+		err = errors.Wrap(err, "invalid user's id value")
+	}
+	var engLevel strings.Builder
+	for index, value := range u.EnglishLevel {
+		if index > 2 {
+			break
+		}
+		engLevel.WriteRune(value)
+	}
+	d = &db.User{
+		Id:           innerId,
+		LastName:     u.LastName,
+		FirstName:    u.FirstName,
+		MiddleName:   *u.MiddleName,
+		Email:        u.Email,
+		Language:     u.Language,
+		EnglishLevel: engLevel.String(),
+		Photo:        u.Photo,
+	}
 	return
 }

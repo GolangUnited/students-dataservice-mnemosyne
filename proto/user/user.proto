@@ -5,10 +5,27 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
 
-
-message Options {
+message Option{
   bool withContacts = 1;
   bool withResume = 2;
+}
+
+//filter by role in da system
+message Role {
+string role = 1;
+}
+
+//filter for info related with user(primary user info, contacts and resume)
+message Filter{
+ string fieldName = 1;
+ string fieldValue = 2;
+}
+
+//query options for "GetUsers" request
+message UserRequest {
+  Option option = 1;
+  Role role = 2;
+  Filter filter = 3;
 }
 
 message Contact {
@@ -66,3 +83,14 @@ message Id{
   }; 
     string id = 1;
 }
+
+message Email{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Email json schema"     
+      required: ["email"]
+    }
+  }; 
+    string email = 1;
+}
+

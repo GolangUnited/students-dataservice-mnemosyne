@@ -113,16 +113,23 @@ service Mnemosyne {
   };
   
   //Get all existing users 
-  rpc GetUsers (user.Options) returns (user.Users){
+  rpc GetUsers (user.UserRequest) returns (user.Users){
     option (google.api.http) = {
       get: "/user"
     };
   };
 
   //Get user by id
-  rpc GetUser (user.Id) returns (user.User){
+  rpc GetUserById (user.Id) returns (user.User){
     option (google.api.http) = {
       get: "/user/{id}"     
+    };
+  };
+
+ //Get user by email
+  rpc GetUserByEmail (user.Email) returns (user.User){
+    option (google.api.http) = {
+      get: "/user/{email}"     
     };
   };
 
