@@ -10,15 +10,7 @@ message Interview {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "User json schema"     
-      required: "interviewer_id"
-      required: "student_id"
-      required: "interview_date"
-      required: "grade"
-      required: "subjective_rating"
-      required: "notes"
-      required: "determined_english_level"
-      required: "main_task"
-      required: "question"
+      required: ["interviewer_id", "student_id", "interview_date", "grade", "subjective_rating", "notes", "determined_english_level", "main_task", "question"]
     }
   };
   uint32 id = 1;
@@ -37,7 +29,7 @@ message Interviews {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Interviews json schema"
-      required: "interviews"
+      required: ["interviews"]
     }
   }; 
   repeated Interview interviews = 1;
@@ -47,7 +39,7 @@ message Id{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Id json schema"     
-      required: "id"
+      required: ["id"]
     }
   }; 
     string id = 1;
