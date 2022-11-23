@@ -156,7 +156,19 @@ service Mnemosyne {
       put: "/contact/{id}"
     };
   };
+  //Get resume by ID
+  rpc GetResume (user.Id) returns (user.Resume){
+    option (google.api.http) = {
+      get: "/resume/{id}"
+    };
+  };
 
+  //Update resume data
+  rpc UpdateResume (user.Resume) returns (google.protobuf.BoolValue){
+    option (google.api.http) = {
+      put: "/resume/{id}"
+    };
+  };
   //  INTERVIEW
   //Create new interview
   rpc CreateInterview (interview.Interview) returns (interview.Id){
@@ -194,6 +206,12 @@ service Mnemosyne {
   rpc DeleteContact (user.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/contact/{id}"
+    };
+  };
+  //Delete resume by ID
+  rpc DeleteResume (user.Id) returns (google.protobuf.BoolValue){
+    option (google.api.http) = {
+      delete: "/resume/{id}"
     };
   };
   //Delete interview by id
