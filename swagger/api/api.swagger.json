@@ -776,13 +776,37 @@
           {
             "name": "uploadedResume",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
             "name": "mentorsNote",
             "in": "query",
-            "required": false,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "experience",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "required": true,
             "type": "string"
           }
         ],
@@ -829,6 +853,12 @@
           },
           {
             "name": "option.withResume",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "option.withDeleted",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1065,6 +1095,55 @@
         "tags": [
           "Mnemosyne"
         ]
+      },
+      "put": {
+        "summary": "Activate user by id",
+        "operationId": "Mnemosyne_ActivateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "title": "Id json schema"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
       }
     }
   },
@@ -1276,7 +1355,7 @@
           "type": "string"
         }
       },
-      "title": "filter for info related with user(primary user info, contacts and resume)"
+      "title": "filter for info related to user(primary user info, contacts and resume)"
     },
     "userId": {
       "type": "object",
@@ -1290,6 +1369,21 @@
         "id"
       ]
     },
+    "userOption": {
+      "type": "object",
+      "properties": {
+        "withContacts": {
+          "type": "boolean"
+        },
+        "withResume": {
+          "type": "boolean"
+        },
+        "withDeleted": {
+          "type": "boolean"
+        }
+      },
+      "title": "Request options about composition of user's info"
+    },
     "userResume": {
       "type": "object",
       "properties": {
@@ -1301,13 +1395,38 @@
         },
         "mentorsNote": {
           "type": "string"
+        },
+        "experience": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "timeZone": {
+          "type": "string"
         }
       },
       "title": "Resume json schema",
       "required": [
         "uploadedResume",
-        "mentorsNote"
+        "mentorsNote",
+        "experience",
+        "country",
+        "city",
+        "timeZone"
       ]
+    },
+    "userRole": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        }
+      },
+      "title": "filter by role in da system"
     },
     "userUser": {
       "type": "object",
@@ -1336,17 +1455,8 @@
         "photo": {
           "type": "string"
         },
-        "experience": {
-          "type": "string"
-        },
-        "country": {
-          "type": "string"
-        },
-        "city": {
-          "type": "string"
-        },
-        "timeZone": {
-          "type": "string"
+        "resume": {
+          "$ref": "#/definitions/userResume"
         },
         "contact": {
           "$ref": "#/definitions/userContact"
@@ -1363,7 +1473,9 @@
         "photo",
         "country",
         "city",
-        "timeZone"
+        "time_zone",
+        "resume",
+        "contact"
       ]
     },
     "userUsers": {

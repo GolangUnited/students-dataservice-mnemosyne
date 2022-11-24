@@ -9,6 +9,7 @@ option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
 message Option{
   bool withContacts = 1;
   bool withResume = 2;
+  bool withDeleted = 3;
 }
 
 //filter by role in da system

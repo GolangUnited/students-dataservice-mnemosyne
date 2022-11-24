@@ -149,6 +149,13 @@ service Mnemosyne {
     };
   };
 
+  //Activate user by id
+  rpc ActivateUser (user.Id) returns (google.protobuf.BoolValue){
+    option (google.api.http) = {
+      put: "/user/{id}"
+      body: "*"
+    };
+  };
 
   //Get contact by ID
   rpc GetContact (user.Id) returns (user.Contact){
