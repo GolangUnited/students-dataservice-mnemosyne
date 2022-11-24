@@ -99,10 +99,18 @@ func (i *InterviewRepository) UpdateInterviewById(ctx context.Context, interview
 	return
 }
 
-func (i *InterviewRepository) DeleteInterviewById(ctx context.Context, interviewId int) (err error) {
-	_, err = i.db.Exec(ctx, DeleteByIdQuery, interviewId, time.Now())
+func (i *InterviewRepository) DeactivateInterviewById(ctx context.Context, interviewId int) (err error) {
+	_, err = i.db.Exec(ctx, DeactivateByIdQuery, interviewId, time.Now())
 	if err != nil {
-		return errors.Wrapf(err, "DeleteInterviewById - unable to set interview %d as deleted", interviewId)
+		return errors.Wrapf(err, "DeactivateInterviewById - unable to set interview %d as deleted", interviewId)
+	}
+	return err
+}
+
+func (i *InterviewRepository) ActivateInterviewById(ctx context.Context, interviewId int) (err error) {
+	_, err = i.db.Exec(ctx, ActivateByIdQuery, interviewId, time.Now())
+	if err != nil {
+		return errors.Wrapf(err, "ActivateInterviewById - unable to set interview %d as active", interviewId)
 	}
 	return err
 }

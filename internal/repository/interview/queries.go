@@ -35,9 +35,15 @@ const UpdateInterviewByIdQuery = `
 		updated_at = $10
 	WHERE id = $11
 `
-const DeleteByIdQuery = `
+const DeactivateByIdQuery = `
 	UPDATE interview 
 	SET deleted = true,
+	updated_at = $2
+	WHERE id = $1
+`
+const ActivateByIdQuery = `
+	UPDATE interview 
+	SET deleted = false,
 	updated_at = $2
 	WHERE id = $1
 `
