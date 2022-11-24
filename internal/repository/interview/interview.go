@@ -43,7 +43,7 @@ func (i *InterviewRepository) AddInterview(ctx context.Context, interview databa
 	return
 }
 
-func (i *InterviewRepository) GetAllInterviews(ctx context.Context, interviewerId int, studentId int) (interviews []database.Interview, err error) {
+func (i *InterviewRepository) GetInterviews(ctx context.Context, interviewerId int, studentId int) (interviews []database.Interview, err error) {
 	sb := sqlbuilder.Select("*").From("interview")
 	if interviewerId > 0 {
 		sb.Where("interviewer_id = 1")

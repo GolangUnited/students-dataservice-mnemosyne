@@ -37,7 +37,7 @@ type User interface {
 
 type Interview interface {
 	AddInterview(ctx context.Context, interview database.Interview) (interviewId int, err error)
-	GetAllInterviews(ctx context.Context, interviewerId int, studentId int) (interviews []database.Interview, err error)
+	GetInterviews(ctx context.Context, interviewerId int, studentId int) (interviews []database.Interview, err error)
 	GetInterviewById(ctx context.Context, interviewId int) (interview database.Interview, err error)
 	UpdateInterviewById(ctx context.Context, interview database.Interview) (err error)
 	DeleteInterviewById(ctx context.Context, interviewId int) (err error)
