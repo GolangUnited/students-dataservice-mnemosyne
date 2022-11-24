@@ -55,7 +55,7 @@ func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *us
 		structUser := dbUserToProtoUser(&value)
 		structUsers = append(structUsers, structUser)
 	}
-	users.Users = structUsers
+	users = &user.Users{Users: structUsers}
 	return
 }
 
