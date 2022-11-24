@@ -21,6 +21,7 @@ type Mnemosyne interface {
 	GetUserByEmail(ctx context.Context, email string) (user database.User, err error)
 	UpdateUser(ctx context.Context, user database.User) (ok bool, err error)
 	DeleteUser(ctx context.Context, id int) (ok bool, err error)
+	ActivateUser(ctx context.Context, id int) (ok bool, err error)
 }
 
 // Service represents service level

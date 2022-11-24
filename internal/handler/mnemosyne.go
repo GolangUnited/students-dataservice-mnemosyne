@@ -38,10 +38,9 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 
 // Create new user
 func (h *Handler) CreateUser(ctx context.Context, in *user.User) (userId *user.Id, err error) {
+
 	dbUser, _ := protoUserToDbUser(in)
-
 	id, err := h.services.Mnemosyne.AddUser(ctx, *dbUser)
-
 	userId = &(user.Id{Id: strconv.Itoa(id)})
 	return
 }
@@ -52,7 +51,8 @@ func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *us
 	dbUsers, err := h.services.Mnemosyne.GetUsers(ctx)
 	var structUsers []*user.User
 	for _, value := range dbUsers {
-		structUser := dbUserToProtoUser(&value)
+		tempUser := value
+		structUser := dbUserToProtoUser(&tempUser)
 		structUsers = append(structUsers, structUser)
 	}
 	users = &user.Users{Users: structUsers}
@@ -81,10 +81,12 @@ func (h *Handler) GetUserByEmail(ctx context.Context, in *user.Email) (user *use
 func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (ok *wrapperspb.BoolValue, err error) {
 	innerUser, err := protoUserToDbUser(in)
 	if err != nil {
-		ok.Value = false
+		err = errors.Wrap(err, "crushed on parsing user's info")
+		ok = &wrapperspb.BoolValue{Value: false}
 		return
 	}
-	ok.Value, err = h.services.Mnemosyne.UpdateUser(ctx, *innerUser)
+	innerOk, err := h.services.Mnemosyne.UpdateUser(ctx, *innerUser)
+	ok = &wrapperspb.BoolValue{Value: innerOk}
 	return
 }
 
@@ -93,10 +95,24 @@ func (h *Handler) DeleteUser(ctx context.Context, in *user.Id) (ok *wrapperspb.B
 	innerId, innerErr := strconv.Atoi(in.Id)
 	if innerErr != nil {
 		err = errors.Wrap(innerErr, "invalid user's id value")
-		ok.Value = false
+		ok = &wrapperspb.BoolValue{Value: false}
 		return
 	}
-	ok.Value, err = h.services.Mnemosyne.DeleteUser(ctx, innerId)
+	innerOk, err := h.services.Mnemosyne.DeleteUser(ctx, innerId)
+	ok = &wrapperspb.BoolValue{Value: innerOk}
+	return
+}
+
+// Delete user by id
+func (h *Handler) ActivateUser(ctx context.Context, in *user.Id) (ok *wrapperspb.BoolValue, err error) {
+	innerId, innerErr := strconv.Atoi(in.Id)
+	if innerErr != nil {
+		err = errors.Wrap(innerErr, "invalid user's id value")
+		ok = &wrapperspb.BoolValue{Value: false}
+		return
+	}
+	innerOk, err := h.services.Mnemosyne.ActivateUser(ctx, innerId)
+	ok = &wrapperspb.BoolValue{Value: innerOk}
 	return
 }
 

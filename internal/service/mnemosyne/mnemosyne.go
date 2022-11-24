@@ -77,3 +77,11 @@ func (s *Service) DeleteUser(ctx context.Context, id int) (ok bool, err error) {
 	}
 	return
 }
+
+func (s *Service) ActivateUser(ctx context.Context, id int) (ok bool, err error) {
+	err = s.reposUser.ActivateUserById(ctx, id)
+	if err == nil {
+		ok = true
+	}
+	return
+}
