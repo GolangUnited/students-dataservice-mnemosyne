@@ -6,6 +6,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/internal/service/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/models/database"
+	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	model "github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
@@ -15,11 +16,11 @@ import (
 type Mnemosyne interface {
 	Test(context.Context, model.Request) (model.Response, error)
 	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
-	AddUser(ctx context.Context, user database.User) (id int, err error)
-	GetUsers(ctx context.Context) (users []database.User, err error)
-	GetUserById(ctx context.Context, id int) (user database.User, err error)
-	GetUserByEmail(ctx context.Context, email string) (user database.User, err error)
-	UpdateUser(ctx context.Context, user database.User) (ok bool, err error)
+	AddUser(ctx context.Context, user dbUser.BaseUser) (id int, err error)
+	GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.BaseUser, err error)
+	GetUserById(ctx context.Context, id int) (user dbUser.BaseUser, err error)
+	GetUserByEmail(ctx context.Context, email string) (user dbUser.BaseUser, err error)
+	UpdateUser(ctx context.Context, user dbUser.BaseUser) (ok bool, err error)
 	DeleteUser(ctx context.Context, id int) (ok bool, err error)
 	ActivateUser(ctx context.Context, id int) (ok bool, err error)
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/models/database"
+	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
@@ -44,26 +45,26 @@ func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []dat
 	return
 }
 
-func (s *Service) AddUser(ctx context.Context, user database.User) (id int, err error) {
+func (s *Service) AddUser(ctx context.Context, user dbUser.BaseUser) (id int, err error) {
 	id, err = s.reposUser.AddUser(ctx, user)
 	return
 }
 
-func (s *Service) GetUsers(ctx context.Context) (users []database.User, err error) {
-	users, err = s.reposUser.GetUsers(ctx)
+func (s *Service) GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.BaseUser, err error) {
+	users, err = s.reposUser.GetUsers(ctx, ur)
 	return
 }
 
-func (s *Service) GetUserById(ctx context.Context, id int) (user database.User, err error) {
+func (s *Service) GetUserById(ctx context.Context, id int) (user dbUser.BaseUser, err error) {
 	user, err = s.reposUser.GetUserById(ctx, id)
 	return
 }
 
-func (s *Service) GetUserByEmail(ctx context.Context, email string) (user database.User, err error) {
+func (s *Service) GetUserByEmail(ctx context.Context, email string) (user dbUser.BaseUser, err error) {
 	user, err = s.reposUser.GetUserByEmail(ctx, email)
 	return
 }
-func (s *Service) UpdateUser(ctx context.Context, user database.User) (ok bool, err error) {
+func (s *Service) UpdateUser(ctx context.Context, user dbUser.BaseUser) (ok bool, err error) {
 	err = s.reposUser.UpdateUserById(ctx, user)
 	if err == nil {
 		ok = true

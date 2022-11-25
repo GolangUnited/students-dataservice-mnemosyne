@@ -7,6 +7,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
+	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -25,11 +26,11 @@ type Role interface {
 }
 
 type User interface {
-	AddUser(ctx context.Context, user database.User) (userId int, err error)
-	GetUsers(ctx context.Context) (users []database.User, err error)
-	GetUserById(ctx context.Context, userId int) (user database.User, err error)
-	GetUserByEmail(ctx context.Context, userEmail string) (user database.User, err error)
-	UpdateUserById(ctx context.Context, user database.User) (err error)
+	AddUser(ctx context.Context, user dbUser.BaseUser) (userId int, err error)
+	GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.BaseUser, err error)
+	GetUserById(ctx context.Context, userId int) (user dbUser.BaseUser, err error)
+	GetUserByEmail(ctx context.Context, userEmail string) (user dbUser.BaseUser, err error)
+	UpdateUserById(ctx context.Context, user dbUser.BaseUser) (err error)
 	ActivateUserById(ctx context.Context, userId int) (err error)
 	DeactivateUserById(ctx context.Context, userId int) (err error)
 }
