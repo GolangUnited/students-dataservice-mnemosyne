@@ -20,6 +20,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_SSL=disable
+      - UPLOAD_FOLDER=upload
+    volumes:
+      - upload:/app/upload
 
   db:
     image: postgres:14.5
@@ -39,3 +42,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+volumes:
+  upload:
