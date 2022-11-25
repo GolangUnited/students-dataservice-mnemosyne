@@ -25,6 +25,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User),
+		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview),
 	}
 }

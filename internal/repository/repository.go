@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
@@ -34,10 +35,20 @@ type User interface {
 	DeactivateUserById(ctx context.Context, userId int) (err error)
 }
 
+type Interview interface {
+	AddInterview(ctx context.Context, interview database.Interview) (interviewId int, err error)
+	GetInterviews(ctx context.Context, interviewerId int, studentId int) (interviews []database.Interview, err error)
+	GetInterviewById(ctx context.Context, interviewId int) (interview database.Interview, err error)
+	UpdateInterviewById(ctx context.Context, interview database.Interview) (err error)
+	DeactivateInterviewById(ctx context.Context, interviewId int) (err error)
+	ActivateInterviewById(ctx context.Context, interviewId int) (err error)
+}
+
 type Repository struct {
 	Mnemosyne
 	Role
 	User
+	Interview
 }
 
 // NewRepository created Repository struct
@@ -46,5 +57,6 @@ func NewRepository(db *pgx.Conn) *Repository {
 		Mnemosyne: mnemosyne.NewMnemosyne(db),
 		Role:      role.NewRoleRepository(db),
 		User:      user.NewUserRepository(db),
+		Interview: interview.NewInterviewRepository(db),
 	}
 }
