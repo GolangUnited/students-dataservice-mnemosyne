@@ -8,6 +8,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
+	apiUser "github.com/NEKETSKY/mnemosyne/pkg/api/user"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -27,7 +28,7 @@ type Role interface {
 
 type User interface {
 	AddUser(ctx context.Context, user dbUser.BaseUser) (userId int, err error)
-	GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.BaseUser, err error)
+	GetUsers(ctx context.Context, ur *apiUser.UserRequest) (users *apiUser.Users, err error)
 	GetUserById(ctx context.Context, userId int) (user dbUser.BaseUser, err error)
 	GetUserByEmail(ctx context.Context, userEmail string) (user dbUser.BaseUser, err error)
 	UpdateUserById(ctx context.Context, user dbUser.BaseUser) (err error)

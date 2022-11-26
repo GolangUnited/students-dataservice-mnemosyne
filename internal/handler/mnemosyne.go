@@ -38,29 +38,25 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 // Create new user
 func (h *Handler) CreateUser(ctx context.Context, in *user.User) (userId *user.Id, err error) {
 
-	dbUser, _ := dbUser.ProtoUserToDbUser(in)
-	id, err := h.services.Mnemosyne.AddUser(ctx, *dbUser)
-	userId = &(user.Id{Id: strconv.Itoa(id)})
+	userId, err = h.services.Mnemosyne.AddUser(ctx, in)
+
 	return
 }
 
 // Get all existing users
 func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *user.Users, err error) {
 
-	innerUserrequest := &(dbUser.UserRequest{WithContacts: in.Option.WithContacts,
-		WithResume:  in.Option.WithResume,
-		WithDeleted: in.Option.WithDeleted,
-		Role:        in.Role.Role,
-		FieldName:   in.Filter.FieldName,
-		FieldValue:  in.Filter.FieldValue})
-	dbUsers, err := h.services.Mnemosyne.GetUsers(ctx, innerUserrequest)
-	var structUsers []*user.User
-	for _, value := range dbUsers {
-		tempUser := value
-		structUser := dbUser.DbUserToProtoUser(&tempUser)
-		structUsers = append(structUsers, structUser)
+	if access := operations.CheckAccess(ctx, "view_deleted"); !access {
+		in.Option.WithDeleted = false
 	}
-	users = &user.Users{Users: structUsers}
+	if access := operations.CheckAccess(ctx, "view_all_students"); !access {
+		in.Role.Role = "mentor"
+		in.Option.WithContacts = false
+		in.Option.WithResume = false
+	}
+
+	users, err = h.services.Mnemosyne.GetUsers(ctx, in)
+
 	return
 }
 

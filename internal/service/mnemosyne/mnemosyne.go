@@ -7,6 +7,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
+	apiUser "github.com/NEKETSKY/mnemosyne/pkg/api/user"
 )
 
 //go:generate mockgen -source=mnemosyne.go -destination=mocks/mnemosyne.go
@@ -45,12 +46,12 @@ func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []dat
 	return
 }
 
-func (s *Service) AddUser(ctx context.Context, user dbUser.BaseUser) (id int, err error) {
+func (s *Service) AddUser(ctx context.Context, user *apiUser.User) (id *apiUser.Id, err error) {
 	id, err = s.reposUser.AddUser(ctx, user)
 	return
 }
 
-func (s *Service) GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.BaseUser, err error) {
+func (s *Service) GetUsers(ctx context.Context, ur *apiUser.UserRequest) (users *apiUser.Users, err error) {
 	users, err = s.reposUser.GetUsers(ctx, ur)
 	return
 }

@@ -2,6 +2,7 @@ package operations
 
 import (
 	"context"
+
 	"github.com/NEKETSKY/mnemosyne/pkg/auth"
 )
 
@@ -17,16 +18,16 @@ var (
 			student,
 			"add_mentor",
 			"delete_mentor",
+			"view_deleted",
 		},
 		mentor: {
 			student,
-			"view_all_mentors",
 			"view_all_students",
-			"add_student",
 			"delete_student",
 		},
 		student: {
 			"view_all_mentors",
+			"add_student",
 			"view_own_profile",
 			"edit_own_profile",
 		},
