@@ -300,7 +300,6 @@ type HttpRule struct {
 	// can be defined using the 'custom' field.
 	//
 	// Types that are assignable to Pattern:
-	//
 	//	*HttpRule_Get
 	//	*HttpRule_Put
 	//	*HttpRule_Post

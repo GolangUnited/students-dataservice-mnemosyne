@@ -6,3 +6,8 @@ option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/common";
 
 //transitory message for rpc methods that temporary get or return nothing
 message Empty {}
+
+message File {
+  string name = 1;
+  bytes content = 2;
+}
