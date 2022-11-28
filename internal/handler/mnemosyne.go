@@ -6,7 +6,6 @@ import (
 
 	"log"
 
-	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/user"
@@ -53,44 +52,62 @@ func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *us
 	if access := operations.CheckAccess(ctx, "view_deleted"); !access {
 		in.Option.WithDeleted = false
 	}
-	if access := operations.CheckAccess(ctx, "view_all_students"); !access {
-		in.Role.Role = "mentor"
-		in.Option.WithContacts = false
-		in.Option.WithResume = false
+	if access := operations.CheckAccess(ctx, "view_all_students"); access {
+		users, err = h.services.Mnemosyne.GetUsers(ctx, in)
+	} else {
+		return nil, errors.New("access denied")
 	}
-
-	users, err = h.services.Mnemosyne.GetUsers(ctx, in)
 
 	return
 }
 
 // Get user by id
 func (h *Handler) GetUserById(ctx context.Context, in *user.Id) (user *user.User, err error) {
+
+	check := auth.GetUser(ctx)
+
 	innerId, innerErr := strconv.Atoi(in.Id)
 	if innerErr != nil {
 		return nil, errors.Wrap(innerErr, "invalid user's id value")
 	}
-	innerUser, err := h.services.Mnemosyne.GetUserById(ctx, innerId)
-	user = dbUser.DbUserToProtoUser(&innerUser)
+
+	if (innerId != check.Id) && !(operations.CheckAccess(ctx, "view_all_students")) {
+		return nil, errors.New("access denied")
+	}
+
+	user, err = h.services.Mnemosyne.GetUserById(ctx, innerId)
 	return
 }
 
 // Get user by email
 func (h *Handler) GetUserByEmail(ctx context.Context, in *user.Email) (user *user.User, err error) {
-	innerUser, err := h.services.Mnemosyne.GetUserByEmail(ctx, in.Email)
-	user = dbUser.DbUserToProtoUser(&innerUser)
+
+	check := auth.GetUser(ctx)
+	checkEmail, _ := h.services.Mnemosyne.GetEmailById(ctx, check.Id)
+
+	if (checkEmail.Email != in.Email) && !(operations.CheckAccess(ctx, "view_all_students")) {
+		return nil, errors.New("access denied")
+	}
+	user, err = h.services.Mnemosyne.GetUserByEmail(ctx, in.Email)
+
 	return
 }
 
 // Update user's data
 func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (ok *wrapperspb.BoolValue, err error) {
-	innerUser, err := dbUser.ProtoUserToDbUser(in)
-	if err != nil {
-		err = errors.Wrap(err, "crushed on parsing user's info")
-		ok = &wrapperspb.BoolValue{Value: false}
-		return
+
+	check := auth.GetUser(ctx)
+
+	innerId, innerErr := strconv.Atoi(in.Id)
+	if innerErr != nil {
+		return nil, errors.Wrap(innerErr, "invalid user's id value")
 	}
-	innerOk, err := h.services.Mnemosyne.UpdateUser(ctx, *innerUser)
+
+	if (innerId != check.Id) && !(operations.CheckAccess(ctx, "view_all_students")) {
+		return nil, errors.New("access denied")
+	}
+
+	innerOk, err := h.services.Mnemosyne.UpdateUser(ctx, in)
 	ok = &wrapperspb.BoolValue{Value: innerOk}
 	return
 }
@@ -122,11 +139,60 @@ func (h *Handler) ActivateUser(ctx context.Context, in *user.Id) (ok *wrapperspb
 }
 
 // Get contact by ID
-func (h *Handler) GetContact(ctx context.Context, in *user.Id) (contact *user.Contact, err error) {
+func (h *Handler) GetContact(ctx context.Context, in *user.Id) (c *user.Contact, err error) {
+	check := auth.GetUser(ctx)
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid user's id value")
+	}
+	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
+		return nil, errors.New("access denied")
+	}
+	c, err = h.services.Mnemosyne.GetContactById(ctx, innerId)
 	return
 }
 
 // Update contact's data
 func (h *Handler) UpdateContact(ctx context.Context, in *user.Contact) (ok *wrapperspb.BoolValue, err error) {
+	check := auth.GetUser(ctx)
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid user's id value")
+	}
+	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
+		return nil, errors.New("access denied")
+	}
+	innerOk, err := h.services.Mnemosyne.UpdateContact(ctx, in)
+	ok = &wrapperspb.BoolValue{Value: innerOk}
+	return
+}
+
+// Get resume by ID
+func (h *Handler) GetResume(ctx context.Context, in *user.Id) (r *user.Resume, err error) {
+	check := auth.GetUser(ctx)
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid user's id value")
+	}
+	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
+		return nil, errors.New("access denied")
+	}
+	r, err = h.services.Mnemosyne.GetResumeById(ctx, innerId)
+	return
+}
+
+// Update resume data
+func (h *Handler) UpdateResume(ctx context.Context, in *user.Resume) (ok *wrapperspb.BoolValue, err error) {
+	check := auth.GetUser(ctx)
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid user's id value")
+	}
+	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
+		return nil, errors.New("access denied")
+	}
+
+	innerOk, err := h.services.Mnemosyne.UpdateResume(ctx, in)
+	ok = &wrapperspb.BoolValue{Value: innerOk}
 	return
 }

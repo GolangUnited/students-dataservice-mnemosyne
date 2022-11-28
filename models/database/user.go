@@ -1,6 +1,6 @@
-package user
+package database
 
-type BaseUser struct {
+type User struct {
 	Id           int     `json:"id" db:"id"`
 	LastName     string  `json:"last_name" db:"last_name"`
 	FirstName    string  `json:"first_name" db:"first_name"`

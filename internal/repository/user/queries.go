@@ -1,24 +1,19 @@
 package user
 
-const WithoutDeleted = `
+const AliveUsers = `
 where u.deleted = false`
 
-const SelectStudents = `
+const SelectByRole = `
 left join user_role ur on ur.user_id = u.id
-inner join roles ro on ro.id = ur.role_id and ro.code='student'
+inner join roles ro on ro.id = ur.role_id and ro.code=$1
 `
-const SelectMentors = `
-left join user_role ur on ur.user_id = u.id
-inner join roles ro on ro.id = ur.role_id and ro.code='mentor'
-`
-
 const AddUser = `
 	INSERT INTO users (last_name, first_name, middle_name, email, language,english_level,photo)
 	VALUES ($1, $2, $3, $4, $5, $6, $7)
 	RETURNING id
 `
 const AddContactById = `
-insert into contacts (user_id, telegram, discord, communication_channel) values ($1, $2, $3, $4)
+insert into сontacts (user_id, telegram, discord, communication_channel) values ($1, $2, $3, $4)
 `
 const AddResumeById = `
 insert into resume (user_id, experience, uploaded_resume, country, city, time_zone, mentors_note) values ($1, $2, $3, $4, $5, $6, $7)
@@ -28,15 +23,11 @@ insert into user_role (user_id, role_id) values ($1, 3)
 `
 
 const GetUserById = `
-	SELECT *
-	FROM users
-	WHERE users.id = $1
+	WHERE u.id = $1 and u.deleted = false
 `
 
 const GetUserByEmail = `
-	SELECT *
-	FROM users
-	WHERE users.email = $1
+	WHERE u.email = $1 and u.deleted = false
 `
 const GetUsersFull = `
 SELECT
@@ -47,16 +38,26 @@ u.middle_name as middle_name,
 u.email as email,
 u."language" as "language",    
 u.english_level as english_level,  
-u.photo as photo,
-case when c.telegram is null then '' end as telegram,
-case when c.discord is null then '' end as discord,
-case when c.communication_channel is null then '' end as communication_channel,
-case when r.experience is null then '' end as experience,
-case when r.uploaded_resume is null then '' end as uploaded_resume,
-case when r.country is null then '' end as country,
-case when r.city is null then '' end as city,
-case when r.time_zone is null then '' end as time_zone,
-case when r.mentors_note is null then '' end as mentors_note
+case when u.photo is null then '' 
+    else u.photo end as photo,
+case when c.telegram is null then '' 
+    else c.telegram end as telegram,
+case when c.discord is null then '' 
+    else c.discord end as discord,
+case when c.communication_channel is null then '' 
+    else c.communication_channel end as communication_channel,
+case when r.experience is null then ''
+    else r.experience end as experience,
+case when r.uploaded_resume is null then ''
+    else r.uploaded_resume end as uploaded_resume,
+case when r.country is null then '' 
+    else r.country end as country,
+case when r.city is null then '' 
+    else r.city end as city,
+case when r.time_zone is null then '' 
+    else r.time_zone end as time_zone,
+case when r.mentors_note is null then '' 
+    else r.mentors_note end as mentors_note
 FROM
 users u
 left join сontacts c on c.user_id = u.id
@@ -85,4 +86,37 @@ const DeactivateById = `
 	SET deleted = true,
 	updated_at = $2
 	WHERE id = $1
+`
+const GetEmailById = `
+select users.email from users where users.id = $1 and users.deleted = false
+`
+const UpdateContactById = `
+	UPDATE сontacts 
+	SET telegram = $1, 
+		discord = $2, 
+		communication_channel = $3,
+		updated_at = $4
+	WHERE user_id = $5
+`
+
+const UpdateResumeById = `
+	UPDATE resume
+	SET experience = $1, 
+		uploaded_resume = $2, 
+		country = $3,
+		city = $4,
+		time_zone = $5,
+		mentors_note = $6,
+		updated_at = $7
+	WHERE user_id = $8
+`
+const GetContactById = `
+select c.user_id, c.telegram, c.discord, c.communication_channel
+from сontacts c
+where c.user_id = $1 and c.deleted = false
+`
+const GetResumeById = `
+select r.user_id, r.experience, r.uploaded_resume, r.country, r.city, r.time_zone, r.mentors_note
+from resume r
+where r.user_id =$1 and r.deleted = false
 `

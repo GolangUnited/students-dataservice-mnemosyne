@@ -2,9 +2,9 @@ package mnemosyne
 
 import (
 	"context"
+
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
 	"github.com/NEKETSKY/mnemosyne/models/database"
-	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 	apiUser "github.com/NEKETSKY/mnemosyne/pkg/api/user"
 )
@@ -57,16 +57,16 @@ func (s *Service) GetUsers(ctx context.Context, ur *apiUser.UserRequest) (users 
 	return
 }
 
-func (s *Service) GetUserById(ctx context.Context, id int) (user dbUser.BaseUser, err error) {
+func (s *Service) GetUserById(ctx context.Context, id int) (user *apiUser.User, err error) {
 	user, err = s.reposUser.GetUserById(ctx, id)
 	return
 }
 
-func (s *Service) GetUserByEmail(ctx context.Context, email string) (user dbUser.BaseUser, err error) {
+func (s *Service) GetUserByEmail(ctx context.Context, email string) (user *apiUser.User, err error) {
 	user, err = s.reposUser.GetUserByEmail(ctx, email)
 	return
 }
-func (s *Service) UpdateUser(ctx context.Context, user dbUser.BaseUser) (ok bool, err error) {
+func (s *Service) UpdateUser(ctx context.Context, user *apiUser.User) (ok bool, err error) {
 	err = s.reposUser.UpdateUserById(ctx, user)
 	if err == nil {
 		ok = true
@@ -86,5 +86,32 @@ func (s *Service) ActivateUser(ctx context.Context, id int) (ok bool, err error)
 	if err == nil {
 		ok = true
 	}
+	return
+}
+
+func (s *Service) GetContactById(ctx context.Context, id int) (c *apiUser.Contact, err error) {
+	c, err = s.reposUser.GetContactById(ctx, id)
+	return
+}
+func (s *Service) GetResumeById(ctx context.Context, id int) (r *apiUser.Resume, err error) {
+	r, err = s.reposUser.GetResumeById(ctx, id)
+	return
+}
+func (s *Service) UpdateContact(ctx context.Context, contact *apiUser.Contact) (ok bool, err error) {
+	err = s.reposUser.UpdateContact(ctx, contact)
+	if err == nil {
+		ok = true
+	}
+	return
+}
+func (s *Service) UpdateResume(ctx context.Context, resume *apiUser.Resume) (ok bool, err error) {
+	err = s.reposUser.UpdateResume(ctx, resume)
+	if err == nil {
+		ok = true
+	}
+	return
+}
+func (s *Service) GetEmailById(ctx context.Context, id int) (email *apiUser.Email, err error) {
+	email, err = s.reposUser.GetEmailById(ctx, id)
 	return
 }

@@ -774,10 +774,17 @@
             "type": "string"
           },
           {
-            "name": "uploadedResume",
+            "name": "uploadedResume.name",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "string"
+          },
+          {
+            "name": "uploadedResume.content",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "byte"
           },
           {
             "name": "mentorsNote",
@@ -1199,6 +1206,18 @@
         "id"
       ]
     },
+    "commonFile": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
     "helloworldHelloReply": {
       "type": "object",
       "properties": {
@@ -1391,7 +1410,7 @@
           "type": "string"
         },
         "uploadedResume": {
-          "type": "string"
+          "$ref": "#/definitions/commonFile"
         },
         "mentorsNote": {
           "type": "string"
@@ -1453,7 +1472,7 @@
           "type": "string"
         },
         "photo": {
-          "type": "string"
+          "$ref": "#/definitions/commonFile"
         },
         "resume": {
           "$ref": "#/definitions/userResume"

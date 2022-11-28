@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package user;
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "common/common.proto";
 
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
 
@@ -64,7 +65,7 @@ message Resume {
     }
   };
   string id = 1;
-  string uploaded_resume = 2;
+  common.File uploaded_resume = 2;
   string mentors_note = 3;
   string experience = 4;
   string country = 5;
@@ -87,7 +88,7 @@ message User {
   string email = 5;
   string language = 6;
   string english_level = 7;
-  string photo = 8;
+  common.File photo = 8;
   Resume resume = 9;
   Contact contact = 10;
 }
