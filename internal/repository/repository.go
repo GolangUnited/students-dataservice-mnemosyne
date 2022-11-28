@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"github.com/NEKETSKY/mnemosyne/internal/repository/certificate"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
@@ -44,19 +45,29 @@ type Interview interface {
 	ActivateInterviewById(ctx context.Context, interviewId int) (err error)
 }
 
+type Certificate interface {
+	AddCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error)
+	GetCertificates(ctx context.Context) (certificates []database.Certificate, err error)
+	UpdateCertificatesById(ctx context.Context, certificate database.Certificate) (err error)
+	DeactivateCertificateById(ctx context.Context, certificateId int) (err error)
+	ActivateCertificateById(ctx context.Context, certificateId int) (err error)
+}
+
 type Repository struct {
 	Mnemosyne
 	Role
 	User
 	Interview
+	Certificate
 }
 
 // NewRepository created Repository struct
 func NewRepository(db *pgx.Conn) *Repository {
 	return &Repository{
-		Mnemosyne: mnemosyne.NewMnemosyne(db),
-		Role:      role.NewRoleRepository(db),
-		User:      user.NewUserRepository(db),
-		Interview: interview.NewInterviewRepository(db),
+		Mnemosyne:   mnemosyne.NewMnemosyne(db),
+		Role:        role.NewRoleRepository(db),
+		User:        user.NewUserRepository(db),
+		Interview:   interview.NewInterviewRepository(db),
+		Certificate: certificate.NewCertificateRepository(db),
 	}
 }
