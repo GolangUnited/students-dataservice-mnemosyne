@@ -8,6 +8,8 @@ import (
 	"github.com/NEKETSKY/mnemosyne/pkg/file"
 	"github.com/NEKETSKY/mnemosyne/pkg/operations"
 	"github.com/pkg/errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 )
 
@@ -30,5 +32,7 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 
 	log.Printf("Received: %v", in.GetName())
 	log.Printf("Version: %v", resp.Version)
-	return &helloworld.HelloReply{Message: "Hello " + in.GetName() + ". Version " + resp.Version}, nil
+
+	//return &helloworld.HelloReply{}, nil
+	return &helloworld.HelloReply{}, status.Error(codes.OK, "")
 }
