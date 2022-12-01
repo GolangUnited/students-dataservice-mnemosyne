@@ -306,7 +306,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -745,7 +745,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -943,7 +943,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -1070,7 +1070,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -1110,7 +1110,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -1205,6 +1205,10 @@
       "required": [
         "id"
       ]
+    },
+    "commonEmpty": {
+      "type": "object",
+      "title": "transitory message for rpc methods that temporary get or return nothing"
     },
     "commonFile": {
       "type": "object",

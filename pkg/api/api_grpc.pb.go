@@ -39,19 +39,19 @@ type MnemosyneClient interface {
 	// Get user by email
 	GetUserByEmail(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error)
 	// Update user's data
-	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*common.Empty, error)
 	// Delete user by id
-	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Activate user by id
-	ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Get contact by ID
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*common.Empty, error)
 	// Get resume by ID
 	GetResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Resume, error)
 	// Update resume data
-	UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*common.Empty, error)
 	//	INTERVIEW
 	//
 	// Create new interview
@@ -133,8 +133,8 @@ func (c *mnemosyneClient) GetUserByEmail(ctx context.Context, in *user.Email, op
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -142,8 +142,8 @@ func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ..
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -151,8 +151,8 @@ func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...g
 	return out, nil
 }
 
-func (c *mnemosyneClient) ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -169,8 +169,8 @@ func (c *mnemosyneClient) GetContact(ctx context.Context, in *user.Id, opts ...g
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateContact", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -187,8 +187,8 @@ func (c *mnemosyneClient) GetResume(ctx context.Context, in *user.Id, opts ...gr
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateResume", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -310,19 +310,19 @@ type MnemosyneServer interface {
 	// Get user by email
 	GetUserByEmail(context.Context, *user.Email) (*user.User, error)
 	// Update user's data
-	UpdateUser(context.Context, *user.User) (*wrapperspb.BoolValue, error)
+	UpdateUser(context.Context, *user.User) (*common.Empty, error)
 	// Delete user by id
-	DeleteUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
+	DeleteUser(context.Context, *user.Id) (*common.Empty, error)
 	// Activate user by id
-	ActivateUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
+	ActivateUser(context.Context, *user.Id) (*common.Empty, error)
 	// Get contact by ID
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error)
+	UpdateContact(context.Context, *user.Contact) (*common.Empty, error)
 	// Get resume by ID
 	GetResume(context.Context, *user.Id) (*user.Resume, error)
 	// Update resume data
-	UpdateResume(context.Context, *user.Resume) (*wrapperspb.BoolValue, error)
+	UpdateResume(context.Context, *user.Resume) (*common.Empty, error)
 	//	INTERVIEW
 	//
 	// Create new interview
@@ -370,25 +370,25 @@ func (UnimplementedMnemosyneServer) GetUserById(context.Context, *user.Id) (*use
 func (UnimplementedMnemosyneServer) GetUserByEmail(context.Context, *user.Email) (*user.User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserByEmail not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedMnemosyneServer) ActivateUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) ActivateUser(context.Context, *user.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateUser not implemented")
 }
 func (UnimplementedMnemosyneServer) GetContact(context.Context, *user.Id) (*user.Contact, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContact not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateContact not implemented")
 }
 func (UnimplementedMnemosyneServer) GetResume(context.Context, *user.Id) (*user.Resume, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetResume not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateResume(context.Context, *user.Resume) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) UpdateResume(context.Context, *user.Resume) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateResume not implemented")
 }
 func (UnimplementedMnemosyneServer) CreateInterview(context.Context, *interview.Interview) (*interview.Id, error) {

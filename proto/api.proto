@@ -135,7 +135,7 @@ service Mnemosyne {
   };
 
   //Update user's data
-  rpc UpdateUser (user.User) returns (google.protobuf.BoolValue){
+  rpc UpdateUser (user.User) returns (common.Empty){
     option (google.api.http) = {
       put: "/user"
       body: "*"
@@ -143,14 +143,14 @@ service Mnemosyne {
   };
 
   //Delete user by id
-  rpc DeleteUser (user.Id) returns (google.protobuf.BoolValue){
+  rpc DeleteUser (user.Id) returns (common.Empty){
     option (google.api.http) = {
       delete: "/user/{id}"
     };
   };
 
   //Activate user by id
-  rpc ActivateUser (user.Id) returns (google.protobuf.BoolValue){
+  rpc ActivateUser (user.Id) returns (common.Empty){
     option (google.api.http) = {
       put: "/user/{id}"
       body: "*"
@@ -165,7 +165,7 @@ service Mnemosyne {
   };
 
   //Update contact's data
-  rpc UpdateContact (user.Contact) returns (google.protobuf.BoolValue){
+  rpc UpdateContact (user.Contact) returns (common.Empty){
     option (google.api.http) = {
       put: "/contact/{id}"
     };
@@ -178,7 +178,7 @@ service Mnemosyne {
   };
 
   //Update resume data
-  rpc UpdateResume (user.Resume) returns (google.protobuf.BoolValue){
+  rpc UpdateResume (user.Resume) returns (common.Empty){
     option (google.api.http) = {
       put: "/resume/{id}"
     };

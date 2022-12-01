@@ -6,14 +6,17 @@ import (
 
 	"log"
 
+	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
+	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/user"
 	"github.com/NEKETSKY/mnemosyne/pkg/auth"
 	"github.com/NEKETSKY/mnemosyne/pkg/file"
 	"github.com/NEKETSKY/mnemosyne/pkg/operations"
 	"github.com/pkg/errors"
-	"google.golang.org/protobuf/types/known/wrapperspb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // SayHello implements api.MnemosyneServer
@@ -41,158 +44,227 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 // Create new user
 func (h *Handler) CreateUser(ctx context.Context, in *user.User) (userId *user.Id, err error) {
 
-	userId, err = h.services.Mnemosyne.AddUser(ctx, in)
-
+	innerUser := &dbUser.UserFullStuff{}
+	innerUser.ProtoToDb(in)
+	innerId, err := h.services.Mnemosyne.AddUser(ctx, innerUser)
+	userId = &user.Id{Id: strconv.Itoa(innerId)}
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
 	return
 }
 
 // Get all existing users
 func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *user.Users, err error) {
-
-	if access := operations.CheckAccess(ctx, "view_deleted"); !access {
-		in.Option.WithDeleted = false
+	ur := &dbUser.UserRequest{}
+	var innerApiUserSlice []*user.User
+	if in.Option != nil {
+		ur.WithContacts = in.Option.WithContacts
+		ur.WithResume = in.Option.WithResume
 	}
-	if access := operations.CheckAccess(ctx, "view_all_students"); access {
-		users, err = h.services.Mnemosyne.GetUsers(ctx, in)
-	} else {
-		return nil, errors.New("access denied")
+	if in.Role != nil {
+		ur.Role = in.Role.Role
 	}
-
+	if in.Filter != nil {
+		ur.FieldName = in.Filter.FieldName
+		ur.FieldValue = in.Filter.FieldValue
+	}
+	innerUsers, err := h.services.Mnemosyne.GetUsers(ctx, ur)
+	if len(innerUsers) > 0 {
+		for _, user := range innerUsers {
+			temp := user
+			innerApiUser := temp.DbToProto()
+			if !ur.WithContacts {
+				innerApiUser.Contact = nil
+			}
+			if !ur.WithResume {
+				innerApiUser.Resume = nil
+			}
+			innerApiUserSlice = append(innerApiUserSlice, innerApiUser)
+		}
+	}
+	users = &user.Users{Users: innerApiUserSlice}
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
 	return
 }
 
 // Get user by id
 func (h *Handler) GetUserById(ctx context.Context, in *user.Id) (user *user.User, err error) {
 
-	check := auth.GetUser(ctx)
-
-	innerId, innerErr := strconv.Atoi(in.Id)
-	if innerErr != nil {
-		return nil, errors.Wrap(innerErr, "invalid user's id value")
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
-
-	if (innerId != check.Id) && !(operations.CheckAccess(ctx, "view_all_students")) {
-		return nil, errors.New("access denied")
+	innerUser, err := h.services.Mnemosyne.GetUserById(ctx, innerId)
+	if innerUser != nil {
+		user = innerUser.DbToProto()
 	}
-
-	user, err = h.services.Mnemosyne.GetUserById(ctx, innerId)
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
 	return
 }
 
 // Get user by email
 func (h *Handler) GetUserByEmail(ctx context.Context, in *user.Email) (user *user.User, err error) {
-
-	check := auth.GetUser(ctx)
-	checkEmail, _ := h.services.Mnemosyne.GetEmailById(ctx, check.Id)
-
-	if (checkEmail.Email != in.Email) && !(operations.CheckAccess(ctx, "view_all_students")) {
-		return nil, errors.New("access denied")
+	email := in.Email
+	innerUser, err := h.services.Mnemosyne.GetUserByEmail(ctx, email)
+	if innerUser != nil {
+		user = innerUser.DbToProto()
 	}
-	user, err = h.services.Mnemosyne.GetUserByEmail(ctx, in.Email)
-
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
 	return
 }
 
 // Update user's data
-func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (ok *wrapperspb.BoolValue, err error) {
-
-	check := auth.GetUser(ctx)
-
-	innerId, innerErr := strconv.Atoi(in.Id)
-	if innerErr != nil {
-		return nil, errors.Wrap(innerErr, "invalid user's id value")
+func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (c *common.Empty, err error) {
+	c = &common.Empty{}
+	innerUser := &dbUser.UserFullStuff{}
+	err = innerUser.ProtoToDb(in)
+	if err != nil {
+		err = status.Error(codes.InvalidArgument, err.Error())
+		return
+	}
+	err = h.services.Mnemosyne.UpdateUser(ctx, innerUser)
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	} else {
+		err = status.Error(codes.OK, "")
 	}
 
-	if (innerId != check.Id) && !(operations.CheckAccess(ctx, "view_all_students")) {
-		return nil, errors.New("access denied")
-	}
-
-	innerOk, err := h.services.Mnemosyne.UpdateUser(ctx, in)
-	ok = &wrapperspb.BoolValue{Value: innerOk}
 	return
 }
 
 // Delete user by id
-func (h *Handler) DeleteUser(ctx context.Context, in *user.Id) (ok *wrapperspb.BoolValue, err error) {
-	innerId, innerErr := strconv.Atoi(in.Id)
-	if innerErr != nil {
-		err = errors.Wrap(innerErr, "invalid user's id value")
-		ok = &wrapperspb.BoolValue{Value: false}
+func (h *Handler) DeactivateUser(ctx context.Context, in *user.Id) (c *common.Empty, err error) {
+	c = &common.Empty{}
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		err = status.Error(codes.InvalidArgument, err.Error())
 		return
 	}
-	innerOk, err := h.services.Mnemosyne.DeleteUser(ctx, innerId)
-	ok = &wrapperspb.BoolValue{Value: innerOk}
+	err = h.services.Mnemosyne.DeactivateUser(ctx, innerId)
+
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	} else {
+		err = status.Error(codes.OK, "")
+	}
+
 	return
 }
 
 // Delete user by id
-func (h *Handler) ActivateUser(ctx context.Context, in *user.Id) (ok *wrapperspb.BoolValue, err error) {
-	innerId, innerErr := strconv.Atoi(in.Id)
-	if innerErr != nil {
-		err = errors.Wrap(innerErr, "invalid user's id value")
-		ok = &wrapperspb.BoolValue{Value: false}
+func (h *Handler) ActivateUser(ctx context.Context, in *user.Id) (c *common.Empty, err error) {
+	c = &common.Empty{}
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		err = status.Error(codes.InvalidArgument, err.Error())
 		return
 	}
-	innerOk, err := h.services.Mnemosyne.ActivateUser(ctx, innerId)
-	ok = &wrapperspb.BoolValue{Value: innerOk}
+	err = h.services.Mnemosyne.ActivateUser(ctx, innerId)
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
 	return
 }
 
 // Get contact by ID
 func (h *Handler) GetContact(ctx context.Context, in *user.Id) (c *user.Contact, err error) {
-	check := auth.GetUser(ctx)
+
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid user's id value")
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
-	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
-		return nil, errors.New("access denied")
+
+	innerContact, err := h.services.Mnemosyne.GetContactById(ctx, innerId)
+	c = &user.Contact{
+		Id:                   strconv.Itoa(innerContact.Id),
+		Telegram:             innerContact.Telegram,
+		Discord:              innerContact.Discord,
+		CommunicationChannel: innerContact.CommunicationChannel,
 	}
-	c, err = h.services.Mnemosyne.GetContactById(ctx, innerId)
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
 	return
 }
 
 // Update contact's data
-func (h *Handler) UpdateContact(ctx context.Context, in *user.Contact) (ok *wrapperspb.BoolValue, err error) {
-	check := auth.GetUser(ctx)
+func (h *Handler) UpdateContact(ctx context.Context, in *user.Contact) (c *common.Empty, err error) {
+
+	c = &common.Empty{}
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid user's id value")
+		err = status.Error(codes.InvalidArgument, err.Error())
+		return
 	}
-	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
-		return nil, errors.New("access denied")
+
+	err = h.services.Mnemosyne.UpdateContact(ctx, &dbUser.Contact{
+		Id:                   innerId,
+		Telegram:             in.Telegram,
+		Discord:              in.Discord,
+		CommunicationChannel: in.CommunicationChannel,
+	})
+
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
 	}
-	innerOk, err := h.services.Mnemosyne.UpdateContact(ctx, in)
-	ok = &wrapperspb.BoolValue{Value: innerOk}
 	return
 }
 
 // Get resume by ID
 func (h *Handler) GetResume(ctx context.Context, in *user.Id) (r *user.Resume, err error) {
-	check := auth.GetUser(ctx)
+
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid user's id value")
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
-	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
-		return nil, errors.New("access denied")
+
+	innerResume, err := h.services.Mnemosyne.GetResumeById(ctx, innerId)
+	r = &user.Resume{
+		Id:             strconv.Itoa(innerResume.Id),
+		UploadedResume: &common.File{Name: innerResume.UploadedResume},
+		Experience:     innerResume.Experience,
+		Country:        innerResume.Country,
+		City:           innerResume.City,
+		TimeZone:       innerResume.TimeZone,
+		MentorsNote:    innerResume.MentorsNote,
 	}
-	r, err = h.services.Mnemosyne.GetResumeById(ctx, innerId)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
 	return
 }
 
 // Update resume data
-func (h *Handler) UpdateResume(ctx context.Context, in *user.Resume) (ok *wrapperspb.BoolValue, err error) {
-	check := auth.GetUser(ctx)
+func (h *Handler) UpdateResume(ctx context.Context, in *user.Resume) (c *common.Empty, err error) {
+	c = &common.Empty{}
+	path := ""
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid user's id value")
+		err = status.Error(codes.InvalidArgument, err.Error())
+		return
 	}
-	if (check.Id != innerId) && !(operations.CheckAccess(ctx, "view_all_students")) {
-		return nil, errors.New("access denied")
+	if in.UploadedResume != nil {
+		path, _ = file.Save(in.UploadedResume.GetName(), in.UploadedResume.GetContent())
 	}
+	err = h.services.Mnemosyne.UpdateResume(ctx, &dbUser.Resume{
+		Id:             innerId,
+		UploadedResume: path,
+		Experience:     in.GetExperience(),
+		Country:        in.GetExperience(),
+		City:           in.GetCity(),
+		TimeZone:       in.GetTimeZone(),
+		MentorsNote:    in.GetMentorsNote(),
+	})
 
-	innerOk, err := h.services.Mnemosyne.UpdateResume(ctx, in)
-	ok = &wrapperspb.BoolValue{Value: innerOk}
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
 	return
 }

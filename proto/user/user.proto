@@ -24,12 +24,12 @@ message Filter{
  string fieldValue = 2;
 }
 
-//query options for "GetUsers" request
+//Summary request options
 message UserRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Request options json schema"
-      required: ["telegram", "discord","communicationChannel"]
+      required: ["option", "role","filter"]
     }
   };
   Option option = 1;

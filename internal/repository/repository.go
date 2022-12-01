@@ -9,7 +9,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
-	apiUser "github.com/NEKETSKY/mnemosyne/pkg/api/user"
+	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -28,18 +28,17 @@ type Role interface {
 }
 
 type User interface {
-	AddUser(ctx context.Context, user *apiUser.User) (userId *apiUser.Id, err error)
-	GetUsers(ctx context.Context, ur *apiUser.UserRequest) (users *apiUser.Users, err error)
-	GetUserById(ctx context.Context, userId int) (user *apiUser.User, err error)
-	GetUserByEmail(ctx context.Context, userEmail string) (user *apiUser.User, err error)
-	UpdateUserById(ctx context.Context, user *apiUser.User) (err error)
+	AddUser(ctx context.Context, user *dbUser.UserFullStuff) (userId int, err error)
+	GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.UserFullStuff, err error)
+	GetUserById(ctx context.Context, userId int) (user *dbUser.UserFullStuff, err error)
+	GetUserByEmail(ctx context.Context, userEmail string) (user *dbUser.UserFullStuff, err error)
+	UpdateUserById(ctx context.Context, user *dbUser.UserFullStuff) (err error)
 	ActivateUserById(ctx context.Context, userId int) (err error)
 	DeactivateUserById(ctx context.Context, userId int) (err error)
-	GetContactById(ctx context.Context, id int) (c *apiUser.Contact, err error)
-	GetResumeById(ctx context.Context, id int) (r *apiUser.Resume, err error)
-	UpdateContact(ctx context.Context, contact *apiUser.Contact) (err error)
-	UpdateResume(ctx context.Context, resume *apiUser.Resume) (err error)
-	GetEmailById(ctx context.Context, id int) (email *apiUser.Email, err error)
+	GetContactById(ctx context.Context, id int) (c *dbUser.Contact, err error)
+	GetResumeById(ctx context.Context, id int) (r *dbUser.Resume, err error)
+	UpdateContact(ctx context.Context, contact *dbUser.Contact) (err error)
+	UpdateResume(ctx context.Context, resume *dbUser.Resume) (err error)
 }
 
 type Interview interface {

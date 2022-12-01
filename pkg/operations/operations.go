@@ -22,8 +22,9 @@ var (
 		},
 		mentor: {
 			student,
-			"view_all_students",
+			"view_all_users",
 			"delete_student",
+			"activate",
 		},
 		student: {
 			"view_all_mentors",
