@@ -48,14 +48,14 @@ func (u *UserRepository) AddUser(ctx context.Context, user *dbUser.UserFullStuff
 	//add role Student for everybody by default
 	_, err = tr.Exec(ctx, AddRoleStudent, userId)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return 0, errors.Wrap(err, "failed to give to a user role Student in the system, try to add user again")
 
 	}
 	//inserting contacts info to database
 	_, err = tr.Exec(ctx, AddContactById, userId, user.Telegram, user.Discord, user.CommunicationChannel)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return 0, errors.Wrap(err, "failed to insert user's contacts")
 
 	}
@@ -63,10 +63,10 @@ func (u *UserRepository) AddUser(ctx context.Context, user *dbUser.UserFullStuff
 	//inserting resume info to database
 	_, err = tr.Exec(ctx, AddResumeById, userId, user.Experience, user.UploadedResume, user.Country, user.City, user.TimeZone, user.MentorsNote)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return 0, errors.Wrap(err, "failed to insert user's resume")
 	}
-	tr.Commit(ctx)
+	err = tr.Commit(ctx)
 	return
 }
 
@@ -180,7 +180,7 @@ func (u *UserRepository) UpdateUserById(ctx context.Context, user *dbUser.UserFu
 		return errors.Wrap(err, "unable to update user's resume info")
 	}
 
-	tr.Commit(ctx)
+	err = tr.Commit(ctx)
 	return err
 }
 
@@ -211,7 +211,7 @@ func (u *UserRepository) UpdateContact(ctx context.Context, contact *dbUser.Cont
 
 	_, err = tr.Exec(ctx, UpdateContactById, contact.Telegram, contact.Discord, contact.CommunicationChannel, time.Now(), contact.Id)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return errors.Wrap(err, "unable to update user's contact info")
 	}
 
@@ -229,7 +229,7 @@ func (u *UserRepository) UpdateResume(ctx context.Context, resume *dbUser.Resume
 
 	_, err = tr.Exec(ctx, UpdateResumeById, resume.Experience, resume.UploadedResume, resume.Country, resume.City, resume.TimeZone, resume.MentorsNote, time.Now(), resume.Id)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return errors.Wrap(err, "failed to update user's resume")
 	}
 	return err

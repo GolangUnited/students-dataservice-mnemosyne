@@ -45,7 +45,7 @@ func (h *Handler) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*h
 func (h *Handler) CreateUser(ctx context.Context, in *user.User) (userId *user.Id, err error) {
 
 	innerUser := &dbUser.UserFullStuff{}
-	innerUser.ProtoToDb(in)
+	_ = innerUser.ProtoToDb(in)
 	innerId, err := h.services.Mnemosyne.AddUser(ctx, innerUser)
 	userId = &user.Id{Id: strconv.Itoa(innerId)}
 	if err != nil {
@@ -132,10 +132,7 @@ func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (c *common.Empt
 	err = h.services.Mnemosyne.UpdateUser(ctx, innerUser)
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
-	} else {
-		err = status.Error(codes.OK, "")
 	}
-
 	return
 }
 
@@ -151,10 +148,7 @@ func (h *Handler) DeactivateUser(ctx context.Context, in *user.Id) (c *common.Em
 
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
-	} else {
-		err = status.Error(codes.OK, "")
 	}
-
 	return
 }
 

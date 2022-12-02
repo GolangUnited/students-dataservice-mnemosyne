@@ -36,6 +36,7 @@ func (d *UserFullStuff) DbToProto() (u *apiUser.User) {
 	return
 }
 
+// err should be used in Update methods, in another cases it doesn't matter
 func (u *UserFullStuff) ProtoToDb(protoUser *apiUser.User) (err error) {
 	photoPath := ""
 	midName := ""
