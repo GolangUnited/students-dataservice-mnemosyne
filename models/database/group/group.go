@@ -7,7 +7,7 @@ import (
 )
 
 type DB struct {
-	Id        int       `db:"id"`
+	Id        uint32    `db:"id"`
 	Name      string    `db:"name"`
 	StartDate time.Time `db:"start_date"`
 	EndDate   time.Time `db:"end_date"`
@@ -18,7 +18,7 @@ type DB struct {
 
 func ConvertToDB(gr *group.Group) *DB {
 	return &DB{
-		Id:        int(gr.GetId()),
+		Id:        gr.GetId(),
 		Name:      gr.GetName(),
 		StartDate: gr.GetStartDate().AsTime(),
 		EndDate:   gr.GetEndDate().AsTime(),
@@ -27,7 +27,7 @@ func ConvertToDB(gr *group.Group) *DB {
 
 func ConvertFromDB(db *DB) *group.Group {
 	return &group.Group{
-		Id:        uint32(db.Id),
+		Id:        db.Id,
 		Name:      db.Name,
 		StartDate: timestamppb.New(db.StartDate),
 		EndDate:   timestamppb.New(db.EndDate),

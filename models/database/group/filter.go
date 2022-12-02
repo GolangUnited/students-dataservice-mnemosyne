@@ -7,7 +7,7 @@ import (
 )
 
 type Filter struct {
-	UserId    int
+	UserId    uint32
 	Name      string
 	StartDate time.Time
 	EndDate   time.Time
@@ -15,7 +15,7 @@ type Filter struct {
 
 func ConvertToFilter(gf *group.Filter) *Filter {
 	return &Filter{
-		UserId:    int(gf.GetUserId()),
+		UserId:    gf.GetUserId(),
 		Name:      gf.GetName(),
 		StartDate: gf.GetStartDate().AsTime(),
 		EndDate:   gf.GetEndDate().AsTime(),
@@ -24,7 +24,7 @@ func ConvertToFilter(gf *group.Filter) *Filter {
 
 func ConvertFromFilter(f *Filter) *group.Filter {
 	return &group.Filter{
-		UserId:    uint32(f.UserId),
+		UserId:    f.UserId,
 		Name:      &f.Name,
 		StartDate: timestamppb.New(f.StartDate),
 		EndDate:   timestamppb.New(f.EndDate),
