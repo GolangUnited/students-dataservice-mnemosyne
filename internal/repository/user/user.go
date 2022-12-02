@@ -206,7 +206,7 @@ func (u *UserRepository) UpdateContact(ctx context.Context, contact *dbUser.Cont
 		tr = *(extractTx(ctx))
 	} else {
 		tr, _ = u.db.Begin(ctx)
-		defer tr.Commit(ctx)
+		defer func() { _ = tr.Commit(ctx) }()
 	}
 
 	_, err = tr.Exec(ctx, UpdateContactById, contact.Telegram, contact.Discord, contact.CommunicationChannel, time.Now(), contact.Id)
@@ -224,7 +224,7 @@ func (u *UserRepository) UpdateResume(ctx context.Context, resume *dbUser.Resume
 		tr = *(extractTx(ctx))
 	} else {
 		tr, _ = u.db.Begin(ctx)
-		defer tr.Commit(ctx)
+		defer func() { _ = tr.Commit(ctx) }()
 	}
 
 	_, err = tr.Exec(ctx, UpdateResumeById, resume.Experience, resume.UploadedResume, resume.Country, resume.City, resume.TimeZone, resume.MentorsNote, time.Now(), resume.Id)
