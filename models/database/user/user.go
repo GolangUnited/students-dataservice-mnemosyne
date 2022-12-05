@@ -1,5 +1,7 @@
 package user
 
+import "github.com/NEKETSKY/mnemosyne/pkg/api/common"
+
 type Contact struct {
 	Id                   int    `json:"id" db:"user_id"`
 	Telegram             string `json:"telegram" db:"telegram"`
@@ -45,4 +47,15 @@ type UserFullStuff struct {
 	City                 string `json:"city" db:"city"`
 	TimeZone             string `json:"time_zone" db:"time_zone"`
 	MentorsNote          string `json:"mentors_note" db:"mentors_note"`
+}
+
+type TransitUser struct {
+	U                  *UserFullStuff
+	OriginalPhoto      common.File
+	OriginalResumeFile common.File
+}
+
+type TransitResume struct {
+	R                  *Resume
+	OriginalResumeFile common.File
 }

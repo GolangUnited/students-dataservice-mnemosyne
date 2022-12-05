@@ -7,7 +7,6 @@ import (
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/user"
-	"github.com/NEKETSKY/mnemosyne/pkg/file"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -17,7 +16,11 @@ func (h *Handler) CreateUser(ctx context.Context, in *user.User) (userId *user.I
 
 	innerUser := &dbUser.UserFullStuff{}
 	_ = innerUser.ProtoToDb(in)
-	innerId, err := h.services.Mnemosyne.AddUser(ctx, innerUser)
+	transit := &dbUser.TransitUser{
+		U:                  innerUser,
+		OriginalPhoto:      *in.GetPhoto(),
+		OriginalResumeFile: *in.Resume.GetUploadedResume()}
+	innerId, err := h.services.Mnemosyne.AddUser(ctx, transit)
 	userId = &user.Id{Id: strconv.Itoa(innerId)}
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
@@ -95,13 +98,19 @@ func (h *Handler) GetUserByEmail(ctx context.Context, in *user.Email) (user *use
 // Update user's data
 func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (c *common.Empty, err error) {
 	c = &common.Empty{}
+
 	innerUser := &dbUser.UserFullStuff{}
 	err = innerUser.ProtoToDb(in)
 	if err != nil {
 		err = status.Error(codes.InvalidArgument, err.Error())
 		return
 	}
-	err = h.services.Mnemosyne.UpdateUser(ctx, innerUser)
+	transit := &dbUser.TransitUser{
+		U:                  innerUser,
+		OriginalPhoto:      *in.GetPhoto(),
+		OriginalResumeFile: *in.Resume.GetUploadedResume()}
+
+	err = h.services.Mnemosyne.UpdateUser(ctx, transit)
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
 	}
@@ -172,9 +181,9 @@ func (h *Handler) UpdateContact(ctx context.Context, in *user.Contact) (c *commo
 
 	err = h.services.Mnemosyne.UpdateContact(ctx, &dbUser.Contact{
 		Id:                   innerId,
-		Telegram:             in.Telegram,
-		Discord:              in.Discord,
-		CommunicationChannel: in.CommunicationChannel,
+		Telegram:             in.GetTelegram(),
+		Discord:              in.GetDiscord(),
+		CommunicationChannel: in.GetCommunicationChannel(),
 	})
 
 	if err != nil {
@@ -210,23 +219,22 @@ func (h *Handler) GetResume(ctx context.Context, in *user.Id) (r *user.Resume, e
 // Update resume data
 func (h *Handler) UpdateResume(ctx context.Context, in *user.Resume) (c *common.Empty, err error) {
 	c = &common.Empty{}
-	path := ""
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
 		err = status.Error(codes.InvalidArgument, err.Error())
 		return
 	}
-	if in.UploadedResume != nil {
-		path, _ = file.Save(in.UploadedResume.GetName(), in.UploadedResume.GetContent())
-	}
-	err = h.services.Mnemosyne.UpdateResume(ctx, &dbUser.Resume{
-		Id:             innerId,
-		UploadedResume: path,
-		Experience:     in.GetExperience(),
-		Country:        in.GetExperience(),
-		City:           in.GetCity(),
-		TimeZone:       in.GetTimeZone(),
-		MentorsNote:    in.GetMentorsNote(),
+
+	err = h.services.Mnemosyne.UpdateResume(ctx, &dbUser.TransitResume{
+		OriginalResumeFile: *in.GetUploadedResume(),
+		R: &dbUser.Resume{
+			Id:          innerId,
+			Experience:  in.GetExperience(),
+			Country:     in.GetExperience(),
+			City:        in.GetCity(),
+			TimeZone:    in.GetTimeZone(),
+			MentorsNote: in.GetMentorsNote(),
+		},
 	})
 
 	if err != nil {

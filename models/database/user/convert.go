@@ -5,7 +5,6 @@ import (
 
 	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
 	apiUser "github.com/NEKETSKY/mnemosyne/pkg/api/user"
-	"github.com/NEKETSKY/mnemosyne/pkg/file"
 )
 
 func (d *UserFullStuff) DbToProto() (u *apiUser.User) {
@@ -50,15 +49,11 @@ func (u *UserFullStuff) ProtoToDb(protoUser *apiUser.User) (err error) {
 	u.Language = protoUser.GetLanguage()
 	u.EnglishLevel = protoUser.GetEnglishLevel()
 
-	u.Photo, _ = file.Save(protoUser.Photo.GetName(), protoUser.Photo.GetContent())
-
 	u.Telegram = protoUser.Contact.GetTelegram()
 	u.Discord = protoUser.Contact.GetDiscord()
 	u.CommunicationChannel = protoUser.Contact.GetCommunicationChannel()
 
 	u.Experience = protoUser.Resume.GetExperience()
-
-	u.UploadedResume, _ = file.Save(protoUser.Resume.UploadedResume.GetName(), protoUser.Resume.UploadedResume.GetContent())
 
 	u.Country = protoUser.Resume.GetCountry()
 	u.City = protoUser.Resume.GetCity()

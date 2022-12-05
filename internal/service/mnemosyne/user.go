@@ -4,9 +4,14 @@ import (
 	"context"
 
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
+	"github.com/NEKETSKY/mnemosyne/pkg/file"
 )
 
-func (s *Service) AddUser(ctx context.Context, user *dbUser.UserFullStuff) (id int, err error) {
+func (s *Service) AddUser(ctx context.Context, transitUser *dbUser.TransitUser) (id int, err error) {
+
+	user := transitUser.U
+	user.Photo, _ = file.Save(transitUser.OriginalPhoto.GetName(), transitUser.OriginalPhoto.GetContent())
+	user.UploadedResume, _ = file.Save(transitUser.OriginalResumeFile.GetName(), transitUser.OriginalPhoto.GetContent())
 	id, err = s.reposUser.AddUser(ctx, user)
 	return
 }
@@ -25,7 +30,11 @@ func (s *Service) GetUserByEmail(ctx context.Context, email string) (user *dbUse
 	user, err = s.reposUser.GetUserByEmail(ctx, email)
 	return
 }
-func (s *Service) UpdateUser(ctx context.Context, user *dbUser.UserFullStuff) (err error) {
+func (s *Service) UpdateUser(ctx context.Context, transitUser *dbUser.TransitUser) (err error) {
+
+	user := transitUser.U
+	user.Photo, _ = file.Save(transitUser.OriginalPhoto.GetName(), transitUser.OriginalPhoto.GetContent())
+	user.UploadedResume, _ = file.Save(transitUser.OriginalResumeFile.GetName(), transitUser.OriginalPhoto.GetContent())
 	err = s.reposUser.UpdateUserById(ctx, user)
 	return
 }
@@ -53,7 +62,9 @@ func (s *Service) UpdateContact(ctx context.Context, contact *dbUser.Contact) (e
 
 	return
 }
-func (s *Service) UpdateResume(ctx context.Context, resume *dbUser.Resume) (err error) {
+func (s *Service) UpdateResume(ctx context.Context, transitResume *dbUser.TransitResume) (err error) {
+	resume := transitResume.R
+	resume.UploadedResume, _ = file.Save(transitResume.OriginalResumeFile.GetName(), transitResume.OriginalResumeFile.GetContent())
 	err = s.reposUser.UpdateResume(ctx, resume)
 	return
 }
