@@ -16,6 +16,10 @@ import (
 type Mnemosyne interface {
 	Test(context.Context, model.Request) (model.Response, error)
 	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
+	User
+}
+
+type User interface {
 	AddUser(ctx context.Context, user *dbUser.UserFullStuff) (id int, err error)
 	GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.UserFullStuff, err error)
 	GetUserById(ctx context.Context, id int) (user *dbUser.UserFullStuff, err error)

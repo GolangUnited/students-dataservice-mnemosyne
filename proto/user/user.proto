@@ -24,6 +24,13 @@ message Filter{
  string fieldValue = 2;
 }
 
+message Group {
+  uint32 groupId=1;
+}
+
+message Team {
+  uint32 teamId=1;
+}
 //Summary request options
 message UserRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -35,6 +42,8 @@ message UserRequest {
   Option option = 1;
   Role role = 2;
   Filter filter = 3;
+  Group group = 4;
+  Team team = 5;
 }
 
 //message containing info about user's contacts

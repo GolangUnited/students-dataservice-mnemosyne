@@ -152,7 +152,7 @@ service Mnemosyne {
   //Activate user by id
   rpc ActivateUser (user.Id) returns (common.Empty){
     option (google.api.http) = {
-      put: "/user/{id}"
+      put: "/user/{id}/activate"
       body: "*"
     };
   };

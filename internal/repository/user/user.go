@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"strconv"
 	"strings"
 	"time"
 
@@ -87,6 +88,13 @@ func (u *UserRepository) GetUsers(ctx context.Context, ur *dbUser.UserRequest) (
 
 	if ur.Role != "" {
 		b.WriteString(SelectByRole)
+		b.WriteString("'" + ur.Role + "'\n")
+	}
+	if ur.Group > 0 {
+		b.WriteString(SelectByGroup + strconv.Itoa(int(ur.Group)) + "\n")
+	}
+	if ur.Team > 0 {
+		b.WriteString(SelectByTeam + strconv.Itoa(int(ur.Team)) + "\n")
 	}
 	if !ur.WithDeleted {
 		b.WriteString(AliveUsers)
@@ -94,18 +102,14 @@ func (u *UserRepository) GetUsers(ctx context.Context, ur *dbUser.UserRequest) (
 
 	b.WriteString(OrderAsc)
 
-	if ur.Role != "" {
-		rows, err = u.db.Query(ctx, b.String(), ur.Role)
-	} else {
-		rows, err = u.db.Query(ctx, b.String())
-	}
+	rows, err = u.db.Query(ctx, b.String())
 
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get users from db")
 	}
 	users, err = pgx.CollectRows(rows, pgx.RowToStructByName[dbUser.UserFullStuff])
 	if err != nil {
-		return nil, errors.Wrap(err, "unable to collect rows ")
+		return nil, errors.Wrap(err, "unable to collect rows, no users found")
 	}
 
 	return users, err

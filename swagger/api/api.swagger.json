@@ -887,6 +887,20 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "group.groupId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "team.teamId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1102,7 +1116,9 @@
         "tags": [
           "Mnemosyne"
         ]
-      },
+      }
+    },
+    "/user/{id}/activate": {
       "put": {
         "summary": "Activate user by id",
         "operationId": "Mnemosyne_ActivateUser",
@@ -1380,6 +1396,15 @@
       },
       "title": "filter for info related to user(primary user info, contacts and resume)"
     },
+    "userGroup": {
+      "type": "object",
+      "properties": {
+        "groupId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
     "userId": {
       "type": "object",
       "properties": {
@@ -1450,6 +1475,15 @@
         }
       },
       "title": "filter by role in da system"
+    },
+    "userTeam": {
+      "type": "object",
+      "properties": {
+        "teamId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
     },
     "userUser": {
       "type": "object",

@@ -24,6 +24,8 @@ type UserRequest struct {
 	Role         string
 	FieldName    string
 	FieldValue   string
+	Group        uint32
+	Team         uint32
 }
 type UserFullStuff struct {
 	Id                   int    `json:"id" db:"id"`

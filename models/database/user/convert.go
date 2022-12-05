@@ -38,43 +38,32 @@ func (d *UserFullStuff) DbToProto() (u *apiUser.User) {
 
 // err should be used in Update methods, in another cases it doesn't matter
 func (u *UserFullStuff) ProtoToDb(protoUser *apiUser.User) (err error) {
-	photoPath := ""
-	midName := ""
-	innerId := 0
-	resumePath := ""
-	if protoUser.Photo != nil {
-		photoPath, _ = file.Save(protoUser.Photo.Name, protoUser.Photo.Content)
-	}
-	if protoUser.MiddleName != nil {
-		midName = *protoUser.MiddleName
-	}
+
 	//err should be used in Update methods, in another cases it doesn't matter
-	innerId, err = strconv.Atoi(protoUser.Id)
+	innerId, err := strconv.Atoi(protoUser.Id)
 
 	u.Id = innerId
-	u.LastName = protoUser.LastName
-	u.FirstName = protoUser.FirstName
-	u.MiddleName = midName
-	u.Email = protoUser.Email
-	u.Language = protoUser.Language
-	u.EnglishLevel = protoUser.EnglishLevel
-	u.Photo = photoPath
+	u.LastName = protoUser.GetLastName()
+	u.FirstName = protoUser.GetFirstName()
+	u.MiddleName = protoUser.GetMiddleName()
+	u.Email = protoUser.GetEmail()
+	u.Language = protoUser.GetLanguage()
+	u.EnglishLevel = protoUser.GetEnglishLevel()
 
-	if protoUser.Contact != nil {
-		u.Telegram = protoUser.Contact.Telegram
-		u.Discord = protoUser.Contact.Discord
-		u.CommunicationChannel = protoUser.Contact.CommunicationChannel
-	}
-	if protoUser.Resume != nil {
-		if protoUser.Resume.UploadedResume != nil {
-			resumePath, _ = file.Save(protoUser.Resume.UploadedResume.Name, protoUser.Resume.UploadedResume.Content)
-		}
-		u.Experience = protoUser.Resume.Experience
-		u.UploadedResume = resumePath
-		u.Country = protoUser.Resume.Country
-		u.City = protoUser.Resume.City
-		u.TimeZone = protoUser.Resume.TimeZone
-		u.MentorsNote = protoUser.Resume.MentorsNote
-	}
+	u.Photo, _ = file.Save(protoUser.Photo.GetName(), protoUser.Photo.GetContent())
+
+	u.Telegram = protoUser.Contact.GetTelegram()
+	u.Discord = protoUser.Contact.GetDiscord()
+	u.CommunicationChannel = protoUser.Contact.GetCommunicationChannel()
+
+	u.Experience = protoUser.Resume.GetExperience()
+
+	u.UploadedResume, _ = file.Save(protoUser.Resume.UploadedResume.GetName(), protoUser.Resume.UploadedResume.GetContent())
+
+	u.Country = protoUser.Resume.GetCountry()
+	u.City = protoUser.Resume.GetCity()
+	u.TimeZone = protoUser.Resume.GetTimeZone()
+	u.MentorsNote = protoUser.Resume.GetMentorsNote()
+
 	return
 }
