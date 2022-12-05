@@ -2,28 +2,51 @@ syntax = "proto3";
 
 package interview;
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/interview";
 
 // The basic message containing the primary information about a interview.
-message Interview {
+message InterviewRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
-      title: "User json schema"     
+      title: "Interview json schema"
       required: ["interviewer_id", "student_id", "interview_date", "grade", "subjective_rating", "notes", "determined_english_level", "main_task", "question"]
     }
   };
   uint32 id = 1;
   uint32 interviewer_id = 2;
   uint32 student_id = 3;
-  string interview_date = 4;
+  google.protobuf.Timestamp interview_date = 4;
   uint32 grade = 5;
   string subjective_rating = 6;
   string notes = 7;
   string determined_english_level = 8;
   uint32 main_task = 9;
-  google.protobuf.Any question = 10;
+  string question = 10;
 }
+
+message InterviewResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Interview response json schema"
+    }
+  };
+  uint32 id = 1;
+  uint32 interviewer_id = 2;
+  uint32 student_id = 3;
+  google.protobuf.Timestamp interview_date = 4;
+  uint32 grade = 5;
+  string subjective_rating = 6;
+  string notes = 7;
+  string determined_english_level = 8;
+  uint32 main_task = 9;
+  string question = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp updated_at = 12;
+  bool deleted = 13;
+}
+
 //The basic message containing information about all interviews from db
 message Interviews {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -32,7 +55,7 @@ message Interviews {
       required: ["interviews"]
     }
   }; 
-  repeated Interview interviews = 1;
+  repeated InterviewResponse interviews = 1;
 }
 //Basic request/response containing id of the interview
 message Id{
@@ -42,5 +65,16 @@ message Id{
       required: ["id"]
     }
   }; 
-    string id = 1;
+    uint32 id = 1;
+}
+
+message InterviewList{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Interview list json schema"
+      required: []
+    }
+  };
+  optional uint32 interviewer_id = 1;
+  optional uint32 student_id = 2;
 }
