@@ -18,8 +18,8 @@ func (h *Handler) CreateUser(ctx context.Context, in *user.User) (userId *user.I
 	_ = innerUser.ProtoToDb(in)
 	transit := &dbUser.TransitUser{
 		U:                  innerUser,
-		OriginalPhoto:      *in.GetPhoto(),
-		OriginalResumeFile: *in.Resume.GetUploadedResume()}
+		OriginalPhoto:      in.GetPhoto(),
+		OriginalResumeFile: in.Resume.GetUploadedResume()}
 	innerId, err := h.services.Mnemosyne.AddUser(ctx, transit)
 	userId = &user.Id{Id: strconv.Itoa(innerId)}
 	if err != nil {
@@ -107,8 +107,8 @@ func (h *Handler) UpdateUser(ctx context.Context, in *user.User) (c *common.Empt
 	}
 	transit := &dbUser.TransitUser{
 		U:                  innerUser,
-		OriginalPhoto:      *in.GetPhoto(),
-		OriginalResumeFile: *in.Resume.GetUploadedResume()}
+		OriginalPhoto:      in.GetPhoto(),
+		OriginalResumeFile: in.Resume.GetUploadedResume()}
 
 	err = h.services.Mnemosyne.UpdateUser(ctx, transit)
 	if err != nil {
@@ -226,7 +226,7 @@ func (h *Handler) UpdateResume(ctx context.Context, in *user.Resume) (c *common.
 	}
 
 	err = h.services.Mnemosyne.UpdateResume(ctx, &dbUser.TransitResume{
-		OriginalResumeFile: *in.GetUploadedResume(),
+		OriginalResumeFile: in.GetUploadedResume(),
 		R: &dbUser.Resume{
 			Id:          innerId,
 			Experience:  in.GetExperience(),

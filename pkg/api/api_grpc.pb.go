@@ -41,7 +41,7 @@ type MnemosyneClient interface {
 	// Update user's data
 	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*common.Empty, error)
 	// Delete user by id
-	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	DeactivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Activate user by id
 	ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Get contact by ID
@@ -142,9 +142,9 @@ func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ..
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+func (c *mnemosyneClient) DeactivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
 	out := new(common.Empty)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +312,7 @@ type MnemosyneServer interface {
 	// Update user's data
 	UpdateUser(context.Context, *user.User) (*common.Empty, error)
 	// Delete user by id
-	DeleteUser(context.Context, *user.Id) (*common.Empty, error)
+	DeactivateUser(context.Context, *user.Id) (*common.Empty, error)
 	// Activate user by id
 	ActivateUser(context.Context, *user.Id) (*common.Empty, error)
 	// Get contact by ID
@@ -373,8 +373,8 @@ func (UnimplementedMnemosyneServer) GetUserByEmail(context.Context, *user.Email)
 func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*common.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+func (UnimplementedMnemosyneServer) DeactivateUser(context.Context, *user.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateUser not implemented")
 }
 func (UnimplementedMnemosyneServer) ActivateUser(context.Context, *user.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateUser not implemented")
@@ -544,20 +544,20 @@ func _Mnemosyne_UpdateUser_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Mnemosyne_DeactivateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(user.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MnemosyneServer).DeleteUser(ctx, in)
+		return srv.(MnemosyneServer).DeactivateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeleteUser",
+		FullMethod: "/api.Mnemosyne/DeactivateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeleteUser(ctx, req.(*user.Id))
+		return srv.(MnemosyneServer).DeactivateUser(ctx, req.(*user.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -882,8 +882,8 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_UpdateUser_Handler,
 		},
 		{
-			MethodName: "DeleteUser",
-			Handler:    _Mnemosyne_DeleteUser_Handler,
+			MethodName: "DeactivateUser",
+			Handler:    _Mnemosyne_DeactivateUser_Handler,
 		},
 		{
 			MethodName: "ActivateUser",

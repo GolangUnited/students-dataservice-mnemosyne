@@ -1079,7 +1079,7 @@
       },
       "delete": {
         "summary": "Delete user by id",
-        "operationId": "Mnemosyne_DeleteUser",
+        "operationId": "Mnemosyne_DeactivateUser",
         "responses": {
           "200": {
             "description": "A successful response.",

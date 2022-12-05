@@ -51,11 +51,11 @@ type UserFullStuff struct {
 
 type TransitUser struct {
 	U                  *UserFullStuff
-	OriginalPhoto      common.File
-	OriginalResumeFile common.File
+	OriginalPhoto      *common.File
+	OriginalResumeFile *common.File
 }
 
 type TransitResume struct {
 	R                  *Resume
-	OriginalResumeFile common.File
+	OriginalResumeFile *common.File
 }
