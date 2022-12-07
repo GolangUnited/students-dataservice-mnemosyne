@@ -703,7 +703,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/interviewInterview"
+              "$ref": "#/definitions/interviewInterviews"
             }
           },
           "403": {
@@ -724,6 +724,22 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "interviewerId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "studentId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
         "tags": [
           "Mnemosyne"
         ]
@@ -735,7 +751,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/interviewId"
+              "$ref": "#/definitions/interviewInterviewResponse"
             }
           },
           "403": {
@@ -763,7 +779,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/interviewInterview"
+              "$ref": "#/definitions/interviewInterviewRequest"
             }
           }
         ],
@@ -780,7 +796,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/interviewInterview"
+              "$ref": "#/definitions/interviewInterviewResponse"
             }
           },
           "403": {
@@ -806,47 +822,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      },
-      "delete": {
-        "summary": "Delete interview by id",
-        "operationId": "Mnemosyne_DeleteInterview",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -860,7 +837,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/interviewInterviewResponse"
             }
           },
           "403": {
@@ -905,7 +882,8 @@
                   "format": "int64"
                 },
                 "interviewDate": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "grade": {
                   "type": "integer",
@@ -925,11 +903,11 @@
                   "format": "int64"
                 },
                 "question": {
-                  "$ref": "#/definitions/protobufAny"
+                  "type": "string"
                 }
               },
               "description": "The basic message containing the primary information about a interview.",
-              "title": "User json schema",
+              "title": "Interview json schema",
               "required": [
                 "interviewerId",
                 "studentId",
@@ -942,6 +920,92 @@
                 "question"
               ]
             }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/interview/{id}/activate": {
+      "put": {
+        "summary": "Activate interview by id",
+        "operationId": "Mnemosyne_ActivateInterview",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/interviewInterviewResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/interview/{id}/deactivate": {
+      "put": {
+        "summary": "Deactivate interview by id",
+        "operationId": "Mnemosyne_DeactivateInterview",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/interviewInterviewResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1501,19 +1565,7 @@
         "name"
       ]
     },
-    "interviewId": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        }
-      },
-      "title": "Id json schema",
-      "required": [
-        "id"
-      ]
-    },
-    "interviewInterview": {
+    "interviewInterviewRequest": {
       "type": "object",
       "properties": {
         "id": {
@@ -1529,7 +1581,8 @@
           "format": "int64"
         },
         "interviewDate": {
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         },
         "grade": {
           "type": "integer",
@@ -1549,11 +1602,11 @@
           "format": "int64"
         },
         "question": {
-          "$ref": "#/definitions/protobufAny"
+          "type": "string"
         }
       },
       "description": "The basic message containing the primary information about a interview.",
-      "title": "User json schema",
+      "title": "Interview json schema",
       "required": [
         "interviewerId",
         "studentId",
@@ -1564,6 +1617,74 @@
         "determinedEnglishLevel",
         "mainTask",
         "question"
+      ]
+    },
+    "interviewInterviewResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "interviewerId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "studentId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "interviewDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "grade": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "subjectiveRating": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "determinedEnglishLevel": {
+          "type": "string"
+        },
+        "mainTask": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "question": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deleted": {
+          "type": "boolean"
+        }
+      },
+      "title": "Interview response json schema"
+    },
+    "interviewInterviews": {
+      "type": "object",
+      "properties": {
+        "interviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/interviewInterviewResponse"
+          }
+        }
+      },
+      "title": "Interviews json schema",
+      "required": [
+        "interviews"
       ]
     },
     "protobufAny": {

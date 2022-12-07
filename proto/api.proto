@@ -172,33 +172,42 @@ service Mnemosyne {
   };
   //  INTERVIEW
   //Create new interview
-  rpc CreateInterview (interview.Interview) returns (interview.Id){
+  rpc CreateInterview (interview.InterviewRequest) returns (interview.InterviewResponse){
     option (google.api.http) = {
       post: "/interview"
       body: "*"
     };
   };
-
   //Get all existing interviews
-  rpc GetInterviews (common.Empty) returns (interview.Interview){
+  rpc GetInterviews (interview.InterviewList) returns (interview.Interviews){
     option (google.api.http) = {
       get: "/interview"
     };
   };
-
   //Get interview by id
-  rpc GetInterview (interview.Id) returns (interview.Interview){
+  rpc GetInterview (interview.Id) returns (interview.InterviewResponse){
     option (google.api.http) = {
       get: "/interview/{id}"
     };
   };
-
   //Update interview data
-  rpc UpdateInterview (interview.Interview) returns (google.protobuf.BoolValue){
+  rpc UpdateInterview (interview.InterviewRequest) returns (interview.InterviewResponse){
     option (google.api.http) = {
       put: "/interview/{id}"
 
       body: "*"
+    };
+  };
+  //Deactivate interview by id
+  rpc DeactivateInterview (interview.Id) returns (interview.InterviewResponse){
+    option (google.api.http) = {
+      put: "/interview/{id}/deactivate"
+    };
+  };
+  //Activate interview by id
+  rpc ActivateInterview (interview.Id) returns (interview.InterviewResponse){
+    option (google.api.http) = {
+      put: "/interview/{id}/activate"
     };
   };
 
@@ -213,13 +222,6 @@ service Mnemosyne {
   rpc DeleteResume (user.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/resume/{id}"
-    };
-  };
-  //Delete interview by id
-  rpc DeleteInterview (interview.Id) returns (google.protobuf.BoolValue){
-    option (google.api.http) = {
-      delete: "/interview/{id}"
-
     };
   };
 

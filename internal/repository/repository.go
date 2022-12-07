@@ -37,11 +37,11 @@ type User interface {
 
 type Interview interface {
 	AddInterview(ctx context.Context, interview database.Interview) (interviewId int, err error)
-	GetInterviews(ctx context.Context, interviewerId int, studentId int) (interviews []database.Interview, err error)
-	GetInterviewById(ctx context.Context, interviewId int) (interview database.Interview, err error)
+	GetInterviews(ctx context.Context, interviewerId uint, studentId uint) (interviews []database.Interview, err error)
+	GetInterviewById(ctx context.Context, interviewId uint) (interview database.Interview, err error)
 	UpdateInterviewById(ctx context.Context, interview database.Interview) (err error)
-	DeactivateInterviewById(ctx context.Context, interviewId int) (err error)
-	ActivateInterviewById(ctx context.Context, interviewId int) (err error)
+	DeactivateInterviewById(ctx context.Context, interviewId uint) (err error)
+	ActivateInterviewById(ctx context.Context, interviewId uint) (err error)
 }
 
 type Repository struct {
