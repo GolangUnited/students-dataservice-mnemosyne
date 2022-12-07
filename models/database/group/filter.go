@@ -11,22 +11,26 @@ type Filter struct {
 	Name      string
 	StartDate time.Time
 	EndDate   time.Time
+	Deleted   bool
 }
 
-func ConvertToFilter(gf *group.Filter) *Filter {
-	return &Filter{
-		UserId:    gf.GetUserId(),
-		Name:      gf.GetName(),
-		StartDate: gf.GetStartDate().AsTime(),
-		EndDate:   gf.GetEndDate().AsTime(),
+func (f *Filter) FromProto(gf *group.Filter) {
+	if gf == nil {
+		return
 	}
+	f.UserId = gf.GetUserId()
+	f.Name = gf.GetName()
+	f.StartDate = gf.GetStartDate().AsTime()
+	f.EndDate = gf.GetEndDate().AsTime()
+	f.Deleted = gf.GetDeleted()
 }
 
-func ConvertFromFilter(f *Filter) *group.Filter {
+func (f *Filter) ToProto() *group.Filter {
 	return &group.Filter{
 		UserId:    f.UserId,
 		Name:      &f.Name,
 		StartDate: timestamppb.New(f.StartDate),
 		EndDate:   timestamppb.New(f.EndDate),
+		Deleted:   f.Deleted,
 	}
 }

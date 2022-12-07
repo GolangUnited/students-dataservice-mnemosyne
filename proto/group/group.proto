@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/group";
 
 // The basic message containing the primary information about a group.
-message Group {
+message GroupRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Group json schema"
@@ -18,6 +18,24 @@ message Group {
   google.protobuf.Timestamp start_date = 3;
   google.protobuf.Timestamp end_date = 4;
 }
+
+// The basic message containing the primary information about a group.
+message GroupResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Group json schema"
+      required: ["name", "start_date", "end_date"]
+    }
+  };
+  uint32 id = 1;
+  string name = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+  bool deleted = 7;
+}
+
 //The basic message containing information about all groups from db
 message Groups {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -26,8 +44,9 @@ message Groups {
       required: ["groups"]
     }
   };
-  repeated Group groups = 1;
+  repeated GroupResponse groups = 1;
 }
+
 //Basic request/response containing id of the group
 message Id{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -36,7 +55,7 @@ message Id{
       required: ["id"]
     }
   };
-  string id = 1;
+  uint32 id = 1;
 }
 
 message GroupsRequest {
@@ -54,6 +73,7 @@ message Filter {
   optional string name = 2;
   google.protobuf.Timestamp start_date = 3;
   google.protobuf.Timestamp end_date = 4;
+  bool deleted = 5;
 }
 
 message UserGroupRequest {

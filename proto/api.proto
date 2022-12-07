@@ -258,7 +258,7 @@ service Mnemosyne {
   };
 
   //Get group by id
-  rpc GetGroup (group.Id) returns (group.Group){
+  rpc GetGroup (group.Id) returns (group.GroupResponse){
     option (google.api.http) = {
       get: "/group/{id}"
     };
@@ -272,7 +272,7 @@ service Mnemosyne {
   };
 
   //Create new group
-  rpc CreateGroup (group.Group) returns (group.Id){
+  rpc CreateGroup (group.GroupRequest) returns (group.Id){
     option (google.api.http) = {
       post: "/group"
       body: "*"
@@ -280,22 +280,29 @@ service Mnemosyne {
   };
 
   //Update group's data
-  rpc UpdateGroup (group.Group) returns (google.protobuf.BoolValue){
+  rpc UpdateGroup (group.GroupRequest) returns (common.Empty){
     option (google.api.http) = {
       put: "/group"
       body: "*"
     };
   }
 
-  //Delete group by id
-  rpc DeleteGroup (group.Id) returns (google.protobuf.BoolValue){
+  //Deactivate group by id
+  rpc DeactivateGroup (group.Id) returns (common.Empty){
     option (google.api.http) = {
-      delete: "/group/{id}"
+      put: "/group/{id}/deactivate"
+    };
+  };
+
+  //Activate group by id
+  rpc ActivateGroup (group.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/group/{id}/activate"
     };
   };
 
   //Bind user to group
-  rpc AddUserToGroup (group.UserGroupRequest) returns (google.protobuf.BoolValue){
+  rpc AddUserToGroup (group.UserGroupRequest) returns (common.Empty){
     option (google.api.http) = {
       post: "/group/{group_id}/{user_id}"
       body: "*"
@@ -303,7 +310,7 @@ service Mnemosyne {
   };
 
   //Unbind user from group
-  rpc DeleteUserFromGroup (group.UserGroupRequest) returns (google.protobuf.BoolValue){
+  rpc DeleteUserFromGroup (group.UserGroupRequest) returns (common.Empty){
     option (google.api.http) = {
       delete: "/group/{group_id}/{user_id}"
     };

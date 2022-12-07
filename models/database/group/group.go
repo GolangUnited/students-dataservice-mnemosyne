@@ -16,20 +16,46 @@ type DB struct {
 	Deleted   bool      `db:"deleted"`
 }
 
-func ConvertToDB(gr *group.Group) *DB {
-	return &DB{
-		Id:        gr.GetId(),
-		Name:      gr.GetName(),
-		StartDate: gr.GetStartDate().AsTime(),
-		EndDate:   gr.GetEndDate().AsTime(),
+func (d *DB) FromProtoRequest(gr *group.GroupRequest) {
+	if gr == nil {
+		return
+	}
+	d.Id = gr.GetId()
+	d.Name = gr.GetName()
+	d.StartDate = gr.GetStartDate().AsTime()
+	d.EndDate = gr.GetEndDate().AsTime()
+}
+
+func (d *DB) ToProtoRequest() *group.GroupRequest {
+	return &group.GroupRequest{
+		Id:        d.Id,
+		Name:      d.Name,
+		StartDate: timestamppb.New(d.StartDate),
+		EndDate:   timestamppb.New(d.EndDate),
 	}
 }
 
-func ConvertFromDB(db *DB) *group.Group {
-	return &group.Group{
-		Id:        db.Id,
-		Name:      db.Name,
-		StartDate: timestamppb.New(db.StartDate),
-		EndDate:   timestamppb.New(db.EndDate),
+func (d *DB) FromProtoResponse(gr *group.GroupResponse) {
+	if gr == nil {
+		return
+	}
+	d.Id = gr.GetId()
+	d.Name = gr.GetName()
+	d.StartDate = gr.GetStartDate().AsTime()
+	d.EndDate = gr.GetEndDate().AsTime()
+	d.CreatedAt = gr.GetCreatedAt().AsTime()
+	d.UpdatedAt = gr.GetUpdatedAt().AsTime()
+	d.Deleted = gr.GetDeleted()
+}
+
+func (d *DB) ToProtoResponse() *group.GroupResponse {
+	return &group.GroupResponse{
+		Id:        d.Id,
+		Name:      d.Name,
+		StartDate: timestamppb.New(d.StartDate),
+		EndDate:   timestamppb.New(d.EndDate),
+		CreatedAt: timestamppb.New(d.CreatedAt),
+		UpdatedAt: timestamppb.New(d.UpdatedAt),
+		Deleted:   d.Deleted,
 	}
 }
