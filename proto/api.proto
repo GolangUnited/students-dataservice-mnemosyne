@@ -8,6 +8,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
 import "interview/interview.proto";
 import "certificate/certificate.proto";
+import "group/group.proto";
 import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
@@ -253,6 +254,65 @@ service Mnemosyne {
   rpc DeleteCertificate (certificate.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/certificate/{id}"
+    };
+  };
+
+  //Get group by id
+  rpc GetGroup (group.Id) returns (group.GroupResponse){
+    option (google.api.http) = {
+      get: "/group/{id}"
+    };
+  };
+
+  //Get groups
+  rpc GetGroups (group.GroupsRequest) returns (group.Groups){
+    option (google.api.http) = {
+      get: "/group"
+    };
+  };
+
+  //Create new group
+  rpc CreateGroup (group.GroupRequest) returns (group.Id){
+    option (google.api.http) = {
+      post: "/group"
+      body: "*"
+    };
+  };
+
+  //Update group's data
+  rpc UpdateGroup (group.GroupRequest) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/group"
+      body: "*"
+    };
+  }
+
+  //Deactivate group by id
+  rpc DeactivateGroup (group.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/group/{id}/deactivate"
+    };
+  };
+
+  //Activate group by id
+  rpc ActivateGroup (group.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/group/{id}/activate"
+    };
+  };
+
+  //Bind user to group
+  rpc AddUserToGroup (group.UserGroupRequest) returns (common.Empty){
+    option (google.api.http) = {
+      post: "/group/{group_id}/{user_id}"
+      body: "*"
+    };
+  };
+
+  //Unbind user from group
+  rpc DeleteUserFromGroup (group.UserGroupRequest) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/group/{group_id}/{user_id}"
     };
   };
 }
