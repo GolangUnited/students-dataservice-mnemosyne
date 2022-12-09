@@ -59,7 +59,8 @@
             "name": "userId",
             "in": "query",
             "required": false,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -73,7 +74,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/certificateId"
+              "$ref": "#/definitions/certificateCertificateResponse"
             }
           },
           "403": {
@@ -101,7 +102,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/certificateCertificate"
+              "$ref": "#/definitions/certificateCertificateRequest"
             }
           }
         ],
@@ -111,46 +112,6 @@
       }
     },
     "/certificate/{id}": {
-      "delete": {
-        "summary": "Delete certificate by id",
-        "operationId": "Mnemosyne_DeleteCertificate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      },
       "put": {
         "summary": "Update certificate data",
         "operationId": "Mnemosyne_UpdateCertificate",
@@ -158,7 +119,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/certificateCertificateResponse"
             }
           },
           "403": {
@@ -184,7 +145,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           {
             "name": "body",
@@ -194,13 +156,16 @@
               "type": "object",
               "properties": {
                 "userId": {
-                  "type": "string"
+                  "type": "integer",
+                  "format": "int64"
                 },
                 "issueDate": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "expireDate": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date-time"
                 }
               },
               "description": "The basic message containing the primary information about a certificate.",
@@ -612,6 +577,92 @@
         ]
       }
     },
+    "/interview/{id}/activate": {
+      "put": {
+        "summary": "Activate certificate by id",
+        "operationId": "Mnemosyne_ActivateCertificate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/certificateCertificateResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/interview/{id}/deactivate": {
+      "put": {
+        "summary": "Deactivate certificate by id",
+        "operationId": "Mnemosyne_DeactivateCertificate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/certificateCertificateResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
     "/mnemosyne": {
       "post": {
         "summary": "Sends a greeting",
@@ -1009,23 +1060,54 @@
     }
   },
   "definitions": {
-    "certificateCertificate": {
+    "certificateCertificateRequest": {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "userId": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "issueDate": {
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         },
         "expireDate": {
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         }
       },
       "description": "The basic message containing the primary information about a certificate.",
+      "title": "Certificate json schema",
+      "required": [
+        "userId",
+        "issueDate",
+        "expireDate"
+      ]
+    },
+    "certificateCertificateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "issueDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expireDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
       "title": "Certificate json schema",
       "required": [
         "userId",
@@ -1039,25 +1121,13 @@
         "Certificates": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/certificateCertificate"
+            "$ref": "#/definitions/certificateCertificateResponse"
           }
         }
       },
       "title": "Certificates json schema",
       "required": [
         "Certificates"
-      ]
-    },
-    "certificateId": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        }
-      },
-      "title": "Id json schema",
-      "required": [
-        "id"
       ]
     },
     "helloworldHelloReply": {

@@ -19,8 +19,8 @@ func NewCertificateRepository(db *pgx.Conn) *CertificateRepository {
 	}
 }
 
-func (u *CertificateRepository) AddCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error) {
-	row := u.db.QueryRow(
+func (c *CertificateRepository) CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error) {
+	row := c.db.QueryRow(
 		ctx,
 		AddCertificate,
 		certificate.UserId,
@@ -38,9 +38,20 @@ func (u *CertificateRepository) AddCertificate(ctx context.Context, certificate 
 
 	return
 }
+func (c *CertificateRepository) GetCertificateById(ctx context.Context, certificateId int) (certificate database.Certificate, err error) {
 
-func (u *CertificateRepository) GetCertificates(ctx context.Context) (certificates []database.Certificate, err error) {
-	rows, _ := u.db.Query(ctx, GetAllCertificates)
+	rows, err := c.db.Query(ctx, GetCertificateById, certificateId)
+	if err != nil {
+		return database.Certificate{}, errors.Wrap(err, "GetCertificateById query error")
+	}
+	certificate, err = pgx.CollectOneRow(rows, pgx.RowToStructByName[database.Certificate])
+	if err != nil {
+		return database.Certificate{}, errors.Wrap(err, "GetCertificateById CollectOneRow error")
+	}
+	return
+}
+func (c *CertificateRepository) GetCertificates(ctx context.Context, userId int) (certificates []database.Certificate, err error) {
+	rows, _ := c.db.Query(ctx, GetAllCertificates, userId)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get certificates from db")
 	}
@@ -51,10 +62,10 @@ func (u *CertificateRepository) GetCertificates(ctx context.Context) (certificat
 	return certificates, err
 }
 
-func (u *CertificateRepository) UpdateCertificatesById(ctx context.Context, certificate database.Certificate) (err error) {
-	_, err = u.db.Exec(
+func (c *CertificateRepository) UpdateCertificates(ctx context.Context, certificate database.Certificate) (err error) {
+	_, err = c.db.Exec(
 		ctx,
-		UpdateCertificatesById,
+		UpdateCertificateById,
 		certificate.UserId,
 		certificate.IssueDate,
 		certificate.ExpireDate,
@@ -65,16 +76,16 @@ func (u *CertificateRepository) UpdateCertificatesById(ctx context.Context, cert
 	return err
 }
 
-func (u *CertificateRepository) ActivateCertificateById(ctx context.Context, certificateId int) (err error) {
-	_, err = u.db.Exec(ctx, ActivateById, certificateId, time.Now())
+func (c *CertificateRepository) ActivateCertificate(ctx context.Context, certificateId int) (err error) {
+	_, err = c.db.Exec(ctx, ActivateById, certificateId, time.Now())
 	if err != nil {
 		return errors.Wrapf(err, "unable to set certificate %d as active", certificateId)
 	}
 	return err
 }
 
-func (u *CertificateRepository) DeactivateCertificateById(ctx context.Context, certificateId int) (err error) {
-	_, err = u.db.Exec(ctx, DeactivateById, certificateId, time.Now())
+func (c *CertificateRepository) DeactivateCertificate(ctx context.Context, certificateId int) (err error) {
+	_, err = c.db.Exec(ctx, DeactivateById, certificateId, time.Now())
 	if err != nil {
 		return errors.Wrapf(err, "unable to set certificate %d as deleted", certificateId)
 	}

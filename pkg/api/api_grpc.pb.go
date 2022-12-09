@@ -30,48 +30,52 @@ const _ = grpc.SupportPackageIsVersion7
 type MnemosyneClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
-	//Create new user
+	// Create new user
 	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
-	//Get all existing users
+	// Get all existing users
 	GetUsers(ctx context.Context, in *user.Options, opts ...grpc.CallOption) (*user.Users, error)
-	//Get user by id
+	// Get user by id
 	GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
-	//Update user's data
+	// Update user's data
 	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//Delete user by id
+	// Delete user by id
 	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//Get contact by ID
+	// Get contact by ID
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
-	//Update contact's data
+	// Update contact's data
 	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//Get resume by ID
+	// Get resume by ID
 	GetResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Resume, error)
-	//Update resume data
+	// Update resume data
 	UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//  INTERVIEW
-	//Create new interview
+	//	INTERVIEW
+	//
+	// Create new interview
 	CreateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*interview.Id, error)
-	//Get all existing interviews
+	// Get all existing interviews
 	GetInterviews(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*interview.Interview, error)
-	//Get interview by id
+	// Get interview by id
 	GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.Interview, error)
-	//Update interview data
+	// Update interview data
 	UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//Delete contacts by ID
+	// Delete contacts by ID
 	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//Delete resume by ID
+	// Delete resume by ID
 	DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//Delete interview by id
+	// Delete interview by id
 	DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//  Certificate
-	//Create new certificate
-	CreateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*certificate.Id, error)
-	//Get all existing certificates
+	//	Certificate
+	//
+	// Create new certificate
+	CreateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
+	// Get all existing certificates
 	GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error)
-	//Update certificate data
-	UpdateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	//Delete certificate by id
-	DeleteCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	// Update certificate data
+	UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
+	// Deactivate certificate by id
+	DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
+	// Activate certificate by id
+	ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
 }
 
 type mnemosyneClient struct {
@@ -235,8 +239,8 @@ func (c *mnemosyneClient) DeleteInterview(ctx context.Context, in *interview.Id,
 	return out, nil
 }
 
-func (c *mnemosyneClient) CreateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*certificate.Id, error) {
-	out := new(certificate.Id)
+func (c *mnemosyneClient) CreateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
+	out := new(certificate.CertificateResponse)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -253,8 +257,8 @@ func (c *mnemosyneClient) GetCertificates(ctx context.Context, in *certificate.F
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
+	out := new(certificate.CertificateResponse)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -262,9 +266,18 @@ func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteCertificate", in, out, opts...)
+func (c *mnemosyneClient) DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
+	out := new(certificate.CertificateResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
+	out := new(certificate.CertificateResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -277,48 +290,52 @@ func (c *mnemosyneClient) DeleteCertificate(ctx context.Context, in *certificate
 type MnemosyneServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error)
-	//Create new user
+	// Create new user
 	CreateUser(context.Context, *user.User) (*user.Id, error)
-	//Get all existing users
+	// Get all existing users
 	GetUsers(context.Context, *user.Options) (*user.Users, error)
-	//Get user by id
+	// Get user by id
 	GetUser(context.Context, *user.Id) (*user.User, error)
-	//Update user's data
+	// Update user's data
 	UpdateUser(context.Context, *user.User) (*wrapperspb.BoolValue, error)
-	//Delete user by id
+	// Delete user by id
 	DeleteUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
-	//Get contact by ID
+	// Get contact by ID
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
-	//Update contact's data
+	// Update contact's data
 	UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error)
-	//Get resume by ID
+	// Get resume by ID
 	GetResume(context.Context, *user.Id) (*user.Resume, error)
-	//Update resume data
+	// Update resume data
 	UpdateResume(context.Context, *user.Resume) (*wrapperspb.BoolValue, error)
-	//  INTERVIEW
-	//Create new interview
+	//	INTERVIEW
+	//
+	// Create new interview
 	CreateInterview(context.Context, *interview.Interview) (*interview.Id, error)
-	//Get all existing interviews
+	// Get all existing interviews
 	GetInterviews(context.Context, *common.Empty) (*interview.Interview, error)
-	//Get interview by id
+	// Get interview by id
 	GetInterview(context.Context, *interview.Id) (*interview.Interview, error)
-	//Update interview data
+	// Update interview data
 	UpdateInterview(context.Context, *interview.Interview) (*wrapperspb.BoolValue, error)
-	//Delete contacts by ID
+	// Delete contacts by ID
 	DeleteContact(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
-	//Delete resume by ID
+	// Delete resume by ID
 	DeleteResume(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
-	//Delete interview by id
+	// Delete interview by id
 	DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error)
-	//  Certificate
-	//Create new certificate
-	CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error)
-	//Get all existing certificates
+	//	Certificate
+	//
+	// Create new certificate
+	CreateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error)
+	// Get all existing certificates
 	GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error)
-	//Update certificate data
-	UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error)
-	//Delete certificate by id
-	DeleteCertificate(context.Context, *certificate.Id) (*wrapperspb.BoolValue, error)
+	// Update certificate data
+	UpdateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error)
+	// Deactivate certificate by id
+	DeactivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error)
+	// Activate certificate by id
+	ActivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -376,17 +393,20 @@ func (UnimplementedMnemosyneServer) DeleteResume(context.Context, *user.Id) (*wr
 func (UnimplementedMnemosyneServer) DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteInterview not implemented")
 }
-func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error) {
+func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCertificate not implemented")
 }
 func (UnimplementedMnemosyneServer) GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCertificates not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCertificate not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteCertificate(context.Context, *certificate.Id) (*wrapperspb.BoolValue, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteCertificate not implemented")
+func (UnimplementedMnemosyneServer) DeactivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateCertificate not implemented")
+}
+func (UnimplementedMnemosyneServer) ActivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateCertificate not implemented")
 }
 
 // UnsafeMnemosyneServer may be embedded to opt out of forward compatibility for this service.
@@ -707,7 +727,7 @@ func _Mnemosyne_DeleteInterview_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _Mnemosyne_CreateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(certificate.Certificate)
+	in := new(certificate.CertificateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -719,7 +739,7 @@ func _Mnemosyne_CreateCertificate_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: "/api.Mnemosyne/CreateCertificate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).CreateCertificate(ctx, req.(*certificate.Certificate))
+		return srv.(MnemosyneServer).CreateCertificate(ctx, req.(*certificate.CertificateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -743,7 +763,7 @@ func _Mnemosyne_GetCertificates_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _Mnemosyne_UpdateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(certificate.Certificate)
+	in := new(certificate.CertificateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -755,25 +775,43 @@ func _Mnemosyne_UpdateCertificate_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: "/api.Mnemosyne/UpdateCertificate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).UpdateCertificate(ctx, req.(*certificate.Certificate))
+		return srv.(MnemosyneServer).UpdateCertificate(ctx, req.(*certificate.CertificateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_DeleteCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Mnemosyne_DeactivateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(certificate.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MnemosyneServer).DeleteCertificate(ctx, in)
+		return srv.(MnemosyneServer).DeactivateCertificate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeleteCertificate",
+		FullMethod: "/api.Mnemosyne/DeactivateCertificate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeleteCertificate(ctx, req.(*certificate.Id))
+		return srv.(MnemosyneServer).DeactivateCertificate(ctx, req.(*certificate.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_ActivateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(certificate.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).ActivateCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/ActivateCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).ActivateCertificate(ctx, req.(*certificate.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -866,8 +904,12 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_UpdateCertificate_Handler,
 		},
 		{
-			MethodName: "DeleteCertificate",
-			Handler:    _Mnemosyne_DeleteCertificate_Handler,
+			MethodName: "DeactivateCertificate",
+			Handler:    _Mnemosyne_DeactivateCertificate_Handler,
+		},
+		{
+			MethodName: "ActivateCertificate",
+			Handler:    _Mnemosyne_ActivateCertificate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,16 +1,22 @@
 package certificate
 
 const AddCertificate = `
-	INSERT INTO certificates (certificate_id, user_id, issue_date, expire_date)
+	INSERT INTO certificates (id, user_id, issue_date, expire_date)
 	VALUES ($1, $2, $3, $4)
 	RETURNING id
 `
 
+const GetCertificateById = `
+	SELECT id, user_id, issue_date, expire_date
+	FROM certificates
+	WHERE id = $1 and deleted = false
+	`
+
 const GetAllCertificates = `
-	SELECT *
+	SELECT id, user_id, issue_date, expire_date
 	FROM certificates
 	`
-const UpdateCertificatesById = `
+const UpdateCertificateById = `
 	UPDATE certificates
 	SET user_id = $1, 
 		issue_date = $2, 

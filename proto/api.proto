@@ -224,7 +224,7 @@ service Mnemosyne {
 
   //  Certificate
   //Create new certificate
-  rpc CreateCertificate (certificate.Certificate) returns (certificate.Id){
+  rpc CreateCertificate (certificate.CertificateRequest) returns (certificate.CertificateResponse){
     option (google.api.http) = {
       post: "/certificate"
       body: "*"
@@ -240,17 +240,22 @@ service Mnemosyne {
 
 
   //Update certificate data
-  rpc UpdateCertificate (certificate.Certificate) returns (google.protobuf.BoolValue){
+  rpc UpdateCertificate (certificate.CertificateRequest) returns (certificate.CertificateResponse){
     option (google.api.http) = {
       put: "/certificate/{id}"
       body: "*"
     };
   };
-
-  //Delete certificate by id
-  rpc DeleteCertificate (certificate.Id) returns (google.protobuf.BoolValue){
+  //Deactivate certificate by id
+  rpc DeactivateCertificate(certificate.Id) returns (certificate.CertificateResponse){
     option (google.api.http) = {
-      delete: "/certificate/{id}"
+      put: "/interview/{id}/deactivate"
+    };
+  };
+  //Activate certificate by id
+  rpc ActivateCertificate(certificate.Id) returns (certificate.CertificateResponse){
+    option (google.api.http) = {
+      put: "/interview/{id}/activate"
     };
   };
 }

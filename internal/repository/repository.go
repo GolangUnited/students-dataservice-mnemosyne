@@ -46,11 +46,12 @@ type Interview interface {
 }
 
 type Certificate interface {
-	AddCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error)
-	GetCertificates(ctx context.Context) (certificates []database.Certificate, err error)
-	UpdateCertificatesById(ctx context.Context, certificate database.Certificate) (err error)
-	DeactivateCertificateById(ctx context.Context, certificateId int) (err error)
-	ActivateCertificateById(ctx context.Context, certificateId int) (err error)
+	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error)
+	GetCertificateById(ctx context.Context, certificateId int) (certificate database.Certificate, err error)
+	GetCertificates(ctx context.Context, userId int) (certificates []database.Certificate, err error)
+	UpdateCertificates(ctx context.Context, certificate database.Certificate) (err error)
+	DeactivateCertificate(ctx context.Context, certificateId int) (err error)
+	ActivateCertificate(ctx context.Context, certificateId int) (err error)
 }
 
 type Repository struct {

@@ -15,6 +15,11 @@ import (
 type Mnemosyne interface {
 	Test(context.Context, model.Request) (model.Response, error)
 	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
+	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error)
+	GetCertificates(ctx context.Context, userId int) (certificates []database.Certificate, err error)
+	UpdateCertificate(ctx context.Context, certificate database.Certificate) (err error)
+	DeactivateCertificate(ctx context.Context, certificateId int) (err error)
+	ActivateCertificate(ctx context.Context, certificateId int) (err error)
 }
 
 // Service represents service level
@@ -25,6 +30,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview),
+		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Certificate),
 	}
 }
