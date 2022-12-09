@@ -7,6 +7,7 @@ import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
 import "interview/interview.proto";
+import "team/team.proto";
 import "certificate/certificate.proto";
 import "group/group.proto";
 import "common/common.proto";
@@ -256,6 +257,67 @@ service Mnemosyne {
       delete: "/certificate/{id}"
     };
   };
+
+
+  //Get team by id
+  rpc GetTeam (team.Id) returns (team.TeamResponse){
+    option (google.api.http) = {
+      get: "/team/{id}"
+    };
+  };
+
+  //Get teams
+  rpc GetTeams (team.TeamListFilter) returns (team.Teams){
+    option (google.api.http) = {
+      get: "/team"
+    };
+  };
+
+  //Create new team
+  rpc CreateTeam (team.TeamRequest) returns (team.Id){
+    option (google.api.http) = {
+      post: "/team"
+      body: "*"
+    };
+  };
+
+  //Update team's data
+  rpc UpdateTeam (team.TeamRequest) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/team"
+      body: "*"
+    };
+  }
+
+  //Deactivate team by id
+  rpc DeactivateTeam (team.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/team/{id}/deactivate"
+    };
+  };
+
+  //Activate team by id
+  rpc ActivateTeam (team.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/team/{id}/activate"
+    };
+  };
+
+  //Bind user to team
+  rpc AddUserToTeam (team.UserTeamRequest) returns (common.Empty){
+    option (google.api.http) = {
+      post: "/team/{team_id}/{user_id}"
+      body: "*"
+    };
+  };
+
+  //Unbind user from team
+  rpc DeleteUserFromTeam (team.UserTeamRequest) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/team/{team_id}/{user_id}"
+    };
+  };
+
 
   //Get group by id
   rpc GetGroup (group.Id) returns (group.GroupResponse){
