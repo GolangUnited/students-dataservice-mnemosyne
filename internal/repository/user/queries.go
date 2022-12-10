@@ -101,9 +101,9 @@ u.last_name as last_name,
 u.first_name as first_name,
 u.middle_name as middle_name,
 u.email as email,
-u."language" as "language",    
-u.english_level as english_level,  
-case when u.photo is null then '' 
+u."language" as "language",
+u.english_level as english_level,
+case when u.photo is null then ''
     else u.photo end as photo,
 '' as telegram,
 '' as discord,
@@ -207,4 +207,16 @@ where r.user_id =$1 and r.deleted = false
 `
 const OrderAsc = `
 order by u.id asc
+`
+const DeleteContact = `
+update contacts
+set updated_at = $2,
+deleted = true
+where user_id = $1
+`
+const DeleteResume = `
+update resume
+set updated_at = $2,
+deleted = true
+where user_id = $1
 `

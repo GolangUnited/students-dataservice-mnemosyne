@@ -242,3 +242,33 @@ func (h *Handler) UpdateResume(ctx context.Context, in *user.Resume) (c *common.
 	}
 	return
 }
+
+// Delete contact by ID
+func (h *Handler) DeleteContact(ctx context.Context, in *user.Id) (c *common.Empty, err error) {
+	c = &common.Empty{}
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		err = status.Error(codes.InvalidArgument, err.Error())
+		return
+	}
+	err = h.services.Mnemosyne.DeleteContact(ctx, innerId)
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
+	return
+}
+
+// Delete resume by ID
+func (h *Handler) DeleteResume(ctx context.Context, in *user.Id) (c *common.Empty, err error) {
+	c = &common.Empty{}
+	innerId, err := strconv.Atoi(in.Id)
+	if err != nil {
+		err = status.Error(codes.InvalidArgument, err.Error())
+		return
+	}
+	err = h.services.Mnemosyne.DeleteResume(ctx, innerId)
+	if err != nil {
+		err = status.Error(codes.Internal, err.Error())
+	}
+	return
+}

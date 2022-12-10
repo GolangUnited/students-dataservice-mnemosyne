@@ -266,7 +266,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -705,7 +705,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {

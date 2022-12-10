@@ -183,6 +183,20 @@ service Mnemosyne {
       put: "/resume/{id}"
     };
   };
+
+   //Delete contacts by ID
+   rpc DeleteContact (user.Id) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/contact/{id}"
+    };
+  };
+  //Delete resume by ID
+  rpc DeleteResume (user.Id) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/resume/{id}"
+    };
+  };
+
   //  INTERVIEW
   //Create new interview
   rpc CreateInterview (interview.Interview) returns (interview.Id){
@@ -216,18 +230,6 @@ service Mnemosyne {
   };
 
 
-  //Delete contacts by ID
-  rpc DeleteContact (user.Id) returns (google.protobuf.BoolValue){
-    option (google.api.http) = {
-      delete: "/contact/{id}"
-    };
-  };
-  //Delete resume by ID
-  rpc DeleteResume (user.Id) returns (google.protobuf.BoolValue){
-    option (google.api.http) = {
-      delete: "/resume/{id}"
-    };
-  };
   //Delete interview by id
   rpc DeleteInterview (interview.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {

@@ -68,3 +68,12 @@ func (s *Service) UpdateResume(ctx context.Context, transitResume *dbUser.Transi
 	err = s.reposUser.UpdateResume(ctx, resume)
 	return
 }
+
+func (s *Service) DeleteContact(ctx context.Context, id int) (err error) {
+	err = s.reposUser.DeleteContact(ctx, id)
+	return
+}
+func (s *Service) DeleteResume(ctx context.Context, id int) (err error) {
+	err = s.reposUser.DeleteResume(ctx, id)
+	return
+}

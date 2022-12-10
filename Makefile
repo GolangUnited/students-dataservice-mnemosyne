@@ -16,3 +16,7 @@ buf-lint:
 
 migrate-create:
 	migrate create -dir ./migrations -ext sql -seq migrate
+
+migrate-up:
+	migrate -path ./migrations -database "postgresql://postgres:postgres@localhost:5436/postgres?sslmode=disable" -verbose up
+	

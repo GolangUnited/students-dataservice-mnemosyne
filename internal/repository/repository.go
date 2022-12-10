@@ -39,6 +39,8 @@ type User interface {
 	GetResumeById(ctx context.Context, id int) (r *dbUser.Resume, err error)
 	UpdateContact(ctx context.Context, contact *dbUser.Contact) (err error)
 	UpdateResume(ctx context.Context, resume *dbUser.Resume) (err error)
+	DeleteContact(ctx context.Context, id int) (err error)
+	DeleteResume(ctx context.Context, id int) (err error)
 }
 
 type Interview interface {

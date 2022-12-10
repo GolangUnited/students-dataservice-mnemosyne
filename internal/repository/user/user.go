@@ -218,7 +218,9 @@ func (u *UserRepository) UpdateContact(ctx context.Context, contact *dbUser.Cont
 
 	_, err = tr.Exec(ctx, UpdateContactById, contact.Telegram, contact.Discord, contact.CommunicationChannel, time.Now(), contact.Id)
 	if err != nil {
-		_ = tr.Rollback(ctx)
+		if extractTx(ctx) == nil {
+			_ = tr.Rollback(ctx)
+		}
 		return errors.Wrap(err, "unable to update user's contact info")
 	}
 
@@ -238,7 +240,9 @@ func (u *UserRepository) UpdateResume(ctx context.Context, resume *dbUser.Resume
 	}
 	_, err = tr.Exec(ctx, UpdateResumeById, resume.Experience, resume.UploadedResume, resume.Country, resume.City, resume.TimeZone, resume.MentorsNote, time.Now(), resume.Id)
 	if err != nil {
-		_ = tr.Rollback(ctx)
+		if extractTx(ctx) == nil {
+			_ = tr.Rollback(ctx)
+		}
 		return errors.Wrap(err, "failed to update user's resume")
 	}
 	return err
@@ -270,4 +274,20 @@ func (u *UserRepository) GetResumeById(ctx context.Context, id int) (r *dbUser.R
 	}
 	r = &innerResume
 	return
+}
+
+func (u *UserRepository) DeleteContact(ctx context.Context, id int) (err error) {
+	_, err = u.db.Exec(ctx, DeleteContact, id, time.Now())
+	if err != nil {
+		return errors.Wrap(err, "unable to delete contact info")
+	}
+	return err
+}
+
+func (u *UserRepository) DeleteResume(ctx context.Context, id int) (err error) {
+	_, err = u.db.Exec(ctx, DeleteResume, id, time.Now())
+	if err != nil {
+		return errors.Wrap(err, "unable to delete resume info")
+	}
+	return err
 }
