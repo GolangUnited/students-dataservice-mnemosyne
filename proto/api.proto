@@ -7,7 +7,9 @@ import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
 import "interview/interview.proto";
+import "team/team.proto";
 import "certificate/certificate.proto";
+import "group/group.proto";
 import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
@@ -199,46 +201,47 @@ service Mnemosyne {
 
   //  INTERVIEW
   //Create new interview
-  rpc CreateInterview (interview.Interview) returns (interview.Id){
+  rpc CreateInterview (interview.InterviewRequest) returns (interview.InterviewResponse){
     option (google.api.http) = {
       post: "/interview"
       body: "*"
     };
   };
-
   //Get all existing interviews
-  rpc GetInterviews (common.Empty) returns (interview.Interview){
+  rpc GetInterviews (interview.InterviewList) returns (interview.Interviews){
     option (google.api.http) = {
       get: "/interview"
     };
   };
-
   //Get interview by id
-  rpc GetInterview (interview.Id) returns (interview.Interview){
+  rpc GetInterview (interview.Id) returns (interview.InterviewResponse){
     option (google.api.http) = {
       get: "/interview/{id}"
     };
   };
-
   //Update interview data
-  rpc UpdateInterview (interview.Interview) returns (google.protobuf.BoolValue){
+  rpc UpdateInterview (interview.InterviewRequest) returns (interview.InterviewResponse){
     option (google.api.http) = {
       put: "/interview/{id}"
 
       body: "*"
     };
   };
-
-
-  //Delete interview by id
-  rpc DeleteInterview (interview.Id) returns (google.protobuf.BoolValue){
+  //Deactivate interview by id
+  rpc DeactivateInterview (interview.Id) returns (interview.InterviewResponse){
     option (google.api.http) = {
-      delete: "/interview/{id}"
-
+      put: "/interview/{id}/deactivate"
+    };
+  };
+  //Activate interview by id
+  rpc ActivateInterview (interview.Id) returns (interview.InterviewResponse){
+    option (google.api.http) = {
+      put: "/interview/{id}/activate"
     };
   };
 
-  //  Certificate
+
+    //  Certificate
   //Create new certificate
   rpc CreateCertificate (certificate.Certificate) returns (certificate.Id){
     option (google.api.http) = {
@@ -267,6 +270,126 @@ service Mnemosyne {
   rpc DeleteCertificate (certificate.Id) returns (google.protobuf.BoolValue){
     option (google.api.http) = {
       delete: "/certificate/{id}"
+    };
+  };
+
+
+  //Get team by id
+  rpc GetTeam (team.Id) returns (team.TeamResponse){
+    option (google.api.http) = {
+      get: "/team/{id}"
+    };
+  };
+
+  //Get teams
+  rpc GetTeams (team.TeamListFilter) returns (team.Teams){
+    option (google.api.http) = {
+      get: "/team"
+    };
+  };
+
+  //Create new team
+  rpc CreateTeam (team.TeamRequest) returns (team.Id){
+    option (google.api.http) = {
+      post: "/team"
+      body: "*"
+    };
+  };
+
+  //Update team's data
+  rpc UpdateTeam (team.TeamRequest) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/team"
+      body: "*"
+    };
+  }
+
+  //Deactivate team by id
+  rpc DeactivateTeam (team.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/team/{id}/deactivate"
+    };
+  };
+
+  //Activate team by id
+  rpc ActivateTeam (team.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/team/{id}/activate"
+    };
+  };
+
+  //Bind user to team
+  rpc AddUserToTeam (team.UserTeamRequest) returns (common.Empty){
+    option (google.api.http) = {
+      post: "/team/{team_id}/{user_id}"
+      body: "*"
+    };
+  };
+
+  //Unbind user from team
+  rpc DeleteUserFromTeam (team.UserTeamRequest) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/team/{team_id}/{user_id}"
+    };
+  };
+
+
+  //Get group by id
+  rpc GetGroup (group.Id) returns (group.GroupResponse){
+    option (google.api.http) = {
+      get: "/group/{id}"
+    };
+  };
+
+  //Get groups
+  rpc GetGroups (group.GroupsRequest) returns (group.Groups){
+    option (google.api.http) = {
+      get: "/group"
+    };
+  };
+
+  //Create new group
+  rpc CreateGroup (group.GroupRequest) returns (group.Id){
+    option (google.api.http) = {
+      post: "/group"
+      body: "*"
+    };
+  };
+
+  //Update group's data
+  rpc UpdateGroup (group.GroupRequest) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/group"
+      body: "*"
+    };
+  }
+
+  //Deactivate group by id
+  rpc DeactivateGroup (group.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/group/{id}/deactivate"
+    };
+  };
+
+  //Activate group by id
+  rpc ActivateGroup (group.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/group/{id}/activate"
+    };
+  };
+
+  //Bind user to group
+  rpc AddUserToGroup (group.UserGroupRequest) returns (common.Empty){
+    option (google.api.http) = {
+      post: "/group/{group_id}/{user_id}"
+      body: "*"
+    };
+  };
+
+  //Unbind user from group
+  rpc DeleteUserFromGroup (group.UserGroupRequest) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/group/{group_id}/{user_id}"
     };
   };
 }

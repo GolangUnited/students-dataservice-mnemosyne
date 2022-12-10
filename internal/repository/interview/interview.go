@@ -43,7 +43,7 @@ func (i *InterviewRepository) AddInterview(ctx context.Context, interview databa
 	return
 }
 
-func (i *InterviewRepository) GetInterviews(ctx context.Context, interviewerId int, studentId int) (interviews []database.Interview, err error) {
+func (i *InterviewRepository) GetInterviews(ctx context.Context, interviewerId uint, studentId uint) (interviews []database.Interview, err error) {
 	sb := sqlbuilder.Select("*").From("interview")
 	if interviewerId > 0 {
 		sb.Where("interviewer_id = 1")
@@ -64,7 +64,7 @@ func (i *InterviewRepository) GetInterviews(ctx context.Context, interviewerId i
 	return interviews, err
 }
 
-func (i *InterviewRepository) GetInterviewById(ctx context.Context, interviewId int) (interview database.Interview, err error) {
+func (i *InterviewRepository) GetInterviewById(ctx context.Context, interviewId uint) (interview database.Interview, err error) {
 
 	rows, err := i.db.Query(ctx, GetInterviewByIdQuery, interviewId)
 	if err != nil {
@@ -74,7 +74,7 @@ func (i *InterviewRepository) GetInterviewById(ctx context.Context, interviewId 
 	if err != nil {
 		return database.Interview{}, errors.Wrap(err, "GetInterviewById CollectOneRow error")
 	}
-	return
+	return interview, err
 }
 
 func (i *InterviewRepository) UpdateInterviewById(ctx context.Context, interview database.Interview) (err error) {
@@ -96,10 +96,10 @@ func (i *InterviewRepository) UpdateInterviewById(ctx context.Context, interview
 	if err != nil {
 		return errors.Wrap(err, "UpdateInterviewById - unable to execute update statement")
 	}
-	return
+	return err
 }
 
-func (i *InterviewRepository) DeactivateInterviewById(ctx context.Context, interviewId int) (err error) {
+func (i *InterviewRepository) DeactivateInterviewById(ctx context.Context, interviewId uint) (err error) {
 	_, err = i.db.Exec(ctx, DeactivateByIdQuery, interviewId, time.Now())
 	if err != nil {
 		return errors.Wrapf(err, "DeactivateInterviewById - unable to set interview %d as deleted", interviewId)
@@ -107,7 +107,7 @@ func (i *InterviewRepository) DeactivateInterviewById(ctx context.Context, inter
 	return err
 }
 
-func (i *InterviewRepository) ActivateInterviewById(ctx context.Context, interviewId int) (err error) {
+func (i *InterviewRepository) ActivateInterviewById(ctx context.Context, interviewId uint) (err error) {
 	_, err = i.db.Exec(ctx, ActivateByIdQuery, interviewId, time.Now())
 	if err != nil {
 		return errors.Wrapf(err, "ActivateInterviewById - unable to set interview %d as active", interviewId)

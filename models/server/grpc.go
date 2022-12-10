@@ -3,6 +3,8 @@ package server
 import (
 	"context"
 	"fmt"
+	"net"
+
 	"github.com/NEKETSKY/mnemosyne/internal/handler"
 	"github.com/NEKETSKY/mnemosyne/pkg/api"
 	"github.com/NEKETSKY/mnemosyne/pkg/logger"
@@ -11,7 +13,6 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"net"
 )
 
 type Grpc struct {
