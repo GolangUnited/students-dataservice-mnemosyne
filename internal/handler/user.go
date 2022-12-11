@@ -65,15 +65,15 @@ func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *us
 }
 
 // Get user by id
-func (h *Handler) GetUserById(ctx context.Context, in *user.Id) (user *user.User, err error) {
-
+func (h *Handler) GetUserById(ctx context.Context, in *user.Id) (u *user.User, err error) {
+	u = new(user.User)
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
+		return u, status.Error(codes.InvalidArgument, err.Error())
 	}
 	innerUser, err := h.services.Mnemosyne.GetUserById(ctx, innerId)
 	if innerUser != nil {
-		user = innerUser.DbToProto()
+		u = innerUser.DbToProto()
 	}
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
@@ -82,11 +82,12 @@ func (h *Handler) GetUserById(ctx context.Context, in *user.Id) (user *user.User
 }
 
 // Get user by email
-func (h *Handler) GetUserByEmail(ctx context.Context, in *user.Email) (user *user.User, err error) {
+func (h *Handler) GetUserByEmail(ctx context.Context, in *user.Email) (u *user.User, err error) {
+	u = &user.User{}
 	email := in.Email
 	innerUser, err := h.services.Mnemosyne.GetUserByEmail(ctx, email)
 	if innerUser != nil {
-		user = innerUser.DbToProto()
+		u = innerUser.DbToProto()
 	}
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
@@ -149,18 +150,20 @@ func (h *Handler) ActivateUser(ctx context.Context, in *user.Id) (c *common.Empt
 
 // Get contact by ID
 func (h *Handler) GetContact(ctx context.Context, in *user.Id) (c *user.Contact, err error) {
-
+	c = &user.Contact{}
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	innerContact, err := h.services.Mnemosyne.GetContactById(ctx, innerId)
-	c = &user.Contact{
-		Id:                   strconv.Itoa(innerContact.Id),
-		Telegram:             innerContact.Telegram,
-		Discord:              innerContact.Discord,
-		CommunicationChannel: innerContact.CommunicationChannel,
+	if innerContact != nil {
+		c = &user.Contact{
+			Id:                   strconv.Itoa(innerContact.Id),
+			Telegram:             innerContact.Telegram,
+			Discord:              innerContact.Discord,
+			CommunicationChannel: innerContact.CommunicationChannel,
+		}
 	}
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
@@ -193,21 +196,23 @@ func (h *Handler) UpdateContact(ctx context.Context, in *user.Contact) (c *commo
 
 // Get resume by ID
 func (h *Handler) GetResume(ctx context.Context, in *user.Id) (r *user.Resume, err error) {
-
+	r = &user.Resume{}
 	innerId, err := strconv.Atoi(in.Id)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	innerResume, err := h.services.Mnemosyne.GetResumeById(ctx, innerId)
-	r = &user.Resume{
-		Id:             strconv.Itoa(innerResume.Id),
-		UploadedResume: &common.File{Name: innerResume.UploadedResume},
-		Experience:     innerResume.Experience,
-		Country:        innerResume.Country,
-		City:           innerResume.City,
-		TimeZone:       innerResume.TimeZone,
-		MentorsNote:    innerResume.MentorsNote,
+	if innerResume != nil {
+		r = &user.Resume{
+			Id:             strconv.Itoa(innerResume.Id),
+			UploadedResume: &common.File{Name: innerResume.UploadedResume},
+			Experience:     innerResume.Experience,
+			Country:        innerResume.Country,
+			City:           innerResume.City,
+			TimeZone:       innerResume.TimeZone,
+			MentorsNote:    innerResume.MentorsNote,
+		}
 	}
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())

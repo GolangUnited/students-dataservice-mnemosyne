@@ -8,6 +8,7 @@ import (
 )
 
 func (d *UserFullStuff) DbToProto() (u *apiUser.User) {
+
 	u = &apiUser.User{
 		Id:           strconv.Itoa(d.Id),
 		LastName:     d.LastName,

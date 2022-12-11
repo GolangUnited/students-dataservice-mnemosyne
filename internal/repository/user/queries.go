@@ -38,10 +38,13 @@ SELECT
 u.id as id,
 u.last_name as last_name,
 u.first_name as first_name,
-u.middle_name as middle_name,
+case when u.middle_name is null then ''
+	else u.middle_name end as middle_name,
 u.email as email,
-u."language" as "language",    
-u.english_level as english_level,  
+case when u."language" is null then ''
+	else u."language" end as "language",    
+case when u.english_level is null then ''
+else u.english_level end as english_level,  
 case when u.photo is null then '' 
     else u.photo end as photo,
 case when c.telegram is null then '' 
@@ -72,10 +75,13 @@ SELECT
 u.id as id,
 u.last_name as last_name,
 u.first_name as first_name,
-u.middle_name as middle_name,
+case when u.middle_name is null then ''
+	else u.middle_name end as middle_name,
 u.email as email,
-u."language" as "language",    
-u.english_level as english_level,  
+case when u."language" is null then ''
+	else u."language" end as "language",    
+case when u.english_level is null then ''
+else u.english_level end as english_level,  
 case when u.photo is null then '' 
     else u.photo end as photo,
 case when c.telegram is null then '' 
@@ -99,11 +105,14 @@ SELECT
 u.id as id,
 u.last_name as last_name,
 u.first_name as first_name,
-u.middle_name as middle_name,
+case when u.middle_name is null then ''
+	else u.middle_name end as middle_name,
 u.email as email,
-u."language" as "language",
-u.english_level as english_level,
-case when u.photo is null then ''
+case when u."language" is null then ''
+	else u."language" end as "language",    
+case when u.english_level is null then ''
+else u.english_level end as english_level,  
+case when u.photo is null then '' 
     else u.photo end as photo,
 '' as telegram,
 '' as discord,
@@ -129,10 +138,13 @@ SELECT
 u.id as id,
 u.last_name as last_name,
 u.first_name as first_name,
-u.middle_name as middle_name,
+case when u.middle_name is null then ''
+	else u.middle_name end as middle_name,
 u.email as email,
-u."language" as "language",    
-u.english_level as english_level,  
+case when u."language" is null then ''
+	else u."language" end as "language",    
+case when u.english_level is null then ''
+else u.english_level end as english_level,  
 case when u.photo is null then '' 
     else u.photo end as photo,
 '' as telegram,

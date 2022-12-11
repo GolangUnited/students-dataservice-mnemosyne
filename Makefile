@@ -19,4 +19,6 @@ migrate-create:
 
 migrate-up:
 	migrate -path ./migrations -database "postgresql://postgres:postgres@localhost:5436/postgres?sslmode=disable" -verbose up
-	
+
+migrate-down:
+	migrate -path ./migrations -database "postgresql://postgres:postgres@localhost:5436/postgres?sslmode=disable" -verbose down

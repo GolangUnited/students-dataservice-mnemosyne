@@ -142,7 +142,6 @@ func (u *UserRepository) GetUserByEmail(ctx context.Context, email string) (user
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get user by email from the db")
 	}
-
 	innerUser, err := pgx.CollectOneRow(rows, pgx.RowToStructByName[dbUser.UserFullStuff])
 	if err != nil {
 		return nil, errors.Wrap(err, "GetUserByEmail CollectRows error")
@@ -154,13 +153,13 @@ func (u *UserRepository) GetUserByEmail(ctx context.Context, email string) (user
 func (u *UserRepository) UpdateUserById(ctx context.Context, user *dbUser.UserFullStuff) (err error) {
 
 	tr, _ := u.db.Begin(ctx)
-	injectTx(ctx, &tr)
-
 	_, err = tr.Exec(ctx, UpdateUserById, user.LastName, user.FirstName, user.MiddleName, user.Language, user.EnglishLevel, user.Photo, time.Now(), user.Id)
+
 	if err != nil {
+		_ = tr.Rollback(ctx)
 		return errors.Wrap(err, "unable to update basic user's info")
 	}
-
+	injectTx(ctx, &tr)
 	err = u.UpdateContact(ctx, &dbUser.Contact{
 		Id:                   user.Id,
 		Telegram:             user.Telegram,
@@ -168,7 +167,9 @@ func (u *UserRepository) UpdateUserById(ctx context.Context, user *dbUser.UserFu
 		CommunicationChannel: user.CommunicationChannel,
 	})
 	if err != nil {
+		_ = tr.Rollback(ctx)
 		return errors.Wrap(err, "unable to update user's contact info")
+
 	}
 
 	err = u.UpdateResume(ctx, &dbUser.Resume{
@@ -181,6 +182,7 @@ func (u *UserRepository) UpdateUserById(ctx context.Context, user *dbUser.UserFu
 		MentorsNote:    user.MentorsNote,
 	})
 	if err != nil {
+		_ = tr.Rollback(ctx)
 		return errors.Wrap(err, "unable to update user's resume info")
 	}
 
