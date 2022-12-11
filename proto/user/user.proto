@@ -11,6 +11,8 @@ message Option{
   bool withContacts = 1;
   bool withResume = 2;
   bool withDeleted = 3;
+  uint32 team_id = 4;
+  uint32 group_id = 5;
 }
 
 //filter by role in da system
@@ -24,13 +26,6 @@ message Filter{
  string fieldValue = 2;
 }
 
-message Group {
-  uint32 groupId=1;
-}
-
-message Team {
-  uint32 teamId=1;
-}
 //Summary request options
 message UserRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -42,8 +37,6 @@ message UserRequest {
   Option option = 1;
   Role role = 2;
   Filter filter = 3;
-  Group group = 4;
-  Team team = 5;
 }
 
 //message containing info about user's contacts

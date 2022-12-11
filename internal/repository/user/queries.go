@@ -21,7 +21,7 @@ const SelectByRole = `
 left join user_role ur on ur.user_id = u.id
 inner join roles ro on ro.id = ur.role_id and ro.code=`
 const SelectByGroup = `
-left join student_groups sg on sg.student_id = u.id
+left join user_groups sg on sg.user_id = u.id
 inner join groups g on g.id = sg.group_id and g.id =`
 const SelectByTeam = `
 left join student_teams st on st.student_id = u.id

@@ -1713,6 +1713,20 @@
             "type": "boolean"
           },
           {
+            "name": "option.teamId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "option.groupId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
             "name": "role.role",
             "in": "query",
             "required": false,
@@ -1729,20 +1743,6 @@
             "in": "query",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "group.groupId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "team.teamId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
           }
         ],
         "tags": [
@@ -2526,15 +2526,6 @@
       },
       "title": "filter for info related to user(primary user info, contacts and resume)"
     },
-    "userGroup": {
-      "type": "object",
-      "properties": {
-        "groupId": {
-          "type": "integer",
-          "format": "int64"
-        }
-      }
-    },
     "userId": {
       "type": "object",
       "properties": {
@@ -2558,6 +2549,14 @@
         },
         "withDeleted": {
           "type": "boolean"
+        },
+        "teamId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "groupId": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "Request options about composition of user's info"
@@ -2605,15 +2604,6 @@
         }
       },
       "title": "filter by role in da system"
-    },
-    "userTeam": {
-      "type": "object",
-      "properties": {
-        "teamId": {
-          "type": "integer",
-          "format": "int64"
-        }
-      }
     },
     "userUser": {
       "type": "object",

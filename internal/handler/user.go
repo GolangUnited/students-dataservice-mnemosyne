@@ -42,9 +42,8 @@ func (h *Handler) GetUsers(ctx context.Context, in *user.UserRequest) (users *us
 	ur.FieldName = in.Filter.GetFieldName()
 	ur.FieldValue = in.Filter.GetFieldValue()
 
-	ur.Group = in.Group.GetGroupId()
-	ur.Team = in.Team.GetTeamId()
-
+	ur.Group = in.Option.GetGroupId()
+	ur.Team = in.Option.GetTeamId()
 	innerUsers, err := h.services.Mnemosyne.GetUsers(ctx, ur)
 	if len(innerUsers) > 0 {
 		for _, user := range innerUsers {
