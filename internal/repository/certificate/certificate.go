@@ -50,7 +50,7 @@ func (c *CertificateRepository) GetCertificateById(ctx context.Context, certific
 	}
 	return
 }
-func (c *CertificateRepository) GetCertificates(ctx context.Context, userId int) (certificates []database.Certificate, err error) {
+func (c *CertificateRepository) GetCertificates(ctx context.Context, userId uint32) (certificates []database.Certificate, err error) {
 	rows, _ := c.db.Query(ctx, GetAllCertificates, userId)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get certificates from db")

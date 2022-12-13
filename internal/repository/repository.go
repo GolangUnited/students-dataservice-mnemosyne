@@ -48,7 +48,7 @@ type Interview interface {
 type Certificate interface {
 	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error)
 	GetCertificateById(ctx context.Context, certificateId int) (certificate database.Certificate, err error)
-	GetCertificates(ctx context.Context, userId int) (certificates []database.Certificate, err error)
+	GetCertificates(ctx context.Context, userId uint32) (certificates []database.Certificate, err error)
 	UpdateCertificates(ctx context.Context, certificate database.Certificate) (err error)
 	DeactivateCertificate(ctx context.Context, certificateId int) (err error)
 	ActivateCertificate(ctx context.Context, certificateId int) (err error)

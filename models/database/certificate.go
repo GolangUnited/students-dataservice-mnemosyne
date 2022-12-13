@@ -27,5 +27,6 @@ func CertificateFromProto(protoCertificate *certificate.CertificateRequest) (c C
 	c.UserId = protoCertificate.GetUserId()
 	c.IssueDate = protoCertificate.IssueDate.AsTime()
 	c.ExpireDate = protoCertificate.ExpireDate.AsTime()
+	
 	return
 }

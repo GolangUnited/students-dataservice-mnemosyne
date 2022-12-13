@@ -15,6 +15,7 @@ const GetCertificateById = `
 const GetAllCertificates = `
 	SELECT id, user_id, issue_date, expire_date
 	FROM certificates
+	WHERE user_id = $1 and deleted = false
 	`
 const UpdateCertificateById = `
 	UPDATE certificates

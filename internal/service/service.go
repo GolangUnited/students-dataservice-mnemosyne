@@ -15,8 +15,12 @@ import (
 type Mnemosyne interface {
 	Test(context.Context, model.Request) (model.Response, error)
 	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
+	Certificate
+}
+
+type Certificate interface {
 	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error)
-	GetCertificates(ctx context.Context, userId int) (certificates []database.Certificate, err error)
+	GetCertificates(ctx context.Context, userId uint32) (certificates []database.Certificate, err error)
 	UpdateCertificate(ctx context.Context, certificate database.Certificate) (err error)
 	DeactivateCertificate(ctx context.Context, certificateId int) (err error)
 	ActivateCertificate(ctx context.Context, certificateId int) (err error)

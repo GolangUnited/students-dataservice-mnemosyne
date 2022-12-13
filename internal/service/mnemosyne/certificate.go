@@ -10,7 +10,7 @@ func (s *Service) CreateCertificate(ctx context.Context, certificate database.Ce
 
 }
 
-func (s *Service) GetCertificates(ctx context.Context, userId int) (certificates []database.Certificate, err error) {
+func (s *Service) GetCertificates(ctx context.Context, userId uint32) (certificates []database.Certificate, err error) {
 	return s.reposCertificate.GetCertificates(ctx, userId)
 
 }

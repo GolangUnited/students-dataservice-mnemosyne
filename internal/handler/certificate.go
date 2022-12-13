@@ -14,7 +14,7 @@ func (h *Handler) CreateCertificate(ctx context.Context, in *certificate.Certifi
 	if err != nil {
 		return cert, status.Error(codes.InvalidArgument, err.Error())
 	}
-	certificateId, err := h.services.Mnemosyne.CreateCertificate(ctx, certificateDb)
+	certificateId, err := h.services.CreateCertificate(ctx, certificateDb)
 	if err != nil {
 		return cert, status.Error(codes.Internal, err.Error())
 	}
@@ -23,7 +23,14 @@ func (h *Handler) CreateCertificate(ctx context.Context, in *certificate.Certifi
 }
 
 func (h *Handler) GetCertificates(ctx context.Context, in *certificate.Filter) (certificates *certificate.Certificates, err error) {
-	certificateDb, err := h.services.Mnemosyne.GetCertificates(ctx, int(in.GetUserId()))
+	certificates = &certificate.Certificates{}
+
+	if err != nil {
+		return certificates, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	certificateDb, err := h.services.Mnemosyne.GetCertificates(ctx, uint32(in.GetUserId()))
+
 	if err != nil {
 		return certificates, status.Error(codes.Internal, err.Error())
 	}
