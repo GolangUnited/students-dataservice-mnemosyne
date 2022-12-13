@@ -2,9 +2,10 @@ package operations
 
 import (
 	"context"
+	"testing"
+
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/pkg/auth"
-	"testing"
 )
 
 func TestCheckAccessAdmin(t *testing.T) {
@@ -28,7 +29,7 @@ func TestCheckAccessAdmin(t *testing.T) {
 			want:      true,
 		},
 		{
-			operation: "view_all_students",
+			operation: "view_all_users",
 			want:      true,
 		},
 		{
@@ -70,7 +71,7 @@ func TestCheckAccessMentor(t *testing.T) {
 			want:      false,
 		},
 		{
-			operation: "view_all_students",
+			operation: "view_all_users",
 			want:      true,
 		},
 		{
@@ -112,7 +113,7 @@ func TestCheckAccessStudent(t *testing.T) {
 			want:      false,
 		},
 		{
-			operation: "view_all_students",
+			operation: "view_all_users",
 			want:      false,
 		},
 		{

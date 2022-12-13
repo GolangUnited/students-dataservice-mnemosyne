@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
@@ -10,6 +11,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
+	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -28,13 +30,19 @@ type Role interface {
 }
 
 type User interface {
-	AddUser(ctx context.Context, user database.User) (userId int, err error)
-	GetAllUsers(ctx context.Context) (users []database.User, err error)
-	GetUserById(ctx context.Context, userId int) (user database.User, err error)
-	GetUserByEmail(ctx context.Context, userEmail string) (user database.User, err error)
-	UpdateUserById(ctx context.Context, user database.User) (err error)
+	AddUser(ctx context.Context, user *dbUser.UserFullStuff) (userId int, err error)
+	GetUsers(ctx context.Context, ur *dbUser.UserRequest) (users []dbUser.UserFullStuff, err error)
+	GetUserById(ctx context.Context, userId int) (user *dbUser.UserFullStuff, err error)
+	GetUserByEmail(ctx context.Context, userEmail string) (user *dbUser.UserFullStuff, err error)
+	UpdateUserById(ctx context.Context, user *dbUser.UserFullStuff) (err error)
 	ActivateUserById(ctx context.Context, userId int) (err error)
 	DeactivateUserById(ctx context.Context, userId int) (err error)
+	GetContactById(ctx context.Context, id int) (c *dbUser.Contact, err error)
+	GetResumeById(ctx context.Context, id int) (r *dbUser.Resume, err error)
+	UpdateContact(ctx context.Context, contact *dbUser.Contact) (err error)
+	UpdateResume(ctx context.Context, resume *dbUser.Resume) (err error)
+	DeleteContact(ctx context.Context, id int) (err error)
+	DeleteResume(ctx context.Context, id int) (err error)
 }
 
 type Interview interface {
