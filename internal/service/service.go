@@ -7,6 +7,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/service/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 )
@@ -28,6 +29,7 @@ type Mnemosyne interface {
 	User
 	Group
 	Role
+	Team
 }
 
 type User interface {
@@ -66,6 +68,17 @@ type Role interface {
 	DeleteUserFromRole(ctx context.Context, userId, roleId uint32) error
 }
 
+type Team interface {
+	GetTeam(context.Context, uint32) (*modelTeam.DB, error)
+	GetTeams(context.Context, *modelTeam.Filter) ([]*modelTeam.DB, error)
+	CreateTeam(context.Context, *modelTeam.DB) (uint32, error)
+	UpdateTeam(context.Context, *modelTeam.DB) error
+	DeactivateTeam(context.Context, uint32) error
+	ActivateTeam(context.Context, uint32) error
+	AddUserToTeam(ctx context.Context, userId, teamId uint32) error
+	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
+}
+
 // Service represents service level
 type Service struct {
 	Mnemosyne
@@ -74,6 +87,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group),
+		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group, repos.Team),
 	}
 }

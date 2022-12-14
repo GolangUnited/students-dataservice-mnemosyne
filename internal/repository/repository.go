@@ -5,8 +5,10 @@ import (
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
+	"github.com/NEKETSKY/mnemosyne/internal/repository/team"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
 	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
@@ -72,12 +74,24 @@ type Group interface {
 	DeleteUserFromGroup(ctx context.Context, userId, groupId uint32) error
 }
 
+type Team interface {
+	GetTeamById(context.Context, uint32) (*modelTeam.DB, error)
+	GetTeams(context.Context, *modelTeam.Filter) ([]*modelTeam.DB, error)
+	AddTeam(context.Context, *modelTeam.DB) (uint32, error)
+	UpdateTeam(context.Context, *modelTeam.DB) error
+	DeactivateTeam(context.Context, uint32) error
+	ActivateTeam(context.Context, uint32) error
+	AddUserToTeam(ctx context.Context, userId, teamId uint32) error
+	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
+}
+
 type Repository struct {
 	Mnemosyne
 	Role
 	User
 	Interview
 	Group
+	Team
 }
 
 // NewRepository created Repository struct
@@ -88,5 +102,6 @@ func NewRepository(db *pgx.Conn) *Repository {
 		User:      user.NewUserRepository(db),
 		Interview: interview.NewInterviewRepository(db),
 		Group:     group.NewRepository(db),
+		Team:      team.NewRepository(db),
 	}
 }

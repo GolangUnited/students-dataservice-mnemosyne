@@ -121,7 +121,7 @@ func (r *Repository) ActivateGroup(ctx context.Context, groupId uint32) error {
 }
 
 func (r *Repository) AddUserToGroup(ctx context.Context, userId, groupId uint32) error {
-	_, err := r.db.Query(ctx, AddUserToGroupQuery, userId, groupId)
+	_, err := r.db.Exec(ctx, AddUserToGroupQuery, userId, groupId)
 	if err != nil {
 		return errors.Wrap(err, "AddUserToGroup - unable to execute")
 	}
@@ -130,7 +130,7 @@ func (r *Repository) AddUserToGroup(ctx context.Context, userId, groupId uint32)
 }
 
 func (r *Repository) DeleteUserFromGroup(ctx context.Context, userId, groupId uint32) error {
-	_, err := r.db.Query(ctx, DeleteUserFromGroupQuery, userId, groupId)
+	_, err := r.db.Exec(ctx, DeleteUserFromGroupQuery, userId, groupId)
 	if err != nil {
 		return errors.Wrap(err, "DeleteUserFromGroup - unable to execute")
 	}

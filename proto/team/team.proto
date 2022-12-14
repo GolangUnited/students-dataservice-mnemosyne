@@ -59,11 +59,7 @@ message Id{
       required: ["id"]
     }
   };
-  string id = 1;
-}
-
-message TeamsRequest {
-  TeamListFilter filter = 1;
+  uint32 id = 1;
 }
 
 //Filter by teams
@@ -78,6 +74,7 @@ message TeamListFilter {
     google.protobuf.Timestamp start_date = 3;
     google.protobuf.Timestamp end_date = 4;
     bool deleted = 5;
+    string name = 6;
 }
 
 message UserTeamRequest {
