@@ -2,6 +2,7 @@ package interview
 
 import (
 	"context"
+	"fmt"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v5"
@@ -46,10 +47,10 @@ func (i *InterviewRepository) AddInterview(ctx context.Context, interview databa
 func (i *InterviewRepository) GetInterviews(ctx context.Context, interviewerId uint, studentId uint) (interviews []database.Interview, err error) {
 	sb := sqlbuilder.Select("*").From("interview")
 	if interviewerId > 0 {
-		sb.Where("interviewer_id = 1")
+		sb.Where(fmt.Sprintf("interviewer_id = %d", interviewerId))
 	}
 	if studentId > 0 {
-		sb.Where("student_id = 1")
+		sb.Where(fmt.Sprintf("student_id = %d", studentId))
 	}
 	query := sb.String()
 
