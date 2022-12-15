@@ -7,8 +7,8 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/service/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
-	model "github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/service.go
@@ -25,10 +25,9 @@ type Interview interface {
 // Mnemosyne has test signatures
 type Mnemosyne interface {
 	Interview
-	Test(context.Context, model.Request) (model.Response, error)
-	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
 	User
 	Group
+	Role
 }
 
 type User interface {
@@ -56,6 +55,15 @@ type Group interface {
 	ActivateGroup(context.Context, uint32) error
 	AddUserToGroup(ctx context.Context, userId, groupId uint32) error
 	DeleteUserFromGroup(ctx context.Context, userId, groupId uint32) error
+}
+
+type Role interface {
+	GetUserRoles(ctx context.Context, userId int) ([]modelRole.DB, error)
+	GetRoles(context.Context, *modelRole.Filter) ([]*modelRole.DB, error)
+	CreateRole(context.Context, *modelRole.DB) (uint32, error)
+	DeleteRole(context.Context, uint32) error
+	AddUserToRole(ctx context.Context, userId, roleId uint32) error
+	DeleteUserFromRole(ctx context.Context, userId, roleId uint32) error
 }
 
 // Service represents service level

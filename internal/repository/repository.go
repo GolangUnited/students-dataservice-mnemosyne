@@ -6,6 +6,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
@@ -23,10 +24,16 @@ type Mnemosyne interface {
 }
 
 type Role interface {
-	GetAllRoles(ctx context.Context) (roles []database.Role, err error)
-	GetUserRoles(ctx context.Context, userId int) (roles []database.Role, err error)
+	GetAllRoles(ctx context.Context) (roles []modelRole.DB, err error)
+	GetUserRoles(ctx context.Context, userId int) (roles []modelRole.DB, err error)
 	DeleteUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error)
 	AddUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error)
+
+	GetRoles(context.Context, *modelRole.Filter) ([]*modelRole.DB, error)
+	AddRole(context.Context, *modelRole.DB) (uint32, error)
+	DeleteRole(context.Context, uint32) error
+	AddUserToRole(ctx context.Context, userId, roleId uint32) error
+	DeleteUserFromRole(ctx context.Context, userId, roleId uint32) error
 }
 
 type User interface {

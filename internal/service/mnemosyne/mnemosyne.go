@@ -2,9 +2,9 @@ package mnemosyne
 
 import (
 	"context"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
-	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
@@ -40,7 +40,7 @@ func (s *Service) Test(ctx context.Context, req mnemosyne.Request) (resp mnemosy
 }
 
 // GetUserRoles get all user roles
-func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []database.Role, err error) {
+func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []modelRole.DB, err error) {
 	userRoles, err = s.reposRole.GetUserRoles(ctx, userId)
 	if err != nil {
 		return nil, err
