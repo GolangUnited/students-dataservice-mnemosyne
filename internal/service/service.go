@@ -8,7 +8,6 @@ import (
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
-	model "github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/service.go
@@ -22,10 +21,8 @@ type Interview interface {
 	ActivateInterview(ctx context.Context, interviewId uint) (interview database.Interview, err error)
 }
 
-// Mnemosyne has test signatures
 type Mnemosyne interface {
 	Interview
-	Test(context.Context, model.Request) (model.Response, error)
 	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
 	User
 	Group
@@ -60,12 +57,13 @@ type Group interface {
 
 // Service represents service level
 type Service struct {
+	//suggest to move here interfaces User, Group etc. and to remove Mnemosyne interface
 	Mnemosyne
 }
 
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group),
+		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group),
 	}
 }

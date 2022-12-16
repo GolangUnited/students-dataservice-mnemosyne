@@ -7,7 +7,6 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
 
-	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
@@ -16,11 +15,6 @@ import (
 )
 
 //go:generate mockgen -source=repository.go -destination=mocks/repository.go
-
-// Mnemosyne represents test interface
-type Mnemosyne interface {
-	Test(ctx context.Context) error
-}
 
 type Role interface {
 	GetAllRoles(ctx context.Context) (roles []database.Role, err error)
@@ -66,7 +60,6 @@ type Group interface {
 }
 
 type Repository struct {
-	Mnemosyne
 	Role
 	User
 	Interview
@@ -76,7 +69,6 @@ type Repository struct {
 // NewRepository created Repository struct
 func NewRepository(db *pgx.Conn) *Repository {
 	return &Repository{
-		Mnemosyne: mnemosyne.NewMnemosyne(db),
 		Role:      role.NewRoleRepository(db),
 		User:      user.NewUserRepository(db),
 		Interview: interview.NewInterviewRepository(db),

@@ -1066,51 +1066,6 @@
         ]
       }
     },
-    "/mnemosyne": {
-      "post": {
-        "summary": "Sends a greeting",
-        "operationId": "Mnemosyne_SayHello",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": "Intentionaly complicated message type to cover many features of Protobuf.",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/helloworldHelloRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
     "/resume/{id}": {
       "get": {
         "summary": "Get resume by ID",
@@ -2195,35 +2150,6 @@
       "title": "Id json schema",
       "required": [
         "id"
-      ]
-    },
-    "helloworldHelloReply": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        }
-      },
-      "title": "The response message containing the greetings"
-    },
-    "helloworldHelloRequest": {
-      "type": "object",
-      "example": {
-        "name": "Alice"
-      },
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "description": "Intentionaly complicated message type to cover many features of Protobuf.",
-      "title": "HelloRequest json schema",
-      "externalDocs": {
-        "description": "Find out more about ABitOfEverything",
-        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
-      },
-      "required": [
-        "name"
       ]
     },
     "interviewInterviewRequest": {
