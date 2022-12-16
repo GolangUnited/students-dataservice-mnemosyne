@@ -2,15 +2,44 @@ syntax = "proto3";
 
 package user;
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "common/common.proto";
 
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
 
-
-message Options {
+//Request options about composition of user's info
+message Option{
   bool withContacts = 1;
   bool withResume = 2;
+  bool withDeleted = 3;
+  uint32 team_id = 4;
+  uint32 group_id = 5;
 }
 
+//filter by role in da system
+message Role {
+string role = 1;
+}
+
+//filter for info related to user(primary user info, contacts and resume)
+message Filter{
+ string fieldName = 1;
+ string fieldValue = 2;
+}
+
+//Summary request options
+message UserRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Request options json schema"
+      required: ["option", "role","filter"]
+    }
+  };
+  Option option = 1;
+  Role role = 2;
+  Filter filter = 3;
+}
+
+//message containing info about user's contacts
 message Contact {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
@@ -24,17 +53,26 @@ message Contact {
   string communicationChannel = 4;
 }
 
+//message containing info about user's resume
 message Resume {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Resume json schema"
       required: "uploaded_resume"
       required: "mentors_note"
+      required: "experience"
+      required: "country"
+      required: "city"
+      required: "time_zone"
     }
   };
   string id = 1;
-  string uploaded_resume = 2;
+  common.File uploaded_resume = 2;
   string mentors_note = 3;
+  string experience = 4;
+  string country = 5;
+  string city = 6;
+  string time_zone = 7;
 }
 
 // The basic message containing the primary information about a user.
@@ -42,7 +80,7 @@ message User {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "User json schema"     
-      required: ["last_name","first_name","email", "language", "english_level","photo","country","city","time_zone"]
+      required: ["last_name","first_name","email", "language", "english_level","photo","country","city","time_zone","resume","contact"]
     }
   };
   string id = 1;
@@ -52,12 +90,9 @@ message User {
   string email = 5;
   string language = 6;
   string english_level = 7;
-  string photo = 8;
-  string experience = 9;
-  string country = 10;
-  string city = 11;
-  string time_zone = 12;
-  Contact contact = 13;
+  common.File photo = 8;
+  Resume resume = 9;
+  Contact contact = 10;
 }
 //The basic message containing information about all users from db
 message Users {
@@ -79,3 +114,14 @@ message Id{
   }; 
     string id = 1;
 }
+
+message Email{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Email json schema"     
+      required: ["email"]
+    }
+  }; 
+    string email = 1;
+}
+

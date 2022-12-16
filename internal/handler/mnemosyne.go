@@ -2,13 +2,15 @@ package handler
 
 import (
 	"context"
+
+	"log"
+
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	"github.com/NEKETSKY/mnemosyne/pkg/auth"
 	"github.com/NEKETSKY/mnemosyne/pkg/file"
 	"github.com/NEKETSKY/mnemosyne/pkg/operations"
 	"github.com/pkg/errors"
-	"log"
 )
 
 // SayHello implements api.MnemosyneServer

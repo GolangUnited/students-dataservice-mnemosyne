@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package team;
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/team";
+
+
+// The request message containing the primary information about a team for create & update.
+message TeamRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Team json schema"
+      required: ["group_id", "name", "start_date", "end_date", "project_id", "mentor_id"]
+    }
+  };
+  uint32 id =1;
+  uint32 group_id =2;
+  string name =3;
+  google.protobuf.Timestamp start_date =4;
+  google.protobuf.Timestamp end_date =5;
+  uint32 project_id = 6;
+  uint32 mentor_id = 7;
+}
+
+// The response message containing the all information about a team from DB.
+message TeamResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Team json schema"
+      required: []
+    }
+  };
+  uint32 id =1;
+  uint32 group_id =2;
+  string name =3;
+  google.protobuf.Timestamp start_date =4;
+  google.protobuf.Timestamp end_date =5;
+  uint32 project_id = 6;
+  uint32 mentor_id = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+  bool deleted = 10;
+}
+
+//The basic message containing information about all teams from db
+message Teams {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Teams json schema"
+      required: ["teams"]
+    }
+  };
+  repeated TeamResponse teams = 1;
+}
+//Basic request/response containing id of the team
+message Id{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Id json schema"
+      required: ["id"]
+    }
+  };
+  string id = 1;
+}
+
+message TeamsRequest {
+  TeamListFilter filter = 1;
+}
+
+//Filter by teams
+message TeamListFilter {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+      json_schema: {
+      title: "Filter teams json schema"
+          }
+      };
+    uint32 user_id = 1;
+    uint32 mentor_id = 2;
+    google.protobuf.Timestamp start_date = 3;
+    google.protobuf.Timestamp end_date = 4;
+    bool deleted = 5;
+}
+
+message UserTeamRequest {
+  uint32 user_id = 1;
+  uint32 team_id = 2;
+}

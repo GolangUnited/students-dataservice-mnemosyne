@@ -10,13 +10,14 @@ import (
 	context "context"
 	certificate "github.com/NEKETSKY/mnemosyne/pkg/api/certificate"
 	common "github.com/NEKETSKY/mnemosyne/pkg/api/common"
+	group "github.com/NEKETSKY/mnemosyne/pkg/api/group"
 	helloworld "github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	interview "github.com/NEKETSKY/mnemosyne/pkg/api/interview"
+	team "github.com/NEKETSKY/mnemosyne/pkg/api/team"
 	user "github.com/NEKETSKY/mnemosyne/pkg/api/user"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -33,37 +34,43 @@ type MnemosyneClient interface {
 	// Create new user
 	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
 	// Get all existing users
-	GetUsers(ctx context.Context, in *user.Options, opts ...grpc.CallOption) (*user.Users, error)
+	GetUsers(ctx context.Context, in *user.UserRequest, opts ...grpc.CallOption) (*user.Users, error)
 	// Get user by id
-	GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
+	GetUserById(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
+	// Get user by email
+	GetUserByEmail(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error)
 	// Update user's data
-	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*common.Empty, error)
 	// Delete user by id
-	DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	DeactivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Activate user by id
+	ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Get contact by ID
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*common.Empty, error)
 	// Get resume by ID
 	GetResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Resume, error)
 	// Update resume data
-	UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*common.Empty, error)
+	// Delete contacts by ID
+	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Delete resume by ID
+	DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	//	INTERVIEW
 	//
 	// Create new interview
-	CreateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*interview.Id, error)
+	CreateInterview(ctx context.Context, in *interview.InterviewRequest, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
 	// Get all existing interviews
-	GetInterviews(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*interview.Interview, error)
+	GetInterviews(ctx context.Context, in *interview.InterviewList, opts ...grpc.CallOption) (*interview.Interviews, error)
 	// Get interview by id
-	GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.Interview, error)
+	GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
 	// Update interview data
-	UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Delete contacts by ID
-	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Delete resume by ID
-	DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Delete interview by id
-	DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateInterview(ctx context.Context, in *interview.InterviewRequest, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
+	// Deactivate interview by id
+	DeactivateInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
+	// Activate interview by id
+	ActivateInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
 	//	Certificate
 	//
 	// Create new certificate
@@ -76,6 +83,38 @@ type MnemosyneClient interface {
 	DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Activate certificate by id
 	ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Get team by id
+	GetTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*team.TeamResponse, error)
+	// Get teams
+	GetTeams(ctx context.Context, in *team.TeamListFilter, opts ...grpc.CallOption) (*team.Teams, error)
+	// Create new team
+	CreateTeam(ctx context.Context, in *team.TeamRequest, opts ...grpc.CallOption) (*team.Id, error)
+	// Update team's data
+	UpdateTeam(ctx context.Context, in *team.TeamRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Deactivate team by id
+	DeactivateTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Activate team by id
+	ActivateTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Bind user to team
+	AddUserToTeam(ctx context.Context, in *team.UserTeamRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Unbind user from team
+	DeleteUserFromTeam(ctx context.Context, in *team.UserTeamRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Get group by id
+	GetGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*group.GroupResponse, error)
+	// Get groups
+	GetGroups(ctx context.Context, in *group.GroupsRequest, opts ...grpc.CallOption) (*group.Groups, error)
+	// Create new group
+	CreateGroup(ctx context.Context, in *group.GroupRequest, opts ...grpc.CallOption) (*group.Id, error)
+	// Update group's data
+	UpdateGroup(ctx context.Context, in *group.GroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Deactivate group by id
+	DeactivateGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Activate group by id
+	ActivateGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Bind user to group
+	AddUserToGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Unbind user from group
+	DeleteUserFromGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
 type mnemosyneClient struct {
@@ -104,7 +143,7 @@ func (c *mnemosyneClient) CreateUser(ctx context.Context, in *user.User, opts ..
 	return out, nil
 }
 
-func (c *mnemosyneClient) GetUsers(ctx context.Context, in *user.Options, opts ...grpc.CallOption) (*user.Users, error) {
+func (c *mnemosyneClient) GetUsers(ctx context.Context, in *user.UserRequest, opts ...grpc.CallOption) (*user.Users, error) {
 	out := new(user.Users)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetUsers", in, out, opts...)
 	if err != nil {
@@ -113,17 +152,26 @@ func (c *mnemosyneClient) GetUsers(ctx context.Context, in *user.Options, opts .
 	return out, nil
 }
 
-func (c *mnemosyneClient) GetUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error) {
+func (c *mnemosyneClient) GetUserById(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error) {
 	out := new(user.User)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetUserById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) GetUserByEmail(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error) {
+	out := new(user.User)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetUserByEmail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -131,9 +179,18 @@ func (c *mnemosyneClient) UpdateUser(ctx context.Context, in *user.User, opts ..
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUser", in, out, opts...)
+func (c *mnemosyneClient) DeactivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -149,8 +206,8 @@ func (c *mnemosyneClient) GetContact(ctx context.Context, in *user.Id, opts ...g
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateContact", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -167,8 +224,8 @@ func (c *mnemosyneClient) GetResume(ctx context.Context, in *user.Id, opts ...gr
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateResume", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -176,44 +233,8 @@ func (c *mnemosyneClient) UpdateResume(ctx context.Context, in *user.Resume, opt
 	return out, nil
 }
 
-func (c *mnemosyneClient) CreateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*interview.Id, error) {
-	out := new(interview.Id)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateInterview", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mnemosyneClient) GetInterviews(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*interview.Interview, error) {
-	out := new(interview.Interview)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetInterviews", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mnemosyneClient) GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.Interview, error) {
-	out := new(interview.Interview)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetInterview", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mnemosyneClient) UpdateInterview(ctx context.Context, in *interview.Interview, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateInterview", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mnemosyneClient) DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteContact", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -221,8 +242,8 @@ func (c *mnemosyneClient) DeleteContact(ctx context.Context, in *user.Id, opts .
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteResume", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -230,9 +251,54 @@ func (c *mnemosyneClient) DeleteResume(ctx context.Context, in *user.Id, opts ..
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteInterview", in, out, opts...)
+func (c *mnemosyneClient) CreateInterview(ctx context.Context, in *interview.InterviewRequest, opts ...grpc.CallOption) (*interview.InterviewResponse, error) {
+	out := new(interview.InterviewResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateInterview", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) GetInterviews(ctx context.Context, in *interview.InterviewList, opts ...grpc.CallOption) (*interview.Interviews, error) {
+	out := new(interview.Interviews)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetInterviews", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error) {
+	out := new(interview.InterviewResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetInterview", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) UpdateInterview(ctx context.Context, in *interview.InterviewRequest, opts ...grpc.CallOption) (*interview.InterviewResponse, error) {
+	out := new(interview.InterviewResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateInterview", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeactivateInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error) {
+	out := new(interview.InterviewResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateInterview", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) ActivateInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error) {
+	out := new(interview.InterviewResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateInterview", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -284,6 +350,150 @@ func (c *mnemosyneClient) ActivateCertificate(ctx context.Context, in *certifica
 	return out, nil
 }
 
+func (c *mnemosyneClient) GetTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*team.TeamResponse, error) {
+	out := new(team.TeamResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetTeam", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) GetTeams(ctx context.Context, in *team.TeamListFilter, opts ...grpc.CallOption) (*team.Teams, error) {
+	out := new(team.Teams)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetTeams", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) CreateTeam(ctx context.Context, in *team.TeamRequest, opts ...grpc.CallOption) (*team.Id, error) {
+	out := new(team.Id)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateTeam", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) UpdateTeam(ctx context.Context, in *team.TeamRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateTeam", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeactivateTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateTeam", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) ActivateTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateTeam", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) AddUserToTeam(ctx context.Context, in *team.UserTeamRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/AddUserToTeam", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeleteUserFromTeam(ctx context.Context, in *team.UserTeamRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUserFromTeam", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) GetGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*group.GroupResponse, error) {
+	out := new(group.GroupResponse)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) GetGroups(ctx context.Context, in *group.GroupsRequest, opts ...grpc.CallOption) (*group.Groups, error) {
+	out := new(group.Groups)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetGroups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) CreateGroup(ctx context.Context, in *group.GroupRequest, opts ...grpc.CallOption) (*group.Id, error) {
+	out := new(group.Id)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) UpdateGroup(ctx context.Context, in *group.GroupRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeactivateGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) ActivateGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) AddUserToGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/AddUserToGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeleteUserFromGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUserFromGroup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MnemosyneServer is the server API for Mnemosyne service.
 // All implementations should embed UnimplementedMnemosyneServer
 // for forward compatibility
@@ -293,37 +503,43 @@ type MnemosyneServer interface {
 	// Create new user
 	CreateUser(context.Context, *user.User) (*user.Id, error)
 	// Get all existing users
-	GetUsers(context.Context, *user.Options) (*user.Users, error)
+	GetUsers(context.Context, *user.UserRequest) (*user.Users, error)
 	// Get user by id
-	GetUser(context.Context, *user.Id) (*user.User, error)
+	GetUserById(context.Context, *user.Id) (*user.User, error)
+	// Get user by email
+	GetUserByEmail(context.Context, *user.Email) (*user.User, error)
 	// Update user's data
-	UpdateUser(context.Context, *user.User) (*wrapperspb.BoolValue, error)
+	UpdateUser(context.Context, *user.User) (*common.Empty, error)
 	// Delete user by id
-	DeleteUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
+	DeactivateUser(context.Context, *user.Id) (*common.Empty, error)
+	// Activate user by id
+	ActivateUser(context.Context, *user.Id) (*common.Empty, error)
 	// Get contact by ID
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
 	// Update contact's data
-	UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error)
+	UpdateContact(context.Context, *user.Contact) (*common.Empty, error)
 	// Get resume by ID
 	GetResume(context.Context, *user.Id) (*user.Resume, error)
 	// Update resume data
-	UpdateResume(context.Context, *user.Resume) (*wrapperspb.BoolValue, error)
+	UpdateResume(context.Context, *user.Resume) (*common.Empty, error)
+	// Delete contacts by ID
+	DeleteContact(context.Context, *user.Id) (*common.Empty, error)
+	// Delete resume by ID
+	DeleteResume(context.Context, *user.Id) (*common.Empty, error)
 	//	INTERVIEW
 	//
 	// Create new interview
-	CreateInterview(context.Context, *interview.Interview) (*interview.Id, error)
+	CreateInterview(context.Context, *interview.InterviewRequest) (*interview.InterviewResponse, error)
 	// Get all existing interviews
-	GetInterviews(context.Context, *common.Empty) (*interview.Interview, error)
+	GetInterviews(context.Context, *interview.InterviewList) (*interview.Interviews, error)
 	// Get interview by id
-	GetInterview(context.Context, *interview.Id) (*interview.Interview, error)
+	GetInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error)
 	// Update interview data
-	UpdateInterview(context.Context, *interview.Interview) (*wrapperspb.BoolValue, error)
-	// Delete contacts by ID
-	DeleteContact(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
-	// Delete resume by ID
-	DeleteResume(context.Context, *user.Id) (*wrapperspb.BoolValue, error)
-	// Delete interview by id
-	DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error)
+	UpdateInterview(context.Context, *interview.InterviewRequest) (*interview.InterviewResponse, error)
+	// Deactivate interview by id
+	DeactivateInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error)
+	// Activate interview by id
+	ActivateInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error)
 	//	Certificate
 	//
 	// Create new certificate
@@ -336,6 +552,38 @@ type MnemosyneServer interface {
 	DeactivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
 	// Activate certificate by id
 	ActivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
+	// Get team by id
+	GetTeam(context.Context, *team.Id) (*team.TeamResponse, error)
+	// Get teams
+	GetTeams(context.Context, *team.TeamListFilter) (*team.Teams, error)
+	// Create new team
+	CreateTeam(context.Context, *team.TeamRequest) (*team.Id, error)
+	// Update team's data
+	UpdateTeam(context.Context, *team.TeamRequest) (*common.Empty, error)
+	// Deactivate team by id
+	DeactivateTeam(context.Context, *team.Id) (*common.Empty, error)
+	// Activate team by id
+	ActivateTeam(context.Context, *team.Id) (*common.Empty, error)
+	// Bind user to team
+	AddUserToTeam(context.Context, *team.UserTeamRequest) (*common.Empty, error)
+	// Unbind user from team
+	DeleteUserFromTeam(context.Context, *team.UserTeamRequest) (*common.Empty, error)
+	// Get group by id
+	GetGroup(context.Context, *group.Id) (*group.GroupResponse, error)
+	// Get groups
+	GetGroups(context.Context, *group.GroupsRequest) (*group.Groups, error)
+	// Create new group
+	CreateGroup(context.Context, *group.GroupRequest) (*group.Id, error)
+	// Update group's data
+	UpdateGroup(context.Context, *group.GroupRequest) (*common.Empty, error)
+	// Deactivate group by id
+	DeactivateGroup(context.Context, *group.Id) (*common.Empty, error)
+	// Activate group by id
+	ActivateGroup(context.Context, *group.Id) (*common.Empty, error)
+	// Bind user to group
+	AddUserToGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error)
+	// Unbind user from group
+	DeleteUserFromGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -348,50 +596,59 @@ func (UnimplementedMnemosyneServer) SayHello(context.Context, *helloworld.HelloR
 func (UnimplementedMnemosyneServer) CreateUser(context.Context, *user.User) (*user.Id, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedMnemosyneServer) GetUsers(context.Context, *user.Options) (*user.Users, error) {
+func (UnimplementedMnemosyneServer) GetUsers(context.Context, *user.UserRequest) (*user.Users, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
 }
-func (UnimplementedMnemosyneServer) GetUser(context.Context, *user.Id) (*user.User, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+func (UnimplementedMnemosyneServer) GetUserById(context.Context, *user.Id) (*user.User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserById not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) GetUserByEmail(context.Context, *user.Email) (*user.User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByEmail not implemented")
+}
+func (UnimplementedMnemosyneServer) UpdateUser(context.Context, *user.User) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteUser(context.Context, *user.Id) (*wrapperspb.BoolValue, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+func (UnimplementedMnemosyneServer) DeactivateUser(context.Context, *user.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateUser not implemented")
+}
+func (UnimplementedMnemosyneServer) ActivateUser(context.Context, *user.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateUser not implemented")
 }
 func (UnimplementedMnemosyneServer) GetContact(context.Context, *user.Id) (*user.Contact, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContact not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) UpdateContact(context.Context, *user.Contact) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateContact not implemented")
 }
 func (UnimplementedMnemosyneServer) GetResume(context.Context, *user.Id) (*user.Resume, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetResume not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateResume(context.Context, *user.Resume) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) UpdateResume(context.Context, *user.Resume) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateResume not implemented")
 }
-func (UnimplementedMnemosyneServer) CreateInterview(context.Context, *interview.Interview) (*interview.Id, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateInterview not implemented")
-}
-func (UnimplementedMnemosyneServer) GetInterviews(context.Context, *common.Empty) (*interview.Interview, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetInterviews not implemented")
-}
-func (UnimplementedMnemosyneServer) GetInterview(context.Context, *interview.Id) (*interview.Interview, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetInterview not implemented")
-}
-func (UnimplementedMnemosyneServer) UpdateInterview(context.Context, *interview.Interview) (*wrapperspb.BoolValue, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateInterview not implemented")
-}
-func (UnimplementedMnemosyneServer) DeleteContact(context.Context, *user.Id) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) DeleteContact(context.Context, *user.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteContact not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteResume(context.Context, *user.Id) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) DeleteResume(context.Context, *user.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteResume not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteInterview(context.Context, *interview.Id) (*wrapperspb.BoolValue, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteInterview not implemented")
+func (UnimplementedMnemosyneServer) CreateInterview(context.Context, *interview.InterviewRequest) (*interview.InterviewResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateInterview not implemented")
+}
+func (UnimplementedMnemosyneServer) GetInterviews(context.Context, *interview.InterviewList) (*interview.Interviews, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInterviews not implemented")
+}
+func (UnimplementedMnemosyneServer) GetInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInterview not implemented")
+}
+func (UnimplementedMnemosyneServer) UpdateInterview(context.Context, *interview.InterviewRequest) (*interview.InterviewResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInterview not implemented")
+}
+func (UnimplementedMnemosyneServer) DeactivateInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateInterview not implemented")
+}
+func (UnimplementedMnemosyneServer) ActivateInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateInterview not implemented")
 }
 func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCertificate not implemented")
@@ -407,6 +664,54 @@ func (UnimplementedMnemosyneServer) DeactivateCertificate(context.Context, *cert
 }
 func (UnimplementedMnemosyneServer) ActivateCertificate(context.Context, *certificate.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateCertificate not implemented")
+}
+func (UnimplementedMnemosyneServer) GetTeam(context.Context, *team.Id) (*team.TeamResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTeam not implemented")
+}
+func (UnimplementedMnemosyneServer) GetTeams(context.Context, *team.TeamListFilter) (*team.Teams, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTeams not implemented")
+}
+func (UnimplementedMnemosyneServer) CreateTeam(context.Context, *team.TeamRequest) (*team.Id, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTeam not implemented")
+}
+func (UnimplementedMnemosyneServer) UpdateTeam(context.Context, *team.TeamRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTeam not implemented")
+}
+func (UnimplementedMnemosyneServer) DeactivateTeam(context.Context, *team.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateTeam not implemented")
+}
+func (UnimplementedMnemosyneServer) ActivateTeam(context.Context, *team.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateTeam not implemented")
+}
+func (UnimplementedMnemosyneServer) AddUserToTeam(context.Context, *team.UserTeamRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUserToTeam not implemented")
+}
+func (UnimplementedMnemosyneServer) DeleteUserFromTeam(context.Context, *team.UserTeamRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserFromTeam not implemented")
+}
+func (UnimplementedMnemosyneServer) GetGroup(context.Context, *group.Id) (*group.GroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroup not implemented")
+}
+func (UnimplementedMnemosyneServer) GetGroups(context.Context, *group.GroupsRequest) (*group.Groups, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroups not implemented")
+}
+func (UnimplementedMnemosyneServer) CreateGroup(context.Context, *group.GroupRequest) (*group.Id, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateGroup not implemented")
+}
+func (UnimplementedMnemosyneServer) UpdateGroup(context.Context, *group.GroupRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroup not implemented")
+}
+func (UnimplementedMnemosyneServer) DeactivateGroup(context.Context, *group.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateGroup not implemented")
+}
+func (UnimplementedMnemosyneServer) ActivateGroup(context.Context, *group.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateGroup not implemented")
+}
+func (UnimplementedMnemosyneServer) AddUserToGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUserToGroup not implemented")
+}
+func (UnimplementedMnemosyneServer) DeleteUserFromGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserFromGroup not implemented")
 }
 
 // UnsafeMnemosyneServer may be embedded to opt out of forward compatibility for this service.
@@ -457,7 +762,7 @@ func _Mnemosyne_CreateUser_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _Mnemosyne_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(user.Options)
+	in := new(user.UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -469,25 +774,43 @@ func _Mnemosyne_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/api.Mnemosyne/GetUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).GetUsers(ctx, req.(*user.Options))
+		return srv.(MnemosyneServer).GetUsers(ctx, req.(*user.UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Mnemosyne_GetUserById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(user.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MnemosyneServer).GetUser(ctx, in)
+		return srv.(MnemosyneServer).GetUserById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Mnemosyne/GetUser",
+		FullMethod: "/api.Mnemosyne/GetUserById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).GetUser(ctx, req.(*user.Id))
+		return srv.(MnemosyneServer).GetUserById(ctx, req.(*user.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_GetUserByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Email)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetUserByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetUserByEmail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetUserByEmail(ctx, req.(*user.Email))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -510,20 +833,38 @@ func _Mnemosyne_UpdateUser_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Mnemosyne_DeactivateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(user.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MnemosyneServer).DeleteUser(ctx, in)
+		return srv.(MnemosyneServer).DeactivateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeleteUser",
+		FullMethod: "/api.Mnemosyne/DeactivateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeleteUser(ctx, req.(*user.Id))
+		return srv.(MnemosyneServer).DeactivateUser(ctx, req.(*user.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_ActivateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).ActivateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/ActivateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).ActivateUser(ctx, req.(*user.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -600,78 +941,6 @@ func _Mnemosyne_UpdateResume_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_CreateInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(interview.Interview)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).CreateInterview(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/CreateInterview",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).CreateInterview(ctx, req.(*interview.Interview))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Mnemosyne_GetInterviews_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(common.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).GetInterviews(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/GetInterviews",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).GetInterviews(ctx, req.(*common.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Mnemosyne_GetInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(interview.Id)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).GetInterview(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/GetInterview",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).GetInterview(ctx, req.(*interview.Id))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Mnemosyne_UpdateInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(interview.Interview)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).UpdateInterview(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/UpdateInterview",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).UpdateInterview(ctx, req.(*interview.Interview))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Mnemosyne_DeleteContact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(user.Id)
 	if err := dec(in); err != nil {
@@ -708,20 +977,110 @@ func _Mnemosyne_DeleteResume_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_DeleteInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Mnemosyne_CreateInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(interview.InterviewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).CreateInterview(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/CreateInterview",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).CreateInterview(ctx, req.(*interview.InterviewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_GetInterviews_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(interview.InterviewList)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetInterviews(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetInterviews",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetInterviews(ctx, req.(*interview.InterviewList))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_GetInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(interview.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MnemosyneServer).DeleteInterview(ctx, in)
+		return srv.(MnemosyneServer).GetInterview(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeleteInterview",
+		FullMethod: "/api.Mnemosyne/GetInterview",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeleteInterview(ctx, req.(*interview.Id))
+		return srv.(MnemosyneServer).GetInterview(ctx, req.(*interview.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_UpdateInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(interview.InterviewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).UpdateInterview(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/UpdateInterview",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).UpdateInterview(ctx, req.(*interview.InterviewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeactivateInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(interview.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeactivateInterview(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeactivateInterview",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeactivateInterview(ctx, req.(*interview.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_ActivateInterview_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(interview.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).ActivateInterview(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/ActivateInterview",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).ActivateInterview(ctx, req.(*interview.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -816,6 +1175,294 @@ func _Mnemosyne_ActivateCertificate_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mnemosyne_GetTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetTeam(ctx, req.(*team.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_GetTeams_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.TeamListFilter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetTeams(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetTeams",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetTeams(ctx, req.(*team.TeamListFilter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_CreateTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.TeamRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).CreateTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/CreateTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).CreateTeam(ctx, req.(*team.TeamRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_UpdateTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.TeamRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).UpdateTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/UpdateTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).UpdateTeam(ctx, req.(*team.TeamRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeactivateTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeactivateTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeactivateTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeactivateTeam(ctx, req.(*team.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_ActivateTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).ActivateTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/ActivateTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).ActivateTeam(ctx, req.(*team.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_AddUserToTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.UserTeamRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).AddUserToTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/AddUserToTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).AddUserToTeam(ctx, req.(*team.UserTeamRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeleteUserFromTeam_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(team.UserTeamRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeleteUserFromTeam(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeleteUserFromTeam",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeleteUserFromTeam(ctx, req.(*team.UserTeamRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_GetGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetGroup(ctx, req.(*group.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_GetGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.GroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetGroups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetGroups(ctx, req.(*group.GroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_CreateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.GroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).CreateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/CreateGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).CreateGroup(ctx, req.(*group.GroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_UpdateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.GroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).UpdateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/UpdateGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).UpdateGroup(ctx, req.(*group.GroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeactivateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeactivateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeactivateGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeactivateGroup(ctx, req.(*group.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_ActivateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).ActivateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/ActivateGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).ActivateGroup(ctx, req.(*group.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_AddUserToGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.UserGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).AddUserToGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/AddUserToGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).AddUserToGroup(ctx, req.(*group.UserGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeleteUserFromGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(group.UserGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeleteUserFromGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeleteUserFromGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeleteUserFromGroup(ctx, req.(*group.UserGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mnemosyne_ServiceDesc is the grpc.ServiceDesc for Mnemosyne service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -836,16 +1483,24 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_GetUsers_Handler,
 		},
 		{
-			MethodName: "GetUser",
-			Handler:    _Mnemosyne_GetUser_Handler,
+			MethodName: "GetUserById",
+			Handler:    _Mnemosyne_GetUserById_Handler,
+		},
+		{
+			MethodName: "GetUserByEmail",
+			Handler:    _Mnemosyne_GetUserByEmail_Handler,
 		},
 		{
 			MethodName: "UpdateUser",
 			Handler:    _Mnemosyne_UpdateUser_Handler,
 		},
 		{
-			MethodName: "DeleteUser",
-			Handler:    _Mnemosyne_DeleteUser_Handler,
+			MethodName: "DeactivateUser",
+			Handler:    _Mnemosyne_DeactivateUser_Handler,
+		},
+		{
+			MethodName: "ActivateUser",
+			Handler:    _Mnemosyne_ActivateUser_Handler,
 		},
 		{
 			MethodName: "GetContact",
@@ -864,6 +1519,14 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_UpdateResume_Handler,
 		},
 		{
+			MethodName: "DeleteContact",
+			Handler:    _Mnemosyne_DeleteContact_Handler,
+		},
+		{
+			MethodName: "DeleteResume",
+			Handler:    _Mnemosyne_DeleteResume_Handler,
+		},
+		{
 			MethodName: "CreateInterview",
 			Handler:    _Mnemosyne_CreateInterview_Handler,
 		},
@@ -880,16 +1543,12 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_UpdateInterview_Handler,
 		},
 		{
-			MethodName: "DeleteContact",
-			Handler:    _Mnemosyne_DeleteContact_Handler,
+			MethodName: "DeactivateInterview",
+			Handler:    _Mnemosyne_DeactivateInterview_Handler,
 		},
 		{
-			MethodName: "DeleteResume",
-			Handler:    _Mnemosyne_DeleteResume_Handler,
-		},
-		{
-			MethodName: "DeleteInterview",
-			Handler:    _Mnemosyne_DeleteInterview_Handler,
+			MethodName: "ActivateInterview",
+			Handler:    _Mnemosyne_ActivateInterview_Handler,
 		},
 		{
 			MethodName: "CreateCertificate",
@@ -910,6 +1569,70 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ActivateCertificate",
 			Handler:    _Mnemosyne_ActivateCertificate_Handler,
+		},
+		{
+			MethodName: "GetTeam",
+			Handler:    _Mnemosyne_GetTeam_Handler,
+		},
+		{
+			MethodName: "GetTeams",
+			Handler:    _Mnemosyne_GetTeams_Handler,
+		},
+		{
+			MethodName: "CreateTeam",
+			Handler:    _Mnemosyne_CreateTeam_Handler,
+		},
+		{
+			MethodName: "UpdateTeam",
+			Handler:    _Mnemosyne_UpdateTeam_Handler,
+		},
+		{
+			MethodName: "DeactivateTeam",
+			Handler:    _Mnemosyne_DeactivateTeam_Handler,
+		},
+		{
+			MethodName: "ActivateTeam",
+			Handler:    _Mnemosyne_ActivateTeam_Handler,
+		},
+		{
+			MethodName: "AddUserToTeam",
+			Handler:    _Mnemosyne_AddUserToTeam_Handler,
+		},
+		{
+			MethodName: "DeleteUserFromTeam",
+			Handler:    _Mnemosyne_DeleteUserFromTeam_Handler,
+		},
+		{
+			MethodName: "GetGroup",
+			Handler:    _Mnemosyne_GetGroup_Handler,
+		},
+		{
+			MethodName: "GetGroups",
+			Handler:    _Mnemosyne_GetGroups_Handler,
+		},
+		{
+			MethodName: "CreateGroup",
+			Handler:    _Mnemosyne_CreateGroup_Handler,
+		},
+		{
+			MethodName: "UpdateGroup",
+			Handler:    _Mnemosyne_UpdateGroup_Handler,
+		},
+		{
+			MethodName: "DeactivateGroup",
+			Handler:    _Mnemosyne_DeactivateGroup_Handler,
+		},
+		{
+			MethodName: "ActivateGroup",
+			Handler:    _Mnemosyne_ActivateGroup_Handler,
+		},
+		{
+			MethodName: "AddUserToGroup",
+			Handler:    _Mnemosyne_AddUserToGroup_Handler,
+		},
+		{
+			MethodName: "DeleteUserFromGroup",
+			Handler:    _Mnemosyne_DeleteUserFromGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
