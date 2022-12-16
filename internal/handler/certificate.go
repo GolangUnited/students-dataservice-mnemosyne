@@ -43,8 +43,8 @@ func (h *Handler) GetCertificates(ctx context.Context, in *certificate.Filter) (
 }
 
 func (h *Handler) UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest) (*common.Empty, error) {
-	certificateDb, err := database.CertificateFromProto(in)
-	err = h.services.Mnemosyne.UpdateCertificate(ctx, certificateDb)
+	certificateDb, _ := database.CertificateFromProto(in)
+	err := h.services.Mnemosyne.UpdateCertificate(ctx, certificateDb)
 	if err != nil {
 		return emptyProto, status.Error(codes.Internal, err.Error())
 	}
