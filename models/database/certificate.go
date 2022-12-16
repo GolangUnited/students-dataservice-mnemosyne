@@ -11,6 +11,9 @@ type Certificate struct {
 	UserId     uint32    `json:"user_id" db:"user_id"`
 	IssueDate  time.Time `json:"issue_date" db:"issue_date"`
 	ExpireDate time.Time `json:"expire_date" db:"expire_date"`
+	//CreatedAt  time.Time `json:"created_at" db:"created_at"`
+	//UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
+	//Deleted    bool      `json:"deleted" db:"deleted"`
 }
 
 func (c *Certificate) CertificateToProto() *certificate.CertificateResponse {
@@ -27,6 +30,6 @@ func CertificateFromProto(protoCertificate *certificate.CertificateRequest) (c C
 	c.UserId = protoCertificate.GetUserId()
 	c.IssueDate = protoCertificate.IssueDate.AsTime()
 	c.ExpireDate = protoCertificate.ExpireDate.AsTime()
-	
+
 	return
 }

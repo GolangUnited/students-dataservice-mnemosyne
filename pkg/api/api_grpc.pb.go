@@ -71,11 +71,11 @@ type MnemosyneClient interface {
 	// Get all existing certificates
 	GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error)
 	// Update certificate data
-	UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
+	UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*common.Empty, error)
 	// Deactivate certificate by id
-	DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
+	DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Activate certificate by id
-	ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
+	ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
 type mnemosyneClient struct {
@@ -257,8 +257,8 @@ func (c *mnemosyneClient) GetCertificates(ctx context.Context, in *certificate.F
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
-	out := new(certificate.CertificateResponse)
+func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -266,8 +266,8 @@ func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
-	out := new(certificate.CertificateResponse)
+func (c *mnemosyneClient) DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -275,8 +275,8 @@ func (c *mnemosyneClient) DeactivateCertificate(ctx context.Context, in *certifi
 	return out, nil
 }
 
-func (c *mnemosyneClient) ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
-	out := new(certificate.CertificateResponse)
+func (c *mnemosyneClient) ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -331,11 +331,11 @@ type MnemosyneServer interface {
 	// Get all existing certificates
 	GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error)
 	// Update certificate data
-	UpdateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error)
+	UpdateCertificate(context.Context, *certificate.CertificateRequest) (*common.Empty, error)
 	// Deactivate certificate by id
-	DeactivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error)
+	DeactivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
 	// Activate certificate by id
-	ActivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error)
+	ActivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -399,13 +399,13 @@ func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certific
 func (UnimplementedMnemosyneServer) GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCertificates not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error) {
+func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.CertificateRequest) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCertificate not implemented")
 }
-func (UnimplementedMnemosyneServer) DeactivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error) {
+func (UnimplementedMnemosyneServer) DeactivateCertificate(context.Context, *certificate.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeactivateCertificate not implemented")
 }
-func (UnimplementedMnemosyneServer) ActivateCertificate(context.Context, *certificate.Id) (*certificate.CertificateResponse, error) {
+func (UnimplementedMnemosyneServer) ActivateCertificate(context.Context, *certificate.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateCertificate not implemented")
 }
 

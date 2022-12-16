@@ -31,6 +31,9 @@ message CertificateResponse {
   uint32 user_id = 2;
   google.protobuf.Timestamp issue_date = 3;
   google.protobuf.Timestamp expire_date = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+  bool deleted = 7;
 
 }
 //The basic message containing information about all certificates from db

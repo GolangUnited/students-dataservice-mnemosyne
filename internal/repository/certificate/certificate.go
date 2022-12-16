@@ -19,7 +19,7 @@ func NewCertificateRepository(db *pgx.Conn) *CertificateRepository {
 	}
 }
 
-func (c *CertificateRepository) CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error) {
+func (c *CertificateRepository) CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId uint32, err error) {
 	row := c.db.QueryRow(
 		ctx,
 		AddCertificate,
@@ -38,7 +38,7 @@ func (c *CertificateRepository) CreateCertificate(ctx context.Context, certifica
 
 	return
 }
-func (c *CertificateRepository) GetCertificateById(ctx context.Context, certificateId int) (certificate database.Certificate, err error) {
+func (c *CertificateRepository) GetCertificateById(ctx context.Context, certificateId uint32) (certificate database.Certificate, err error) {
 
 	rows, err := c.db.Query(ctx, GetCertificateById, certificateId)
 	if err != nil {
@@ -69,14 +69,15 @@ func (c *CertificateRepository) UpdateCertificates(ctx context.Context, certific
 		certificate.UserId,
 		certificate.IssueDate,
 		certificate.ExpireDate,
+		certificate.Id,
 	)
 	if err != nil {
 		return errors.Wrap(err, "UpdateCertificates - unable to execute update statement")
 	}
-	return err
+	return
 }
 
-func (c *CertificateRepository) ActivateCertificate(ctx context.Context, certificateId int) (err error) {
+func (c *CertificateRepository) ActivateCertificate(ctx context.Context, certificateId uint32) (err error) {
 	_, err = c.db.Exec(ctx, ActivateById, certificateId, time.Now())
 	if err != nil {
 		return errors.Wrapf(err, "unable to set certificate %d as active", certificateId)
@@ -84,7 +85,7 @@ func (c *CertificateRepository) ActivateCertificate(ctx context.Context, certifi
 	return err
 }
 
-func (c *CertificateRepository) DeactivateCertificate(ctx context.Context, certificateId int) (err error) {
+func (c *CertificateRepository) DeactivateCertificate(ctx context.Context, certificateId uint32) (err error) {
 	_, err = c.db.Exec(ctx, DeactivateById, certificateId, time.Now())
 	if err != nil {
 		return errors.Wrapf(err, "unable to set certificate %d as deleted", certificateId)

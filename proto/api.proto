@@ -240,22 +240,22 @@ service Mnemosyne {
 
 
   //Update certificate data
-  rpc UpdateCertificate (certificate.CertificateRequest) returns (certificate.CertificateResponse){
+  rpc UpdateCertificate (certificate.CertificateRequest) returns (common.Empty){
     option (google.api.http) = {
       put: "/certificate/{id}"
       body: "*"
     };
   };
   //Deactivate certificate by id
-  rpc DeactivateCertificate(certificate.Id) returns (certificate.CertificateResponse){
+  rpc DeactivateCertificate(certificate.Id) returns (common.Empty){
     option (google.api.http) = {
-      put: "/interview/{id}/deactivate"
+      put: "/certificate/{id}/deactivate"
     };
   };
   //Activate certificate by id
-  rpc ActivateCertificate(certificate.Id) returns (certificate.CertificateResponse){
+  rpc ActivateCertificate(certificate.Id) returns (common.Empty){
     option (google.api.http) = {
-      put: "/interview/{id}/activate"
+      put: "/certificate/{id}/activate"
     };
   };
 }

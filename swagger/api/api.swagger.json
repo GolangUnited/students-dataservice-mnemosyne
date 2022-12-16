@@ -119,7 +119,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/certificateCertificateResponse"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -176,6 +176,92 @@
                 "expireDate"
               ]
             }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/certificate/{id}/activate": {
+      "put": {
+        "summary": "Activate certificate by id",
+        "operationId": "Mnemosyne_ActivateCertificate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/certificate/{id}/deactivate": {
+      "put": {
+        "summary": "Deactivate certificate by id",
+        "operationId": "Mnemosyne_DeactivateCertificate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -570,92 +656,6 @@
                 "question"
               ]
             }
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
-    "/interview/{id}/activate": {
-      "put": {
-        "summary": "Activate certificate by id",
-        "operationId": "Mnemosyne_ActivateCertificate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/certificateCertificateResponse"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
-    "/interview/{id}/deactivate": {
-      "put": {
-        "summary": "Deactivate certificate by id",
-        "operationId": "Mnemosyne_DeactivateCertificate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/certificateCertificateResponse"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
           }
         ],
         "tags": [
@@ -1106,6 +1106,17 @@
         "expireDate": {
           "type": "string",
           "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deleted": {
+          "type": "boolean"
         }
       },
       "title": "Certificate json schema",
@@ -1129,6 +1140,10 @@
       "required": [
         "Certificates"
       ]
+    },
+    "commonEmpty": {
+      "type": "object",
+      "title": "transitory message for rpc methods that temporary get or return nothing"
     },
     "helloworldHelloReply": {
       "type": "object",

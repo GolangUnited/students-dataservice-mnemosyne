@@ -1606,7 +1606,7 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/DeactivateCertificate", runtime.WithHTTPPathPattern("/interview/{id}/deactivate"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/DeactivateCertificate", runtime.WithHTTPPathPattern("/certificate/{id}/deactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1631,7 +1631,7 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/ActivateCertificate", runtime.WithHTTPPathPattern("/interview/{id}/activate"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/ActivateCertificate", runtime.WithHTTPPathPattern("/certificate/{id}/activate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2135,7 +2135,7 @@ func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/DeactivateCertificate", runtime.WithHTTPPathPattern("/interview/{id}/deactivate"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/DeactivateCertificate", runtime.WithHTTPPathPattern("/certificate/{id}/deactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2157,7 +2157,7 @@ func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/ActivateCertificate", runtime.WithHTTPPathPattern("/interview/{id}/activate"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/ActivateCertificate", runtime.WithHTTPPathPattern("/certificate/{id}/activate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2217,9 +2217,9 @@ var (
 
 	pattern_Mnemosyne_UpdateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"certificate", "id"}, ""))
 
-	pattern_Mnemosyne_DeactivateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"interview", "id", "deactivate"}, ""))
+	pattern_Mnemosyne_DeactivateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"certificate", "id", "deactivate"}, ""))
 
-	pattern_Mnemosyne_ActivateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"interview", "id", "activate"}, ""))
+	pattern_Mnemosyne_ActivateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"certificate", "id", "activate"}, ""))
 )
 
 var (

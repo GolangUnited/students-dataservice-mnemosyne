@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/pkg/api/certificate"
+	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -29,7 +30,7 @@ func (h *Handler) GetCertificates(ctx context.Context, in *certificate.Filter) (
 		return certificates, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	certificateDb, err := h.services.Mnemosyne.GetCertificates(ctx, uint32(in.GetUserId()))
+	certificateDb, err := h.services.Mnemosyne.GetCertificates(ctx, in.GetUserId())
 
 	if err != nil {
 		return certificates, status.Error(codes.Internal, err.Error())
@@ -41,30 +42,27 @@ func (h *Handler) GetCertificates(ctx context.Context, in *certificate.Filter) (
 	return &certificate.Certificates{Certificates: slice}, err
 }
 
-func (h *Handler) UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest) (cert *certificate.CertificateResponse, err error) {
+func (h *Handler) UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest) (*common.Empty, error) {
 	certificateDb, err := database.CertificateFromProto(in)
-	if err != nil {
-		return cert, status.Error(codes.InvalidArgument, err.Error())
-	}
 	err = h.services.Mnemosyne.UpdateCertificate(ctx, certificateDb)
 	if err != nil {
-		return cert, status.Error(codes.Internal, err.Error())
+		return emptyProto, status.Error(codes.Internal, err.Error())
 	}
-	return
+	return emptyProto, nil
 }
 
-func (h *Handler) DeactivateCertificate(ctx context.Context, in *certificate.Id) (certificates *certificate.CertificateResponse, err error) {
-	err = h.services.Mnemosyne.DeactivateCertificate(ctx, int(in.GetId()))
+func (h *Handler) DeactivateCertificate(ctx context.Context, in *certificate.Id) (*common.Empty, error) {
+	err := h.services.Mnemosyne.DeactivateCertificate(ctx, in.GetId())
 	if err != nil {
-		return certificates, status.Error(codes.Internal, err.Error())
+		return emptyProto, status.Error(codes.Internal, err.Error())
 	}
-	return
+	return emptyProto, nil
 }
 
-func (h *Handler) ActivateCertificate(ctx context.Context, in *certificate.Id) (certificates *certificate.CertificateResponse, err error) {
-	err = h.services.Mnemosyne.ActivateCertificate(ctx, int(in.GetId()))
+func (h *Handler) ActivateCertificate(ctx context.Context, in *certificate.Id) (*common.Empty, error) {
+	err := h.services.Mnemosyne.ActivateCertificate(ctx, in.GetId())
 	if err != nil {
-		return certificates, status.Error(codes.Internal, err.Error())
+		return emptyProto, status.Error(codes.Internal, err.Error())
 	}
-	return
+	return emptyProto, nil
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/NEKETSKY/mnemosyne/internal/service"
 	"github.com/NEKETSKY/mnemosyne/pkg/api"
+	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
 )
 
 // Handler struct with grpc api server
@@ -20,3 +21,7 @@ func NewHandler(ctx context.Context, services *service.Service) *Handler {
 		services: *services,
 	}
 }
+
+var (
+	emptyProto = &common.Empty{}
+)

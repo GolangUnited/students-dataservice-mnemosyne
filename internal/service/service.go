@@ -19,11 +19,11 @@ type Mnemosyne interface {
 }
 
 type Certificate interface {
-	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId int, err error)
+	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId uint32, err error)
 	GetCertificates(ctx context.Context, userId uint32) (certificates []database.Certificate, err error)
 	UpdateCertificate(ctx context.Context, certificate database.Certificate) (err error)
-	DeactivateCertificate(ctx context.Context, certificateId int) (err error)
-	ActivateCertificate(ctx context.Context, certificateId int) (err error)
+	DeactivateCertificate(ctx context.Context, certificateId uint32) (err error)
+	ActivateCertificate(ctx context.Context, certificateId uint32) (err error)
 }
 
 // Service represents service level
