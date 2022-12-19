@@ -2,7 +2,6 @@ package interview
 
 import (
 	"context"
-	"fmt"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v5"
@@ -47,14 +46,14 @@ func (i *InterviewRepository) AddInterview(ctx context.Context, interview databa
 func (i *InterviewRepository) GetInterviews(ctx context.Context, interviewerId uint, studentId uint) (interviews []database.Interview, err error) {
 	sb := sqlbuilder.Select("*").From("interview")
 	if interviewerId > 0 {
-		sb.Where(fmt.Sprintf("interviewer_id = %d", interviewerId))
+		sb.Where(sb.Equal("interviewer_id", interviewerId))
 	}
 	if studentId > 0 {
-		sb.Where(fmt.Sprintf("student_id = %d", studentId))
+		sb.Where(sb.Equal("student_id", studentId))
 	}
-	query := sb.String()
 
-	rows, _ := i.db.Query(ctx, query)
+	sql, args := sb.BuildWithFlavor(sqlbuilder.PostgreSQL)
+	rows, err := i.db.Query(ctx, sql, args...)
 	if err != nil {
 		return nil, errors.Wrap(err, "GetAllInterviews query error")
 	}
