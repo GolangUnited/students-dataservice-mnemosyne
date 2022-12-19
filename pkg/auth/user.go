@@ -2,12 +2,12 @@ package auth
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/database"
+	"github.com/NEKETSKY/mnemosyne/models/database/role"
 )
 
 type User struct {
 	Id    int
-	Roles []database.Role
+	Roles []role.DB
 }
 
 type userKey struct{}
