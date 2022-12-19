@@ -5,14 +5,14 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/certificate"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/team"
-	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
-	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
+	"github.com/NEKETSKY/mnemosyne/internal/repository/team"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/jackc/pgx/v5"
 )
@@ -73,7 +73,6 @@ type Group interface {
 	DeleteUserFromGroup(ctx context.Context, userId, groupId uint32) error
 }
 
-
 type Certificate interface {
 	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId uint32, err error)
 	GetCertificateById(ctx context.Context, certificateId uint32) (certificate database.Certificate, err error)
@@ -81,6 +80,7 @@ type Certificate interface {
 	UpdateCertificates(ctx context.Context, certificate database.Certificate) (err error)
 	DeactivateCertificate(ctx context.Context, certificateId uint32) (err error)
 	ActivateCertificate(ctx context.Context, certificateId uint32) (err error)
+}
 
 type Team interface {
 	GetTeamById(context.Context, uint32) (*modelTeam.DB, error)
@@ -91,7 +91,6 @@ type Team interface {
 	ActivateTeam(context.Context, uint32) error
 	AddUserToTeam(ctx context.Context, userId, teamId uint32) error
 	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
-
 }
 
 type Repository struct {
@@ -107,13 +106,12 @@ type Repository struct {
 // NewRepository created Repository struct
 func NewRepository(db *pgx.Conn) *Repository {
 	return &Repository{
-	Mnemosyne:   mnemosyne.NewMnemosyne(db),
+		Mnemosyne:   mnemosyne.NewMnemosyne(db),
 		Role:        role.NewRoleRepository(db),
 		User:        user.NewUserRepository(db),
 		Interview:   interview.NewInterviewRepository(db),
 		Certificate: certificate.NewCertificateRepository(db),
 		Group:       group.NewRepository(db),
-		Team:      team.NewRepository(db),
-
+		Team:        team.NewRepository(db),
 	}
 }
