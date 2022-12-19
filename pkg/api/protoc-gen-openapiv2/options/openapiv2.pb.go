@@ -1359,7 +1359,8 @@ type JSONSchema struct {
 	// be imported into the protofile. If no message is identified, the Ref will
 	// be used verbatim in the output.
 	// For example:
-	//  `ref: ".google.protobuf.Timestamp"`.
+	//
+	//	`ref: ".google.protobuf.Timestamp"`.
 	Ref string `protobuf:"bytes,3,opt,name=ref,proto3" json:"ref,omitempty"`
 	// The title of the schema.
 	Title string `protobuf:"bytes,5,opt,name=title,proto3" json:"title,omitempty"`

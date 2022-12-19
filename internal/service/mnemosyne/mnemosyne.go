@@ -12,12 +12,13 @@ import (
 
 // Service implemented Mnemosyne interface
 type Service struct {
-	mnemosyne      repository.Mnemosyne
-	reposRole      repository.Role
-	reposUser      repository.User
-	reposInterview repository.Interview
-	reposGroup     repository.Group
-	reposTeam      repository.Team
+	mnemosyne        repository.Mnemosyne
+	reposRole        repository.Role
+	reposUser        repository.User
+	reposInterview   repository.Interview
+	reposGroup       repository.Group
+	reposCertificate repository.Certificate
+	reposTeam        repository.Team
 }
 
 // NewService created Service struct
@@ -27,15 +28,17 @@ func NewService(
 	reposUser repository.User,
 	reposInterview repository.Interview,
 	reposGroup repository.Group,
+	reposCertificate repository.Certificate,
 	reposTeam repository.Team,
 ) *Service {
 	return &Service{
-		mnemosyne:      mnemosyne,
-		reposRole:      reposRole,
-		reposUser:      reposUser,
-		reposInterview: reposInterview,
-		reposGroup:     reposGroup,
-		reposTeam:      reposTeam,
+		mnemosyne:        mnemosyne,
+		reposRole:        reposRole,
+		reposUser:        reposUser,
+		reposInterview:   reposInterview,
+		reposGroup:       reposGroup,
+		reposCertificate: reposCertificate,
+		reposTeam:        reposTeam,
 	}
 }
 

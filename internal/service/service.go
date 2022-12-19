@@ -7,8 +7,8 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/service/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
-	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 )
 
@@ -26,10 +26,19 @@ type Interview interface {
 // Mnemosyne has test signatures
 type Mnemosyne interface {
 	Interview
+	Certificate
 	User
 	Group
 	Role
 	Team
+}
+
+type Certificate interface {
+	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId uint32, err error)
+	GetCertificates(ctx context.Context, userId uint32) (certificates []database.Certificate, err error)
+	UpdateCertificate(ctx context.Context, certificate database.Certificate) (err error)
+	DeactivateCertificate(ctx context.Context, certificateId uint32) (err error)
+	ActivateCertificate(ctx context.Context, certificateId uint32) (err error)
 }
 
 type User interface {
@@ -87,6 +96,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group, repos.Team),
+		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team),
 	}
 }
