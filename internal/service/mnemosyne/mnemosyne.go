@@ -17,17 +17,25 @@ type Service struct {
 	reposUser      repository.User
 	reposInterview repository.Interview
 	reposGroup     repository.Group
+	reposTeam      repository.Team
 }
 
 // NewService created Service struct
-func NewService(mnemosyne repository.Mnemosyne, reposRole repository.Role, reposUser repository.User,
-	reposInterview repository.Interview, reposGroup repository.Group) *Service {
+func NewService(
+	mnemosyne repository.Mnemosyne,
+	reposRole repository.Role,
+	reposUser repository.User,
+	reposInterview repository.Interview,
+	reposGroup repository.Group,
+	reposTeam repository.Team,
+) *Service {
 	return &Service{
 		mnemosyne:      mnemosyne,
 		reposRole:      reposRole,
 		reposUser:      reposUser,
 		reposInterview: reposInterview,
 		reposGroup:     reposGroup,
+		reposTeam:      reposTeam,
 	}
 }
 

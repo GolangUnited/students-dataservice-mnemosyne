@@ -11,16 +11,15 @@ message TeamRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Team json schema"
-      required: ["group_id", "name", "start_date", "end_date", "project_id", "mentor_id"]
+      required: ["group_id", "name", "start_date", "end_date", "mentor_id"]
     }
   };
-  uint32 id =1;
-  uint32 group_id =2;
-  string name =3;
-  google.protobuf.Timestamp start_date =4;
-  google.protobuf.Timestamp end_date =5;
-  uint32 project_id = 6;
-  uint32 mentor_id = 7;
+  uint32 id = 1;
+  uint32 group_id = 2;
+  string name = 3;
+  google.protobuf.Timestamp start_date = 4;
+  google.protobuf.Timestamp end_date = 5;
+  uint32 mentor_id = 6;
 }
 
 // The response message containing the all information about a team from DB.
@@ -31,16 +30,15 @@ message TeamResponse {
       required: []
     }
   };
-  uint32 id =1;
-  uint32 group_id =2;
-  string name =3;
-  google.protobuf.Timestamp start_date =4;
-  google.protobuf.Timestamp end_date =5;
-  uint32 project_id = 6;
-  uint32 mentor_id = 7;
-  google.protobuf.Timestamp created_at = 8;
-  google.protobuf.Timestamp updated_at = 9;
-  bool deleted = 10;
+  uint32 id = 1;
+  uint32 group_id = 2;
+  string name = 3;
+  google.protobuf.Timestamp start_date = 4;
+  google.protobuf.Timestamp end_date = 5;
+  uint32 mentor_id = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  bool deleted = 9;
 }
 
 //The basic message containing information about all teams from db
@@ -61,11 +59,7 @@ message Id{
       required: ["id"]
     }
   };
-  string id = 1;
-}
-
-message TeamsRequest {
-  TeamListFilter filter = 1;
+  uint32 id = 1;
 }
 
 //Filter by teams
@@ -80,6 +74,7 @@ message TeamListFilter {
     google.protobuf.Timestamp start_date = 3;
     google.protobuf.Timestamp end_date = 4;
     bool deleted = 5;
+    string name = 6;
 }
 
 message UserTeamRequest {

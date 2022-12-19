@@ -25,7 +25,7 @@ func (h *Handler) Auth(ctx context.Context) (context.Context, error) {
 			userRoles, err := h.services.GetUserRoles(ctx, int(userId))
 			if err != nil {
 				logger.Infof("get user (%d) roles error: %s", userId, err.Error())
-				return nil, status.Error(codes.PermissionDenied, "user is not defined")
+				return nil, status.Error(codes.PermissionDenied, err.Error())
 			}
 			if len(userRoles) == 0 {
 				logger.Infof("user (%d) not found", userId)
