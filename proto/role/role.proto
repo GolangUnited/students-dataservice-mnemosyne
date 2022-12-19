@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package role;
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/role";
+
+// The basic message containing the primary information about a role.
+message Role {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Role json schema"
+      required: ["code"]
+    }
+  };
+  uint32 id = 1;
+  string code = 2;
+}
+
+//The basic message containing information about all roles from db
+message Roles {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Roles json schema"
+      required: ["roles"]
+    }
+  };
+  repeated Role roles = 1;
+}
+
+//Basic request/response containing id of the role
+message Id{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Id json schema"
+      required: ["id"]
+    }
+  };
+  uint32 id = 1;
+}
+
+message RolesRequest {
+  Filter filter = 1;
+}
+
+//Filter by roles
+message Filter {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Filter roles json schema"
+    }
+  };
+  optional string code = 1;
+}
+
+message UserRoleRequest {
+  uint32 user_id = 1;
+  uint32 role_id = 2;
+}

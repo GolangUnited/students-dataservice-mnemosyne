@@ -7,8 +7,9 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/service/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
-	model "github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/service.go
@@ -25,11 +26,11 @@ type Interview interface {
 // Mnemosyne has test signatures
 type Mnemosyne interface {
 	Interview
-	Test(context.Context, model.Request) (model.Response, error)
-	GetUserRoles(ctx context.Context, userId int) ([]database.Role, error)
 	Certificate
 	User
 	Group
+	Role
+	Team
 }
 
 type Certificate interface {
@@ -67,6 +68,26 @@ type Group interface {
 	DeleteUserFromGroup(ctx context.Context, userId, groupId uint32) error
 }
 
+type Role interface {
+	GetUserRoles(ctx context.Context, userId int) ([]modelRole.DB, error)
+	GetRoles(context.Context, *modelRole.Filter) ([]*modelRole.DB, error)
+	CreateRole(context.Context, *modelRole.DB) (uint32, error)
+	DeleteRole(context.Context, uint32) error
+	AddUserToRole(ctx context.Context, userId, roleId uint32) error
+	DeleteUserFromRole(ctx context.Context, userId, roleId uint32) error
+}
+
+type Team interface {
+	GetTeam(context.Context, uint32) (*modelTeam.DB, error)
+	GetTeams(context.Context, *modelTeam.Filter) ([]*modelTeam.DB, error)
+	CreateTeam(context.Context, *modelTeam.DB) (uint32, error)
+	UpdateTeam(context.Context, *modelTeam.DB) error
+	DeactivateTeam(context.Context, uint32) error
+	ActivateTeam(context.Context, uint32) error
+	AddUserToTeam(ctx context.Context, userId, teamId uint32) error
+	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
+}
+
 // Service represents service level
 type Service struct {
 	Mnemosyne
@@ -75,6 +96,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate),
+		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team),
 	}
 }

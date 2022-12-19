@@ -2,9 +2,9 @@ package mnemosyne
 
 import (
 	"context"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository"
-	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/models/mnemosyne"
 )
 
@@ -18,10 +18,19 @@ type Service struct {
 	reposInterview   repository.Interview
 	reposGroup       repository.Group
 	reposCertificate repository.Certificate
+	reposTeam        repository.Team
 }
 
 // NewService created Service struct
-func NewService(mnemosyne repository.Mnemosyne, reposRole repository.Role, reposUser repository.User, reposInterview repository.Interview, reposGroup repository.Group, reposCertificate repository.Certificate) *Service {
+func NewService(
+	mnemosyne repository.Mnemosyne,
+	reposRole repository.Role,
+	reposUser repository.User,
+	reposInterview repository.Interview,
+	reposGroup repository.Group,
+	reposCertificate repository.Certificate,
+	reposTeam repository.Team,
+) *Service {
 	return &Service{
 		mnemosyne:        mnemosyne,
 		reposRole:        reposRole,
@@ -29,6 +38,7 @@ func NewService(mnemosyne repository.Mnemosyne, reposRole repository.Role, repos
 		reposInterview:   reposInterview,
 		reposGroup:       reposGroup,
 		reposCertificate: reposCertificate,
+		reposTeam:        reposTeam,
 	}
 }
 
@@ -41,7 +51,7 @@ func (s *Service) Test(ctx context.Context, req mnemosyne.Request) (resp mnemosy
 }
 
 // GetUserRoles get all user roles
-func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []database.Role, err error) {
+func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []modelRole.DB, err error) {
 	userRoles, err = s.reposRole.GetUserRoles(ctx, userId)
 	if err != nil {
 		return nil, err
