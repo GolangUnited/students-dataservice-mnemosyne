@@ -9,7 +9,6 @@ import (
 	"github.com/NEKETSKY/mnemosyne/pkg/api"
 	"github.com/NEKETSKY/mnemosyne/pkg/logger"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -28,7 +27,7 @@ func NewGrpc(ctx context.Context, handler *handler.Handler) *Grpc {
 		// grpc middleware
 		grpcService: grpc.NewServer(
 			grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-				grpc_auth.UnaryServerInterceptor(handler.Auth),
+			//grpc_auth.UnaryServerInterceptor(handler.Auth),
 			)),
 		),
 		handler: handler,

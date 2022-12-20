@@ -46,14 +46,14 @@ func (i *InterviewRepository) AddInterview(ctx context.Context, interview databa
 func (i *InterviewRepository) GetInterviews(ctx context.Context, interviewerId uint, studentId uint) (interviews []database.Interview, err error) {
 	sb := sqlbuilder.Select("*").From("interview")
 	if interviewerId > 0 {
-		sb.Where("interviewer_id = 1")
+		sb.Where(sb.Equal("interviewer_id", interviewerId))
 	}
 	if studentId > 0 {
-		sb.Where("student_id = 1")
+		sb.Where(sb.Equal("student_id", studentId))
 	}
-	query := sb.String()
 
-	rows, _ := i.db.Query(ctx, query)
+	sql, args := sb.BuildWithFlavor(sqlbuilder.PostgreSQL)
+	rows, err := i.db.Query(ctx, sql, args...)
 	if err != nil {
 		return nil, errors.Wrap(err, "GetAllInterviews query error")
 	}

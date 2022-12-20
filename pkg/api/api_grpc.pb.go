@@ -12,12 +12,12 @@ import (
 	common "github.com/NEKETSKY/mnemosyne/pkg/api/common"
 	group "github.com/NEKETSKY/mnemosyne/pkg/api/group"
 	interview "github.com/NEKETSKY/mnemosyne/pkg/api/interview"
+	role "github.com/NEKETSKY/mnemosyne/pkg/api/role"
 	team "github.com/NEKETSKY/mnemosyne/pkg/api/team"
 	user "github.com/NEKETSKY/mnemosyne/pkg/api/user"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -72,13 +72,15 @@ type MnemosyneClient interface {
 	//	Certificate
 	//
 	// Create new certificate
-	CreateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*certificate.Id, error)
+	CreateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
 	// Get all existing certificates
 	GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error)
 	// Update certificate data
-	UpdateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
-	// Delete certificate by id
-	DeleteCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error)
+	UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Deactivate certificate by id
+	DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Activate certificate by id
+	ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Get team by id
 	GetTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*team.TeamResponse, error)
 	// Get teams
@@ -111,6 +113,16 @@ type MnemosyneClient interface {
 	AddUserToGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
 	// Unbind user from group
 	DeleteUserFromGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Get roles
+	GetRoles(ctx context.Context, in *role.RolesRequest, opts ...grpc.CallOption) (*role.Roles, error)
+	// Create new role
+	CreateRole(ctx context.Context, in *role.Role, opts ...grpc.CallOption) (*role.Id, error)
+	// Delete role by id
+	DeleteRole(ctx context.Context, in *role.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Bind user to role
+	AddUserToRole(ctx context.Context, in *role.UserRoleRequest, opts ...grpc.CallOption) (*common.Empty, error)
+	// Unbind user from role
+	DeleteUserFromRole(ctx context.Context, in *role.UserRoleRequest, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
 type mnemosyneClient struct {
@@ -292,8 +304,8 @@ func (c *mnemosyneClient) ActivateInterview(ctx context.Context, in *interview.I
 	return out, nil
 }
 
-func (c *mnemosyneClient) CreateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*certificate.Id, error) {
-	out := new(certificate.Id)
+func (c *mnemosyneClient) CreateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error) {
+	out := new(certificate.CertificateResponse)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -310,8 +322,8 @@ func (c *mnemosyneClient) GetCertificates(ctx context.Context, in *certificate.F
 	return out, nil
 }
 
-func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate.Certificate, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
+func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/UpdateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -319,9 +331,18 @@ func (c *mnemosyneClient) UpdateCertificate(ctx context.Context, in *certificate
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeleteCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*wrapperspb.BoolValue, error) {
-	out := new(wrapperspb.BoolValue)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteCertificate", in, out, opts...)
+func (c *mnemosyneClient) DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateCertificate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -472,6 +493,51 @@ func (c *mnemosyneClient) DeleteUserFromGroup(ctx context.Context, in *group.Use
 	return out, nil
 }
 
+func (c *mnemosyneClient) GetRoles(ctx context.Context, in *role.RolesRequest, opts ...grpc.CallOption) (*role.Roles, error) {
+	out := new(role.Roles)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/GetRoles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) CreateRole(ctx context.Context, in *role.Role, opts ...grpc.CallOption) (*role.Id, error) {
+	out := new(role.Id)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/CreateRole", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeleteRole(ctx context.Context, in *role.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteRole", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) AddUserToRole(ctx context.Context, in *role.UserRoleRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/AddUserToRole", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeleteUserFromRole(ctx context.Context, in *role.UserRoleRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUserFromRole", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MnemosyneServer is the server API for Mnemosyne service.
 // All implementations should embed UnimplementedMnemosyneServer
 // for forward compatibility
@@ -519,13 +585,15 @@ type MnemosyneServer interface {
 	//	Certificate
 	//
 	// Create new certificate
-	CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error)
+	CreateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error)
 	// Get all existing certificates
 	GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error)
 	// Update certificate data
-	UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error)
-	// Delete certificate by id
-	DeleteCertificate(context.Context, *certificate.Id) (*wrapperspb.BoolValue, error)
+	UpdateCertificate(context.Context, *certificate.CertificateRequest) (*common.Empty, error)
+	// Deactivate certificate by id
+	DeactivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
+	// Activate certificate by id
+	ActivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
 	// Get team by id
 	GetTeam(context.Context, *team.Id) (*team.TeamResponse, error)
 	// Get teams
@@ -558,6 +626,16 @@ type MnemosyneServer interface {
 	AddUserToGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error)
 	// Unbind user from group
 	DeleteUserFromGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error)
+	// Get roles
+	GetRoles(context.Context, *role.RolesRequest) (*role.Roles, error)
+	// Create new role
+	CreateRole(context.Context, *role.Role) (*role.Id, error)
+	// Delete role by id
+	DeleteRole(context.Context, *role.Id) (*common.Empty, error)
+	// Bind user to role
+	AddUserToRole(context.Context, *role.UserRoleRequest) (*common.Empty, error)
+	// Unbind user from role
+	DeleteUserFromRole(context.Context, *role.UserRoleRequest) (*common.Empty, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -621,17 +699,20 @@ func (UnimplementedMnemosyneServer) DeactivateInterview(context.Context, *interv
 func (UnimplementedMnemosyneServer) ActivateInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateInterview not implemented")
 }
-func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certificate.Certificate) (*certificate.Id, error) {
+func (UnimplementedMnemosyneServer) CreateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCertificate not implemented")
 }
 func (UnimplementedMnemosyneServer) GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCertificates not implemented")
 }
-func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.Certificate) (*wrapperspb.BoolValue, error) {
+func (UnimplementedMnemosyneServer) UpdateCertificate(context.Context, *certificate.CertificateRequest) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCertificate not implemented")
 }
-func (UnimplementedMnemosyneServer) DeleteCertificate(context.Context, *certificate.Id) (*wrapperspb.BoolValue, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteCertificate not implemented")
+func (UnimplementedMnemosyneServer) DeactivateCertificate(context.Context, *certificate.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateCertificate not implemented")
+}
+func (UnimplementedMnemosyneServer) ActivateCertificate(context.Context, *certificate.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateCertificate not implemented")
 }
 func (UnimplementedMnemosyneServer) GetTeam(context.Context, *team.Id) (*team.TeamResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTeam not implemented")
@@ -680,6 +761,21 @@ func (UnimplementedMnemosyneServer) AddUserToGroup(context.Context, *group.UserG
 }
 func (UnimplementedMnemosyneServer) DeleteUserFromGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserFromGroup not implemented")
+}
+func (UnimplementedMnemosyneServer) GetRoles(context.Context, *role.RolesRequest) (*role.Roles, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoles not implemented")
+}
+func (UnimplementedMnemosyneServer) CreateRole(context.Context, *role.Role) (*role.Id, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRole not implemented")
+}
+func (UnimplementedMnemosyneServer) DeleteRole(context.Context, *role.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRole not implemented")
+}
+func (UnimplementedMnemosyneServer) AddUserToRole(context.Context, *role.UserRoleRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUserToRole not implemented")
+}
+func (UnimplementedMnemosyneServer) DeleteUserFromRole(context.Context, *role.UserRoleRequest) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserFromRole not implemented")
 }
 
 // UnsafeMnemosyneServer may be embedded to opt out of forward compatibility for this service.
@@ -1036,7 +1132,7 @@ func _Mnemosyne_ActivateInterview_Handler(srv interface{}, ctx context.Context, 
 }
 
 func _Mnemosyne_CreateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(certificate.Certificate)
+	in := new(certificate.CertificateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1048,7 +1144,7 @@ func _Mnemosyne_CreateCertificate_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: "/api.Mnemosyne/CreateCertificate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).CreateCertificate(ctx, req.(*certificate.Certificate))
+		return srv.(MnemosyneServer).CreateCertificate(ctx, req.(*certificate.CertificateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1072,7 +1168,7 @@ func _Mnemosyne_GetCertificates_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _Mnemosyne_UpdateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(certificate.Certificate)
+	in := new(certificate.CertificateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1084,25 +1180,43 @@ func _Mnemosyne_UpdateCertificate_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: "/api.Mnemosyne/UpdateCertificate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).UpdateCertificate(ctx, req.(*certificate.Certificate))
+		return srv.(MnemosyneServer).UpdateCertificate(ctx, req.(*certificate.CertificateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_DeleteCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Mnemosyne_DeactivateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(certificate.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MnemosyneServer).DeleteCertificate(ctx, in)
+		return srv.(MnemosyneServer).DeactivateCertificate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeleteCertificate",
+		FullMethod: "/api.Mnemosyne/DeactivateCertificate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeleteCertificate(ctx, req.(*certificate.Id))
+		return srv.(MnemosyneServer).DeactivateCertificate(ctx, req.(*certificate.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_ActivateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(certificate.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).ActivateCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/ActivateCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).ActivateCertificate(ctx, req.(*certificate.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1395,6 +1509,96 @@ func _Mnemosyne_DeleteUserFromGroup_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Mnemosyne_GetRoles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(role.RolesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).GetRoles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/GetRoles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).GetRoles(ctx, req.(*role.RolesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_CreateRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(role.Role)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).CreateRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/CreateRole",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).CreateRole(ctx, req.(*role.Role))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeleteRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(role.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeleteRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeleteRole",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeleteRole(ctx, req.(*role.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_AddUserToRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(role.UserRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).AddUserToRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/AddUserToRole",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).AddUserToRole(ctx, req.(*role.UserRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeleteUserFromRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(role.UserRoleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeleteUserFromRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeleteUserFromRole",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeleteUserFromRole(ctx, req.(*role.UserRoleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Mnemosyne_ServiceDesc is the grpc.ServiceDesc for Mnemosyne service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1491,8 +1695,12 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_UpdateCertificate_Handler,
 		},
 		{
-			MethodName: "DeleteCertificate",
-			Handler:    _Mnemosyne_DeleteCertificate_Handler,
+			MethodName: "DeactivateCertificate",
+			Handler:    _Mnemosyne_DeactivateCertificate_Handler,
+		},
+		{
+			MethodName: "ActivateCertificate",
+			Handler:    _Mnemosyne_ActivateCertificate_Handler,
 		},
 		{
 			MethodName: "GetTeam",
@@ -1557,6 +1765,26 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUserFromGroup",
 			Handler:    _Mnemosyne_DeleteUserFromGroup_Handler,
+		},
+		{
+			MethodName: "GetRoles",
+			Handler:    _Mnemosyne_GetRoles_Handler,
+		},
+		{
+			MethodName: "CreateRole",
+			Handler:    _Mnemosyne_CreateRole_Handler,
+		},
+		{
+			MethodName: "DeleteRole",
+			Handler:    _Mnemosyne_DeleteRole_Handler,
+		},
+		{
+			MethodName: "AddUserToRole",
+			Handler:    _Mnemosyne_AddUserToRole_Handler,
+		},
+		{
+			MethodName: "DeleteUserFromRole",
+			Handler:    _Mnemosyne_DeleteUserFromRole_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

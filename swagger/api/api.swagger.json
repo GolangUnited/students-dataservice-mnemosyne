@@ -59,7 +59,8 @@
             "name": "userId",
             "in": "query",
             "required": false,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -73,7 +74,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/certificateId"
+              "$ref": "#/definitions/certificateCertificateResponse"
             }
           },
           "403": {
@@ -101,7 +102,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/certificateCertificate"
+              "$ref": "#/definitions/certificateCertificateRequest"
             }
           }
         ],
@@ -111,46 +112,6 @@
       }
     },
     "/certificate/{id}": {
-      "delete": {
-        "summary": "Delete certificate by id",
-        "operationId": "Mnemosyne_DeleteCertificate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      },
       "put": {
         "summary": "Update certificate data",
         "operationId": "Mnemosyne_UpdateCertificate",
@@ -158,7 +119,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "type": "boolean"
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -184,7 +145,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           {
             "name": "body",
@@ -194,13 +156,16 @@
               "type": "object",
               "properties": {
                 "userId": {
-                  "type": "string"
+                  "type": "integer",
+                  "format": "int64"
                 },
                 "issueDate": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "expireDate": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "date-time"
                 }
               },
               "description": "The basic message containing the primary information about a certificate.",
@@ -211,6 +176,92 @@
                 "expireDate"
               ]
             }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/certificate/{id}/activate": {
+      "put": {
+        "summary": "Activate certificate by id",
+        "operationId": "Mnemosyne_ActivateCertificate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/certificate/{id}/deactivate": {
+      "put": {
+        "summary": "Deactivate certificate by id",
+        "operationId": "Mnemosyne_DeactivateCertificate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1231,6 +1282,240 @@
         ]
       }
     },
+    "/role": {
+      "get": {
+        "summary": "Get roles",
+        "operationId": "Mnemosyne_GetRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roleRoles"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter.code",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "post": {
+        "summary": "Create new role",
+        "operationId": "Mnemosyne_CreateRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/roleId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a role.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/roleRole"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/role/{id}": {
+      "delete": {
+        "summary": "Delete role by id",
+        "operationId": "Mnemosyne_DeleteRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/role/{roleId}/{userId}": {
+      "delete": {
+        "summary": "Unbind user from role",
+        "operationId": "Mnemosyne_DeleteUserFromRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "post": {
+        "summary": "Bind user to role",
+        "operationId": "Mnemosyne_AddUserToRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
     "/team": {
       "get": {
         "summary": "Get teams",
@@ -1294,6 +1579,12 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1421,7 +1712,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1463,7 +1755,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1505,7 +1798,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -1968,23 +2262,65 @@
     }
   },
   "definitions": {
-    "certificateCertificate": {
+    "certificateCertificateRequest": {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "userId": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         },
         "issueDate": {
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         },
         "expireDate": {
-          "type": "string"
+          "type": "string",
+          "format": "date-time"
         }
       },
       "description": "The basic message containing the primary information about a certificate.",
+      "title": "Certificate json schema",
+      "required": [
+        "userId",
+        "issueDate",
+        "expireDate"
+      ]
+    },
+    "certificateCertificateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "issueDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expireDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deleted": {
+          "type": "boolean"
+        }
+      },
       "title": "Certificate json schema",
       "required": [
         "userId",
@@ -1998,25 +2334,13 @@
         "Certificates": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/certificateCertificate"
+            "$ref": "#/definitions/certificateCertificateResponse"
           }
         }
       },
       "title": "Certificates json schema",
       "required": [
         "Certificates"
-      ]
-    },
-    "certificateId": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        }
-      },
-      "title": "Id json schema",
-      "required": [
-        "id"
       ]
     },
     "commonEmpty": {
@@ -2285,6 +2609,60 @@
       "additionalProperties": {},
       "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\nExample 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\nExample 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
     },
+    "roleFilter": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "title": "Filter roles json schema"
+    },
+    "roleId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "Id json schema",
+      "required": [
+        "id"
+      ]
+    },
+    "roleRole": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "description": "The basic message containing the primary information about a role.",
+      "title": "Role json schema",
+      "required": [
+        "code"
+      ]
+    },
+    "roleRoles": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/roleRole"
+          }
+        }
+      },
+      "title": "Roles json schema",
+      "required": [
+        "roles"
+      ]
+    },
     "rpcStatus": {
       "type": "object",
       "properties": {
@@ -2307,7 +2685,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "Id json schema",
@@ -2337,10 +2716,6 @@
           "type": "string",
           "format": "date-time"
         },
-        "projectId": {
-          "type": "integer",
-          "format": "int64"
-        },
         "mentorId": {
           "type": "integer",
           "format": "int64"
@@ -2353,7 +2728,6 @@
         "name",
         "startDate",
         "endDate",
-        "projectId",
         "mentorId"
       ]
     },
@@ -2378,10 +2752,6 @@
         "endDate": {
           "type": "string",
           "format": "date-time"
-        },
-        "projectId": {
-          "type": "integer",
-          "format": "int64"
         },
         "mentorId": {
           "type": "integer",

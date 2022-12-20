@@ -3,13 +3,16 @@ package repository
 import (
 	"context"
 
+	"github.com/NEKETSKY/mnemosyne/internal/repository/certificate"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
-	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
-
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
+	"github.com/NEKETSKY/mnemosyne/internal/repository/team"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
+	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
 	"github.com/jackc/pgx/v5"
 )
@@ -17,10 +20,16 @@ import (
 //go:generate mockgen -source=repository.go -destination=mocks/repository.go
 
 type Role interface {
-	GetAllRoles(ctx context.Context) (roles []database.Role, err error)
-	GetUserRoles(ctx context.Context, userId int) (roles []database.Role, err error)
+	GetAllRoles(ctx context.Context) (roles []modelRole.DB, err error)
+	GetUserRoles(ctx context.Context, userId int) (roles []modelRole.DB, err error)
 	DeleteUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error)
 	AddUserRoleByCode(ctx context.Context, userId int, roleCode int) (err error)
+
+	GetRoles(context.Context, *modelRole.Filter) ([]*modelRole.DB, error)
+	AddRole(context.Context, *modelRole.DB) (uint32, error)
+	DeleteRole(context.Context, uint32) error
+	AddUserToRole(ctx context.Context, userId, roleId uint32) error
+	DeleteUserFromRole(ctx context.Context, userId, roleId uint32) error
 }
 
 type User interface {
@@ -59,19 +68,43 @@ type Group interface {
 	DeleteUserFromGroup(ctx context.Context, userId, groupId uint32) error
 }
 
+type Certificate interface {
+	CreateCertificate(ctx context.Context, certificate database.Certificate) (certificateId uint32, err error)
+	GetCertificateById(ctx context.Context, certificateId uint32) (certificate database.Certificate, err error)
+	GetCertificates(ctx context.Context, userId uint32) (certificates []database.Certificate, err error)
+	UpdateCertificates(ctx context.Context, certificate database.Certificate) (err error)
+	DeactivateCertificate(ctx context.Context, certificateId uint32) (err error)
+	ActivateCertificate(ctx context.Context, certificateId uint32) (err error)
+}
+
+type Team interface {
+	GetTeamById(context.Context, uint32) (*modelTeam.DB, error)
+	GetTeams(context.Context, *modelTeam.Filter) ([]*modelTeam.DB, error)
+	AddTeam(context.Context, *modelTeam.DB) (uint32, error)
+	UpdateTeam(context.Context, *modelTeam.DB) error
+	DeactivateTeam(context.Context, uint32) error
+	ActivateTeam(context.Context, uint32) error
+	AddUserToTeam(ctx context.Context, userId, teamId uint32) error
+	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
+}
+
 type Repository struct {
 	Role
 	User
 	Interview
+	Certificate
 	Group
+	Team
 }
 
 // NewRepository created Repository struct
 func NewRepository(db *pgx.Conn) *Repository {
 	return &Repository{
-		Role:      role.NewRoleRepository(db),
-		User:      user.NewUserRepository(db),
-		Interview: interview.NewInterviewRepository(db),
-		Group:     group.NewRepository(db),
+		Role:        role.NewRoleRepository(db),
+		User:        user.NewUserRepository(db),
+		Interview:   interview.NewInterviewRepository(db),
+		Certificate: certificate.NewCertificateRepository(db),
+		Group:       group.NewRepository(db),
+		Team:        team.NewRepository(db),
 	}
 }

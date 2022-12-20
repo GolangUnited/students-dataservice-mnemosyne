@@ -9,6 +9,7 @@ import "interview/interview.proto";
 import "team/team.proto";
 import "certificate/certificate.proto";
 import "group/group.proto";
+import "role/role.proto";
 import "common/common.proto";
 option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
 
@@ -235,7 +236,7 @@ service Mnemosyne {
 
     //  Certificate
   //Create new certificate
-  rpc CreateCertificate (certificate.Certificate) returns (certificate.Id){
+  rpc CreateCertificate (certificate.CertificateRequest) returns (certificate.CertificateResponse){
     option (google.api.http) = {
       post: "/certificate"
       body: "*"
@@ -251,17 +252,22 @@ service Mnemosyne {
 
 
   //Update certificate data
-  rpc UpdateCertificate (certificate.Certificate) returns (google.protobuf.BoolValue){
+  rpc UpdateCertificate (certificate.CertificateRequest) returns (common.Empty){
     option (google.api.http) = {
       put: "/certificate/{id}"
       body: "*"
     };
   };
-
-  //Delete certificate by id
-  rpc DeleteCertificate (certificate.Id) returns (google.protobuf.BoolValue){
+  //Deactivate certificate by id
+  rpc DeactivateCertificate(certificate.Id) returns (common.Empty){
     option (google.api.http) = {
-      delete: "/certificate/{id}"
+      put: "/certificate/{id}/deactivate"
+    };
+  };
+  //Activate certificate by id
+  rpc ActivateCertificate(certificate.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/certificate/{id}/activate"
     };
   };
 
@@ -384,6 +390,41 @@ service Mnemosyne {
       delete: "/group/{group_id}/{user_id}"
     };
   };
+
+  //Get roles
+  rpc GetRoles (role.RolesRequest) returns (role.Roles){
+    option (google.api.http) = {
+      get: "/role"
+    };
+  };
+
+  //Create new role
+  rpc CreateRole (role.Role) returns (role.Id){
+    option (google.api.http) = {
+      post: "/role"
+      body: "*"
+    };
+  };
+
+  //Delete role by id
+  rpc DeleteRole (role.Id) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/role/{id}"
+    };
+  };
+
+  //Bind user to role
+  rpc AddUserToRole (role.UserRoleRequest) returns (common.Empty){
+    option (google.api.http) = {
+      post: "/role/{role_id}/{user_id}"
+      body: "*"
+    };
+  };
+
+  //Unbind user from role
+  rpc DeleteUserFromRole (role.UserRoleRequest) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/role/{role_id}/{user_id}"
+    };
+  };
 }
-
-

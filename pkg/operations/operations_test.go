@@ -2,15 +2,15 @@ package operations
 
 import (
 	"context"
+	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
 	"testing"
 
-	"github.com/NEKETSKY/mnemosyne/models/database"
 	"github.com/NEKETSKY/mnemosyne/pkg/auth"
 )
 
 func TestCheckAccessAdmin(t *testing.T) {
 	ctx := context.Background()
-	roles := []database.Role{
+	roles := []modelRole.DB{
 		{
 			Id:   1,
 			Code: string(admin),
@@ -52,7 +52,7 @@ func TestCheckAccessAdmin(t *testing.T) {
 
 func TestCheckAccessMentor(t *testing.T) {
 	ctx := context.Background()
-	roles := []database.Role{
+	roles := []modelRole.DB{
 		{
 			Code: string(mentor),
 		},
@@ -94,7 +94,7 @@ func TestCheckAccessMentor(t *testing.T) {
 
 func TestCheckAccessStudent(t *testing.T) {
 	ctx := context.Background()
-	roles := []database.Role{
+	roles := []modelRole.DB{
 		{
 			Code: string(student),
 		},
