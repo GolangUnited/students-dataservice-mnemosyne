@@ -23,7 +23,6 @@ type Interview interface {
 	ActivateInterview(ctx context.Context, interviewId uint) (interview database.Interview, err error)
 }
 
-// Mnemosyne has test signatures
 type Mnemosyne interface {
 	Interview
 	Certificate
@@ -90,12 +89,13 @@ type Team interface {
 
 // Service represents service level
 type Service struct {
+	//suggest to move here interfaces User, Group etc. and to remove Mnemosyne interface
 	Mnemosyne
 }
 
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Mnemosyne, repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team),
+		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team),
 	}
 }

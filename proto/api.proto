@@ -3,7 +3,6 @@ syntax = "proto3";
 package api;
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
-import "helloworld/helloworld.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
 import "interview/interview.proto";
@@ -100,13 +99,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
 // The greeting service definition.
 service Mnemosyne {
-  // Sends a greeting
-  rpc SayHello (helloworld.HelloRequest) returns (helloworld.HelloReply) {
-    option (google.api.http) = {
-      post: "/mnemosyne"
-      body: "*"
-    };
-  };
 
   //Create new user
   rpc CreateUser (user.User) returns (user.Id){
@@ -133,7 +125,7 @@ service Mnemosyne {
  //Get user by email
   rpc GetUserByEmail (user.Email) returns (user.User){
     option (google.api.http) = {
-      get: "/user/{email}"     
+      get: "/user/{email}"
     };
   };
 

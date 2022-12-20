@@ -2,10 +2,10 @@ package repository
 
 import (
 	"context"
+
 	"github.com/NEKETSKY/mnemosyne/internal/repository/certificate"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/mnemosyne"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/team"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
@@ -18,11 +18,6 @@ import (
 )
 
 //go:generate mockgen -source=repository.go -destination=mocks/repository.go
-
-// Mnemosyne represents test interface
-type Mnemosyne interface {
-	Test(ctx context.Context) error
-}
 
 type Role interface {
 	GetAllRoles(ctx context.Context) (roles []modelRole.DB, err error)
@@ -94,7 +89,6 @@ type Team interface {
 }
 
 type Repository struct {
-	Mnemosyne
 	Role
 	User
 	Interview
@@ -106,7 +100,6 @@ type Repository struct {
 // NewRepository created Repository struct
 func NewRepository(db *pgx.Conn) *Repository {
 	return &Repository{
-		Mnemosyne:   mnemosyne.NewMnemosyne(db),
 		Role:        role.NewRoleRepository(db),
 		User:        user.NewUserRepository(db),
 		Interview:   interview.NewInterviewRepository(db),

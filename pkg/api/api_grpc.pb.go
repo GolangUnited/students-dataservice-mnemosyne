@@ -11,7 +11,6 @@ import (
 	certificate "github.com/NEKETSKY/mnemosyne/pkg/api/certificate"
 	common "github.com/NEKETSKY/mnemosyne/pkg/api/common"
 	group "github.com/NEKETSKY/mnemosyne/pkg/api/group"
-	helloworld "github.com/NEKETSKY/mnemosyne/pkg/api/helloworld"
 	interview "github.com/NEKETSKY/mnemosyne/pkg/api/interview"
 	role "github.com/NEKETSKY/mnemosyne/pkg/api/role"
 	team "github.com/NEKETSKY/mnemosyne/pkg/api/team"
@@ -30,8 +29,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MnemosyneClient interface {
-	// Sends a greeting
-	SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error)
 	// Create new user
 	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
 	// Get all existing users
@@ -134,15 +131,6 @@ type mnemosyneClient struct {
 
 func NewMnemosyneClient(cc grpc.ClientConnInterface) MnemosyneClient {
 	return &mnemosyneClient{cc}
-}
-
-func (c *mnemosyneClient) SayHello(ctx context.Context, in *helloworld.HelloRequest, opts ...grpc.CallOption) (*helloworld.HelloReply, error) {
-	out := new(helloworld.HelloReply)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/SayHello", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *mnemosyneClient) CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error) {
@@ -554,8 +542,6 @@ func (c *mnemosyneClient) DeleteUserFromRole(ctx context.Context, in *role.UserR
 // All implementations should embed UnimplementedMnemosyneServer
 // for forward compatibility
 type MnemosyneServer interface {
-	// Sends a greeting
-	SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error)
 	// Create new user
 	CreateUser(context.Context, *user.User) (*user.Id, error)
 	// Get all existing users
@@ -656,9 +642,6 @@ type MnemosyneServer interface {
 type UnimplementedMnemosyneServer struct {
 }
 
-func (UnimplementedMnemosyneServer) SayHello(context.Context, *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
-}
 func (UnimplementedMnemosyneServer) CreateUser(context.Context, *user.User) (*user.Id, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
@@ -804,24 +787,6 @@ type UnsafeMnemosyneServer interface {
 
 func RegisterMnemosyneServer(s grpc.ServiceRegistrar, srv MnemosyneServer) {
 	s.RegisterService(&Mnemosyne_ServiceDesc, srv)
-}
-
-func _Mnemosyne_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(helloworld.HelloRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).SayHello(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/SayHello",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).SayHello(ctx, req.(*helloworld.HelloRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Mnemosyne_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1641,10 +1606,6 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "api.Mnemosyne",
 	HandlerType: (*MnemosyneServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "SayHello",
-			Handler:    _Mnemosyne_SayHello_Handler,
-		},
 		{
 			MethodName: "CreateUser",
 			Handler:    _Mnemosyne_CreateUser_Handler,
