@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package project;
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/project";
+
+// The basic message containing the primary information about a project.
+message ProjectRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Project json schema"
+      required: ["name", "description", "team_id"]
+    }
+  };
+  uint32 id = 1;
+  string name = 2;
+  string description = 3;
+  string git_url = 4;
+  uint32 team_id = 5;
+}
+
+// The basic message containing the primary information about a project.
+message ProjectResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Project json schema"
+      required: ["name", "description", "team_id"]
+    }
+  };
+  uint32 id = 1;
+  string name = 2;
+  string description = 3;
+  string git_url = 4;
+  uint32 team_id = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  bool deleted = 8;
+}
+
+//The basic message containing information about all projects from db
+message Projects {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Projects json schema"
+      required: ["projects"]
+    }
+  };
+  repeated ProjectResponse projects = 1;
+}
+
+//Basic request/response containing id of the project
+message Id{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Id json schema"
+      required: ["id"]
+    }
+  };
+  uint32 id = 1;
+}
+
+message ProjectsRequest {
+  Filter filter = 1;
+}
+
+//Filter by projects
+message Filter {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Filter projects json schema"
+    }
+  };
+  uint32 team_id = 1;
+  optional string name = 2;
+  bool deleted = 5;
+}

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"github.com/NEKETSKY/mnemosyne/internal/repository/project"
 
 	"github.com/NEKETSKY/mnemosyne/internal/repository/certificate"
 	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
@@ -11,6 +12,7 @@ import (
 	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
 	"github.com/NEKETSKY/mnemosyne/models/database"
 	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelProject "github.com/NEKETSKY/mnemosyne/models/database/project"
 	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
 	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
 	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
@@ -88,6 +90,15 @@ type Team interface {
 	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
 }
 
+type Project interface {
+	GetProjectById(context.Context, uint32) (*modelProject.DB, error)
+	GetProjects(context.Context, *modelProject.Filter) ([]*modelProject.DB, error)
+	AddProject(context.Context, *modelProject.DB) (uint32, error)
+	UpdateProject(context.Context, *modelProject.DB) error
+	DeactivateProject(context.Context, uint32) error
+	ActivateProject(context.Context, uint32) error
+}
+
 type Repository struct {
 	Role
 	User
@@ -95,6 +106,7 @@ type Repository struct {
 	Certificate
 	Group
 	Team
+	Project
 }
 
 // NewRepository created Repository struct
@@ -106,5 +118,6 @@ func NewRepository(db *pgx.Conn) *Repository {
 		Certificate: certificate.NewCertificateRepository(db),
 		Group:       group.NewRepository(db),
 		Team:        team.NewRepository(db),
+		Project:     project.NewRepository(db),
 	}
 }
