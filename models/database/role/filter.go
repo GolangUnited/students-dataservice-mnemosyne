@@ -1,7 +1,7 @@
 package role
 
 import (
-	"github.com/NEKETSKY/mnemosyne/pkg/api/role"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/role"
 )
 
 type Filter struct {

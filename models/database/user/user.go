@@ -1,6 +1,6 @@
 package user
 
-import "github.com/NEKETSKY/mnemosyne/pkg/api/common"
+import "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/common"
 
 type Contact struct {
 	Id                   int    `json:"id" db:"user_id"`

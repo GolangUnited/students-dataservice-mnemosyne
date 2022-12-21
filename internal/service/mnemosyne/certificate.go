@@ -1,7 +1,7 @@
 package mnemosyne
 
 import (
-	"github.com/NEKETSKY/mnemosyne/models/database"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 )
 import "context"
 

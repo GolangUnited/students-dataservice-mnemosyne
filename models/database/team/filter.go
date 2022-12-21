@@ -1,7 +1,7 @@
 package team
 
 import (
-	"github.com/NEKETSKY/mnemosyne/pkg/api/team"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/team"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )

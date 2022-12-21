@@ -2,7 +2,7 @@ package mnemosyne
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/database"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 )
 
 func (s *Service) CreateInterview(ctx context.Context, interviewModel database.Interview) (interviewDb database.Interview, err error) {

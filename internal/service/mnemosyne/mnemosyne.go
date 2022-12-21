@@ -3,9 +3,9 @@ package mnemosyne
 import (
 	"context"
 
-	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 
-	"github.com/NEKETSKY/mnemosyne/internal/repository"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository"
 )
 
 //go:generate mockgen -source=mnemosyne.go -destination=mocks/mnemosyne.go

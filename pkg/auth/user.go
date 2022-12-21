@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/database/role"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 )
 
 type User struct {

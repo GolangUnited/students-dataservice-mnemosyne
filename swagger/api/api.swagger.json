@@ -1249,7 +1249,7 @@
           {
             "name": "mentorsNote",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "string"
           },
           {
@@ -1273,7 +1273,7 @@
           {
             "name": "timeZone",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "string"
           }
         ],
@@ -2946,7 +2946,7 @@
         "photo",
         "country",
         "city",
-        "time_zone",
+        "timeZone",
         "resume",
         "contact"
       ]

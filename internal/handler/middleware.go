@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/pkg/auth"
-	"github.com/NEKETSKY/mnemosyne/pkg/logger"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/auth"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/logger"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
