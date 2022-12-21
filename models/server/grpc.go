@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/NEKETSKY/mnemosyne/internal/handler"
-	"github.com/NEKETSKY/mnemosyne/pkg/api"
-	"github.com/NEKETSKY/mnemosyne/pkg/logger"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/handler"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/logger"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"

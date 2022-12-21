@@ -4,13 +4,13 @@ import (
 	"context"
 	modelProject "github.com/NEKETSKY/mnemosyne/models/database/project"
 
-	"github.com/NEKETSKY/mnemosyne/internal/repository"
-	"github.com/NEKETSKY/mnemosyne/internal/service/mnemosyne"
-	"github.com/NEKETSKY/mnemosyne/models/database"
-	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
-	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
-	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
-	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/service/mnemosyne"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
+	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
+	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
+	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
+	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/service.go

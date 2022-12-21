@@ -2,7 +2,7 @@ package mnemosyne
 
 import (
 	"context"
-	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
+	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
 )
 
 func (s *Service) GetGroup(ctx context.Context, groupId uint32) (*modelGroup.DB, error) {

@@ -2,20 +2,20 @@ package repository
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/project"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/project"
 
-	"github.com/NEKETSKY/mnemosyne/internal/repository/certificate"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/group"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/interview"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/role"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/team"
-	"github.com/NEKETSKY/mnemosyne/internal/repository/user"
-	"github.com/NEKETSKY/mnemosyne/models/database"
-	modelGroup "github.com/NEKETSKY/mnemosyne/models/database/group"
-	modelProject "github.com/NEKETSKY/mnemosyne/models/database/project"
-	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
-	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
-	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/certificate"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/group"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/interview"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/role"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/team"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/user"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
+	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
+	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
+	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
+	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
+	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
 	"github.com/jackc/pgx/v5"
 )
 

@@ -4,7 +4,7 @@ package user;
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "common/common.proto";
 
-option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/user";
+option go_package = "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/user";
 
 //complicated example message
 //

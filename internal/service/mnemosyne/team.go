@@ -2,7 +2,7 @@ package mnemosyne
 
 import (
 	"context"
-	modelTeam "github.com/NEKETSKY/mnemosyne/models/database/team"
+	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
 	//"time"
 )
 

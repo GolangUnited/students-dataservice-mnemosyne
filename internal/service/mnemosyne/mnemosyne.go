@@ -1,7 +1,7 @@
 package mnemosyne
 
 import (
-	"github.com/NEKETSKY/mnemosyne/internal/repository"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository"
 )
 
 //go:generate mockgen -source=mnemosyne.go -destination=mocks/mnemosyne.go

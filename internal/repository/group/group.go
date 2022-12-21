@@ -2,7 +2,7 @@ package group
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/database/group"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v5"
 	"github.com/pkg/errors"

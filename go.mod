@@ -1,9 +1,9 @@
-module github.com/NEKETSKY/mnemosyne
+module github.com/GolangUnited/students-dataservice-mnemosyne
 
 go 1.19
 
 require (
-	github.com/NEKETSKY/mnemosyne/pkg/api v0.0.0-00010101000000-000000000000
+	github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api v0.0.0-00010101000000-000000000000
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
@@ -19,7 +19,6 @@ require (
 )
 
 require (
-	cloud.google.com/go/compute v1.6.1 // indirect
 	github.com/docker/docker v20.10.17+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
@@ -47,4 +46,4 @@ require (
 	google.golang.org/genproto v0.0.0-20221114212237-e4508ebdbee1 // indirect
 )
 
-replace github.com/NEKETSKY/mnemosyne/pkg/api => ./pkg/api
+replace github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api => ./pkg/api

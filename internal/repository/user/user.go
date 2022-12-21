@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
+	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
 	"github.com/jackc/pgx/v5"
 	"github.com/pkg/errors"
 )

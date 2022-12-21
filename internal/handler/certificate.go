@@ -2,9 +2,9 @@ package handler
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/database"
-	"github.com/NEKETSKY/mnemosyne/pkg/api/certificate"
-	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/certificate"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/common"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

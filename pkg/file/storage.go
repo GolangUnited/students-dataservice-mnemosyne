@@ -3,7 +3,7 @@ package file
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/NEKETSKY/mnemosyne/pkg/logger"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/logger"
 	"github.com/joho/godotenv"
 	"github.com/pkg/errors"
 	"os"
