@@ -2,7 +2,7 @@ package mnemosyne
 
 import (
 	"context"
-	modelProject "github.com/NEKETSKY/mnemosyne/models/database/project"
+	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
 )
 
 func (s *Service) GetProject(ctx context.Context, projectId uint32) (*modelProject.DB, error) {

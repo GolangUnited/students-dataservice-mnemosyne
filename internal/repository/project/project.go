@@ -2,7 +2,7 @@ package project
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/database/project"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v5"
 	"github.com/pkg/errors"

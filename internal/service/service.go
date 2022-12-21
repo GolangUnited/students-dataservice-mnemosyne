@@ -2,12 +2,11 @@ package service
 
 import (
 	"context"
-	modelProject "github.com/NEKETSKY/mnemosyne/models/database/project"
-
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/service/mnemosyne"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
+	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
 	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
 	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"

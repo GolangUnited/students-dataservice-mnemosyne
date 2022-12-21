@@ -1,7 +1,7 @@
 package project
 
 import (
-	"github.com/NEKETSKY/mnemosyne/pkg/api/project"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/project"
 )
 
 type Filter struct {

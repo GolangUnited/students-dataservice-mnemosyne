@@ -3,7 +3,7 @@ syntax = "proto3";
 package project;
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
-option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/project";
+option go_package = "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/project";
 
 // The basic message containing the primary information about a project.
 message ProjectRequest {
