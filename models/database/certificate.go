@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/NEKETSKY/mnemosyne/pkg/api/certificate"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/certificate"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )

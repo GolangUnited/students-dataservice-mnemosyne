@@ -3,7 +3,7 @@ package operations
 import (
 	"context"
 
-	"github.com/NEKETSKY/mnemosyne/pkg/auth"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/auth"
 )
 
 type role string

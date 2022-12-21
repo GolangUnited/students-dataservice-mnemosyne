@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
-	"github.com/NEKETSKY/mnemosyne/models/database"
-	"github.com/NEKETSKY/mnemosyne/pkg/api/interview"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/interview"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

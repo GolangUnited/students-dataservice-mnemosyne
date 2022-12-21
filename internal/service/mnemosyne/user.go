@@ -3,8 +3,8 @@ package mnemosyne
 import (
 	"context"
 
-	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
-	"github.com/NEKETSKY/mnemosyne/pkg/file"
+	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/file"
 )
 
 func (s *Service) AddUser(ctx context.Context, transitUser *dbUser.TransitUser) (id int, err error) {

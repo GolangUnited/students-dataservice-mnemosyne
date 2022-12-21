@@ -2,7 +2,7 @@ package database
 
 import (
 	"encoding/json"
-	"github.com/NEKETSKY/mnemosyne/pkg/api/interview"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/interview"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )

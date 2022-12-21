@@ -4,9 +4,9 @@ import (
 	"context"
 	"strconv"
 
-	dbUser "github.com/NEKETSKY/mnemosyne/models/database/user"
-	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
-	"github.com/NEKETSKY/mnemosyne/pkg/api/user"
+	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/common"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/user"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

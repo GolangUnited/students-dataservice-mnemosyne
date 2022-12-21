@@ -2,10 +2,10 @@ package operations
 
 import (
 	"context"
-	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	"testing"
 
-	"github.com/NEKETSKY/mnemosyne/pkg/auth"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/auth"
 )
 
 func TestCheckAccessAdmin(t *testing.T) {

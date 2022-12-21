@@ -3,8 +3,8 @@ package user
 import (
 	"strconv"
 
-	"github.com/NEKETSKY/mnemosyne/pkg/api/common"
-	apiUser "github.com/NEKETSKY/mnemosyne/pkg/api/user"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/common"
+	apiUser "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/user"
 )
 
 func (d *UserFullStuff) DbToProto() (u *apiUser.User) {

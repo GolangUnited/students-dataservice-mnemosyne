@@ -1,4 +1,4 @@
-module github.com/NEKETSKY/mnemosyne/pkg/api
+module github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api
 
 go 1.19
 

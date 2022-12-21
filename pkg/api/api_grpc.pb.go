@@ -8,13 +8,13 @@ package api
 
 import (
 	context "context"
-	certificate "github.com/NEKETSKY/mnemosyne/pkg/api/certificate"
-	common "github.com/NEKETSKY/mnemosyne/pkg/api/common"
-	group "github.com/NEKETSKY/mnemosyne/pkg/api/group"
-	interview "github.com/NEKETSKY/mnemosyne/pkg/api/interview"
-	role "github.com/NEKETSKY/mnemosyne/pkg/api/role"
-	team "github.com/NEKETSKY/mnemosyne/pkg/api/team"
-	user "github.com/NEKETSKY/mnemosyne/pkg/api/user"
+	certificate "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/certificate"
+	common "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/common"
+	group "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/group"
+	interview "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/interview"
+	role "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/role"
+	team "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/team"
+	user "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/user"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -29,99 +29,97 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MnemosyneClient interface {
-	// Create new user
+	//Create new user
 	CreateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*user.Id, error)
-	// Get all existing users
+	//Get all existing users
 	GetUsers(ctx context.Context, in *user.UserRequest, opts ...grpc.CallOption) (*user.Users, error)
-	// Get user by id
+	//Get user by id
 	GetUserById(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.User, error)
-	// Get user by email
+	//Get user by email
 	GetUserByEmail(ctx context.Context, in *user.Email, opts ...grpc.CallOption) (*user.User, error)
-	// Update user's data
+	//Update user's data
 	UpdateUser(ctx context.Context, in *user.User, opts ...grpc.CallOption) (*common.Empty, error)
-	// Delete user by id
+	//Delete user by id
 	DeactivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Activate user by id
+	//Activate user by id
 	ActivateUser(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Get contact by ID
+	//Get contact by ID
 	GetContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Contact, error)
-	// Update contact's data
+	//Update contact's data
 	UpdateContact(ctx context.Context, in *user.Contact, opts ...grpc.CallOption) (*common.Empty, error)
-	// Get resume by ID
+	//Get resume by ID
 	GetResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*user.Resume, error)
-	// Update resume data
+	//Update resume data
 	UpdateResume(ctx context.Context, in *user.Resume, opts ...grpc.CallOption) (*common.Empty, error)
-	// Delete contacts by ID
+	//Delete contacts by ID
 	DeleteContact(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Delete resume by ID
+	//Delete resume by ID
 	DeleteResume(ctx context.Context, in *user.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	//	INTERVIEW
-	//
-	// Create new interview
+	//  INTERVIEW
+	//Create new interview
 	CreateInterview(ctx context.Context, in *interview.InterviewRequest, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
-	// Get all existing interviews
+	//Get all existing interviews
 	GetInterviews(ctx context.Context, in *interview.InterviewList, opts ...grpc.CallOption) (*interview.Interviews, error)
-	// Get interview by id
+	//Get interview by id
 	GetInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
-	// Update interview data
+	//Update interview data
 	UpdateInterview(ctx context.Context, in *interview.InterviewRequest, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
-	// Deactivate interview by id
+	//Deactivate interview by id
 	DeactivateInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
-	// Activate interview by id
+	//Activate interview by id
 	ActivateInterview(ctx context.Context, in *interview.Id, opts ...grpc.CallOption) (*interview.InterviewResponse, error)
-	//	Certificate
-	//
-	// Create new certificate
+	//  Certificate
+	//Create new certificate
 	CreateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*certificate.CertificateResponse, error)
-	// Get all existing certificates
+	//Get all existing certificates
 	GetCertificates(ctx context.Context, in *certificate.Filter, opts ...grpc.CallOption) (*certificate.Certificates, error)
-	// Update certificate data
+	//Update certificate data
 	UpdateCertificate(ctx context.Context, in *certificate.CertificateRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Deactivate certificate by id
+	//Deactivate certificate by id
 	DeactivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Activate certificate by id
+	//Activate certificate by id
 	ActivateCertificate(ctx context.Context, in *certificate.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Get team by id
+	//Get team by id
 	GetTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*team.TeamResponse, error)
-	// Get teams
+	//Get teams
 	GetTeams(ctx context.Context, in *team.TeamListFilter, opts ...grpc.CallOption) (*team.Teams, error)
-	// Create new team
+	//Create new team
 	CreateTeam(ctx context.Context, in *team.TeamRequest, opts ...grpc.CallOption) (*team.Id, error)
-	// Update team's data
+	//Update team's data
 	UpdateTeam(ctx context.Context, in *team.TeamRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Deactivate team by id
+	//Deactivate team by id
 	DeactivateTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Activate team by id
+	//Activate team by id
 	ActivateTeam(ctx context.Context, in *team.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Bind user to team
+	//Bind user to team
 	AddUserToTeam(ctx context.Context, in *team.UserTeamRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Unbind user from team
+	//Unbind user from team
 	DeleteUserFromTeam(ctx context.Context, in *team.UserTeamRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Get group by id
+	//Get group by id
 	GetGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*group.GroupResponse, error)
-	// Get groups
+	//Get groups
 	GetGroups(ctx context.Context, in *group.GroupsRequest, opts ...grpc.CallOption) (*group.Groups, error)
-	// Create new group
+	//Create new group
 	CreateGroup(ctx context.Context, in *group.GroupRequest, opts ...grpc.CallOption) (*group.Id, error)
-	// Update group's data
+	//Update group's data
 	UpdateGroup(ctx context.Context, in *group.GroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Deactivate group by id
+	//Deactivate group by id
 	DeactivateGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Activate group by id
+	//Activate group by id
 	ActivateGroup(ctx context.Context, in *group.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Bind user to group
+	//Bind user to group
 	AddUserToGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Unbind user from group
+	//Unbind user from group
 	DeleteUserFromGroup(ctx context.Context, in *group.UserGroupRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Get roles
+	//Get roles
 	GetRoles(ctx context.Context, in *role.RolesRequest, opts ...grpc.CallOption) (*role.Roles, error)
-	// Create new role
+	//Create new role
 	CreateRole(ctx context.Context, in *role.Role, opts ...grpc.CallOption) (*role.Id, error)
-	// Delete role by id
+	//Delete role by id
 	DeleteRole(ctx context.Context, in *role.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Bind user to role
+	//Bind user to role
 	AddUserToRole(ctx context.Context, in *role.UserRoleRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Unbind user from role
+	//Unbind user from role
 	DeleteUserFromRole(ctx context.Context, in *role.UserRoleRequest, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
@@ -542,99 +540,97 @@ func (c *mnemosyneClient) DeleteUserFromRole(ctx context.Context, in *role.UserR
 // All implementations should embed UnimplementedMnemosyneServer
 // for forward compatibility
 type MnemosyneServer interface {
-	// Create new user
+	//Create new user
 	CreateUser(context.Context, *user.User) (*user.Id, error)
-	// Get all existing users
+	//Get all existing users
 	GetUsers(context.Context, *user.UserRequest) (*user.Users, error)
-	// Get user by id
+	//Get user by id
 	GetUserById(context.Context, *user.Id) (*user.User, error)
-	// Get user by email
+	//Get user by email
 	GetUserByEmail(context.Context, *user.Email) (*user.User, error)
-	// Update user's data
+	//Update user's data
 	UpdateUser(context.Context, *user.User) (*common.Empty, error)
-	// Delete user by id
+	//Delete user by id
 	DeactivateUser(context.Context, *user.Id) (*common.Empty, error)
-	// Activate user by id
+	//Activate user by id
 	ActivateUser(context.Context, *user.Id) (*common.Empty, error)
-	// Get contact by ID
+	//Get contact by ID
 	GetContact(context.Context, *user.Id) (*user.Contact, error)
-	// Update contact's data
+	//Update contact's data
 	UpdateContact(context.Context, *user.Contact) (*common.Empty, error)
-	// Get resume by ID
+	//Get resume by ID
 	GetResume(context.Context, *user.Id) (*user.Resume, error)
-	// Update resume data
+	//Update resume data
 	UpdateResume(context.Context, *user.Resume) (*common.Empty, error)
-	// Delete contacts by ID
+	//Delete contacts by ID
 	DeleteContact(context.Context, *user.Id) (*common.Empty, error)
-	// Delete resume by ID
+	//Delete resume by ID
 	DeleteResume(context.Context, *user.Id) (*common.Empty, error)
-	//	INTERVIEW
-	//
-	// Create new interview
+	//  INTERVIEW
+	//Create new interview
 	CreateInterview(context.Context, *interview.InterviewRequest) (*interview.InterviewResponse, error)
-	// Get all existing interviews
+	//Get all existing interviews
 	GetInterviews(context.Context, *interview.InterviewList) (*interview.Interviews, error)
-	// Get interview by id
+	//Get interview by id
 	GetInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error)
-	// Update interview data
+	//Update interview data
 	UpdateInterview(context.Context, *interview.InterviewRequest) (*interview.InterviewResponse, error)
-	// Deactivate interview by id
+	//Deactivate interview by id
 	DeactivateInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error)
-	// Activate interview by id
+	//Activate interview by id
 	ActivateInterview(context.Context, *interview.Id) (*interview.InterviewResponse, error)
-	//	Certificate
-	//
-	// Create new certificate
+	//  Certificate
+	//Create new certificate
 	CreateCertificate(context.Context, *certificate.CertificateRequest) (*certificate.CertificateResponse, error)
-	// Get all existing certificates
+	//Get all existing certificates
 	GetCertificates(context.Context, *certificate.Filter) (*certificate.Certificates, error)
-	// Update certificate data
+	//Update certificate data
 	UpdateCertificate(context.Context, *certificate.CertificateRequest) (*common.Empty, error)
-	// Deactivate certificate by id
+	//Deactivate certificate by id
 	DeactivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
-	// Activate certificate by id
+	//Activate certificate by id
 	ActivateCertificate(context.Context, *certificate.Id) (*common.Empty, error)
-	// Get team by id
+	//Get team by id
 	GetTeam(context.Context, *team.Id) (*team.TeamResponse, error)
-	// Get teams
+	//Get teams
 	GetTeams(context.Context, *team.TeamListFilter) (*team.Teams, error)
-	// Create new team
+	//Create new team
 	CreateTeam(context.Context, *team.TeamRequest) (*team.Id, error)
-	// Update team's data
+	//Update team's data
 	UpdateTeam(context.Context, *team.TeamRequest) (*common.Empty, error)
-	// Deactivate team by id
+	//Deactivate team by id
 	DeactivateTeam(context.Context, *team.Id) (*common.Empty, error)
-	// Activate team by id
+	//Activate team by id
 	ActivateTeam(context.Context, *team.Id) (*common.Empty, error)
-	// Bind user to team
+	//Bind user to team
 	AddUserToTeam(context.Context, *team.UserTeamRequest) (*common.Empty, error)
-	// Unbind user from team
+	//Unbind user from team
 	DeleteUserFromTeam(context.Context, *team.UserTeamRequest) (*common.Empty, error)
-	// Get group by id
+	//Get group by id
 	GetGroup(context.Context, *group.Id) (*group.GroupResponse, error)
-	// Get groups
+	//Get groups
 	GetGroups(context.Context, *group.GroupsRequest) (*group.Groups, error)
-	// Create new group
+	//Create new group
 	CreateGroup(context.Context, *group.GroupRequest) (*group.Id, error)
-	// Update group's data
+	//Update group's data
 	UpdateGroup(context.Context, *group.GroupRequest) (*common.Empty, error)
-	// Deactivate group by id
+	//Deactivate group by id
 	DeactivateGroup(context.Context, *group.Id) (*common.Empty, error)
-	// Activate group by id
+	//Activate group by id
 	ActivateGroup(context.Context, *group.Id) (*common.Empty, error)
-	// Bind user to group
+	//Bind user to group
 	AddUserToGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error)
-	// Unbind user from group
+	//Unbind user from group
 	DeleteUserFromGroup(context.Context, *group.UserGroupRequest) (*common.Empty, error)
-	// Get roles
+	//Get roles
 	GetRoles(context.Context, *role.RolesRequest) (*role.Roles, error)
-	// Create new role
+	//Create new role
 	CreateRole(context.Context, *role.Role) (*role.Id, error)
-	// Delete role by id
+	//Delete role by id
 	DeleteRole(context.Context, *role.Id) (*common.Empty, error)
-	// Bind user to role
+	//Bind user to role
 	AddUserToRole(context.Context, *role.UserRoleRequest) (*common.Empty, error)
-	// Unbind user from role
+	//Unbind user from role
 	DeleteUserFromRole(context.Context, *role.UserRoleRequest) (*common.Empty, error)
 }
 

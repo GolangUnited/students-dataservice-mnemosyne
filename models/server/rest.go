@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 	"fmt"
-	"github.com/NEKETSKY/mnemosyne/pkg/api"
-	"github.com/NEKETSKY/mnemosyne/pkg/logger"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/logger"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"

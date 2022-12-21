@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/NEKETSKY/mnemosyne/models/database"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	"github.com/jackc/pgx/v5"
 	"github.com/pkg/errors"
 )

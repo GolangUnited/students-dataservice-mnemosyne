@@ -2,7 +2,7 @@ package mnemosyne
 
 import (
 	"context"
-	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 )
 
 func (s *Service) GetRoles(ctx context.Context, roleFilter *modelRole.Filter) ([]*modelRole.DB, error) {

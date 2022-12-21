@@ -3,7 +3,7 @@ syntax = "proto3";
 package role;
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
-option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api/role";
+option go_package = "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/role";
 
 // The basic message containing the primary information about a role.
 message Role {

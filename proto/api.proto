@@ -11,7 +11,7 @@ import "certificate/certificate.proto";
 import "group/group.proto";
 import "role/role.proto";
 import "common/common.proto";
-option go_package = "github.com/NEKETSKY/mnemosyne/pkg/api";
+option go_package = "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {

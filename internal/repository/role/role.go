@@ -2,7 +2,7 @@ package role
 
 import (
 	"context"
-	modelRole "github.com/NEKETSKY/mnemosyne/models/database/role"
+	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jackc/pgx/v5"
 	"github.com/pkg/errors"
