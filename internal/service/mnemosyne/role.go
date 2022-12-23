@@ -5,6 +5,15 @@ import (
 	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 )
 
+// GetUserRoles get all user roles
+func (s *Service) GetUserRoles(ctx context.Context, userId int) (userRoles []modelRole.DB, err error) {
+	userRoles, err = s.reposRole.GetUserRoles(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 func (s *Service) GetRoles(ctx context.Context, roleFilter *modelRole.Filter) ([]*modelRole.DB, error) {
 	return s.reposRole.GetRoles(ctx, roleFilter)
 }

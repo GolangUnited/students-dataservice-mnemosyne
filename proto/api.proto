@@ -10,6 +10,7 @@ import "team/team.proto";
 import "certificate/certificate.proto";
 import "group/group.proto";
 import "role/role.proto";
+import "project/project.proto";
 import "common/common.proto";
 option go_package = "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api";
 
@@ -425,6 +426,50 @@ service Mnemosyne {
   rpc DeleteUserFromRole (role.UserRoleRequest) returns (common.Empty){
     option (google.api.http) = {
       delete: "/role/{role_id}/{user_id}"
+    };
+  };
+
+  //Get project by id
+  rpc GetProject (project.Id) returns (project.ProjectResponse){
+    option (google.api.http) = {
+      get: "/project/{id}"
+    };
+  };
+
+  //Get projects
+  rpc GetProjects (project.ProjectsRequest) returns (project.Projects){
+    option (google.api.http) = {
+      get: "/project"
+    };
+  };
+
+  //Create new project
+  rpc CreateProject (project.ProjectRequest) returns (project.Id){
+    option (google.api.http) = {
+      post: "/project"
+      body: "*"
+    };
+  };
+
+  //Update project's data
+  rpc UpdateProject (project.ProjectRequest) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/project"
+      body: "*"
+    };
+  }
+
+  //Deactivate project by id
+  rpc DeactivateProject (project.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/project/{id}/deactivate"
+    };
+  };
+
+  //Activate project by id
+  rpc ActivateProject (project.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/project/{id}/activate"
     };
   };
 }
