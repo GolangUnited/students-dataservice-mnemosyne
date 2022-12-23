@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package lessons;
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/lessons";
+
+// The basic message containing the primary information about a lesson.
+message LessonRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Lesson json schema"
+      required: ["presentation", "video_link", "lesson_date", "homework", "lecturer_id", "group_id", "language"]
+    }
+  };
+  uint32 id = 1;
+  string presentation = 2;
+  string video_link = 3;
+  google.protobuf.Timestamp lesson_date = 4;
+  string homework =5;
+  uint32 lecturer_id = 6;
+  uint32 group_id = 7;
+  string language = 8;
+
+
+}
+message LessonResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Lesson json schema"
+      required: ["presentation", "video_link", "lesson_date", "homework", "lecturer_id", "group_id", "language"]
+    }
+  };
+  uint32 id = 1;
+  string presentation = 2;
+  string video_link = 3;
+  google.protobuf.Timestamp lesson_date = 4;
+  string homework =5;
+  uint32 lecturer_id = 6;
+  uint32 group_id = 7;
+  string language = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+  bool deleted = 11;
+
+}
+//The basic message containing information about all lessons from db
+message Lessons {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Lessons json schema"
+      required: ["Lessons"]
+    }
+  };
+  repeated LessonResponse Lessons = 1;
+}
+//Basic request/response containing id of the lesson
+message Id{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Id json schema"
+      required: ["id"]
+    }
+  };
+  uint32 id = 1;
+}
+
+message Filter{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Lesson filter json schema"
+    }
+  };
+  optional uint32 lecturer_id = 1;
+}

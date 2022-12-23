@@ -6,6 +6,7 @@ import "google/protobuf/wrappers.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
 import "interview/interview.proto";
+import "lessons/lessons.proto";
 import "team/team.proto";
 import "certificate/certificate.proto";
 import "group/group.proto";
@@ -425,6 +426,42 @@ service Mnemosyne {
   rpc DeleteUserFromRole (role.UserRoleRequest) returns (common.Empty){
     option (google.api.http) = {
       delete: "/role/{role_id}/{user_id}"
+    };
+  };
+  //  Lessons
+  //Create new lesson
+  rpc CreateLesson (lessons.LessonRequest) returns (lessons.LessonResponse){
+    option (google.api.http) = {
+      post: "/lessons"
+      body: "*"
+    };
+  };
+
+  //Get all existing lessons
+  rpc GetLessons (lessons.Filter) returns (lessons.Lessons){
+    option (google.api.http) = {
+      get: "/lessons"
+    };
+  };
+
+
+  //Update lesson data
+  rpc UpdateLesson (lessons.LessonRequest) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/lessons/{id}"
+      body: "*"
+    };
+  };
+  //Deactivate lesson by id
+  rpc DeactivateLesson(lessons.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/lessons/{id}/deactivate"
+    };
+  };
+  //Activate lesson by id
+  rpc ActivateLesson(lessons.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/lessons/{id}/activate"
     };
   };
 }
