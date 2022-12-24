@@ -221,7 +221,7 @@ const OrderAsc = `
 order by u.id asc
 `
 const DeleteContact = `
-update contacts
+update сontacts
 set updated_at = $2,
 deleted = true
 where user_id = $1
@@ -230,5 +230,17 @@ const DeleteResume = `
 update resume
 set updated_at = $2,
 deleted = true
+where user_id = $1
+`
+const ActivateContact = `
+update сontacts
+set updated_at = $2,
+deleted = false
+where user_id = $1
+`
+const ActivateResume = `
+update resume
+set updated_at = $2,
+deleted = false
 where user_id = $1
 `

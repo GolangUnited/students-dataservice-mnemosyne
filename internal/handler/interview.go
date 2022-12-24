@@ -2,6 +2,9 @@ package handler
 
 import (
 	"context"
+
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/handler/validate"
+
 	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/interview"
 	"google.golang.org/grpc/codes"
@@ -9,6 +12,11 @@ import (
 )
 
 func (h *Handler) CreateInterview(ctx context.Context, in *interview.InterviewRequest) (resp *interview.InterviewResponse, err error) {
+
+	_, err = validate.IsValid(in)
+	if err != nil {
+		return resp, status.Error(codes.InvalidArgument, err.Error())
+	}
 	interviewDb, err := database.InterviewFromProto(in)
 	if err != nil {
 		return resp, status.Error(codes.InvalidArgument, err.Error())
@@ -43,6 +51,10 @@ func (h *Handler) GetInterview(ctx context.Context, in *interview.Id) (resp *int
 }
 
 func (h *Handler) UpdateInterview(ctx context.Context, in *interview.InterviewRequest) (resp *interview.InterviewResponse, err error) {
+	_, err = validate.IsValid(in)
+	if err != nil {
+		return resp, status.Error(codes.InvalidArgument, err.Error())
+	}
 	interviewModel, err := database.InterviewFromProto(in)
 	if err != nil {
 		return resp, status.Error(codes.InvalidArgument, err.Error())

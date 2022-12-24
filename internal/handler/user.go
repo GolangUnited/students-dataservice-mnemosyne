@@ -77,6 +77,7 @@ func (h *Handler) GetUserById(ctx context.Context, in *user.Id) (u *user.User, e
 	}
 	if err != nil {
 		err = status.Error(codes.Internal, err.Error())
+		return
 	}
 	return
 }
