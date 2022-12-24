@@ -194,20 +194,20 @@ func (u *UserRepository) ActivateUserById(ctx context.Context, userId int) (err 
 	tr, _ := u.db.Begin(ctx)
 	_, err = tr.Exec(ctx, ActivateById, userId, time.Now())
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as active", userId)
 	}
 	err = u.ActivateContact(ctx, userId)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as active", userId)
 	}
 	err = u.ActivateResume(ctx, userId)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as active", userId)
 	}
-	tr.Commit(ctx)
+	_ = tr.Commit(ctx)
 	return nil
 }
 
@@ -215,19 +215,20 @@ func (u *UserRepository) DeactivateUserById(ctx context.Context, userId int) (er
 	tr, _ := u.db.Begin(ctx)
 	_, err = tr.Exec(ctx, DeactivateById, userId, time.Now())
 	if err != nil {
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as deleted", userId)
 	}
 	err = u.DeleteContact(ctx, userId)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as deleted", userId)
 	}
 	err = u.DeleteResume(ctx, userId)
 	if err != nil {
-		tr.Rollback(ctx)
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as deleted", userId)
 	}
-	tr.Commit(ctx)
+	_ = tr.Commit(ctx)
 	return nil
 }
 
