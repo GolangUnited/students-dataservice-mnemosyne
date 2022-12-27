@@ -2,17 +2,18 @@ package repository
 
 import (
 	"context"
-	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/lessons"
-	modelLesson "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/lessons"
-
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/certificate"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/group"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/interview"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/lessons"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/project"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/role"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/team"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/user"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
+	modelLesson "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/lessons"
+	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
 	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
 	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
@@ -101,6 +102,15 @@ type Lesson interface {
 	DeleteUserFromLesson(ctx context.Context, userId, lessonId uint32) error
 }
 
+type Project interface {
+	GetProjectById(context.Context, uint32) (*modelProject.DB, error)
+	GetProjects(context.Context, *modelProject.Filter) ([]*modelProject.DB, error)
+	AddProject(context.Context, *modelProject.DB) (uint32, error)
+	UpdateProject(context.Context, *modelProject.DB) error
+	DeactivateProject(context.Context, uint32) error
+	ActivateProject(context.Context, uint32) error
+}
+
 type Repository struct {
 	Role
 	User
@@ -109,6 +119,7 @@ type Repository struct {
 	Group
 	Team
 	Lesson
+	Project
 }
 
 // NewRepository created Repository struct
@@ -121,5 +132,6 @@ func NewRepository(db *pgx.Conn) *Repository {
 		Group:       group.NewRepository(db),
 		Team:        team.NewRepository(db),
 		Lesson:      lessons.NewRepository(db),
+		Project:     project.NewRepository(db),
 	}
 }

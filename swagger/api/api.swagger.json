@@ -1233,13 +1233,56 @@
         },
         "parameters": [
           {
-            "name": "body",
-            "description": "The basic message containing the primary information about a lesson.",
-            "in": "body",
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "presentation",
+            "in": "query",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/lessonsLessonRequest"
-            }
+            "type": "string"
+          },
+          {
+            "name": "videoLink",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lessonDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "homework",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lecturerId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "groupId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1276,13 +1319,56 @@
         },
         "parameters": [
           {
-            "name": "body",
-            "description": "The basic message containing the primary information about a lesson.",
-            "in": "body",
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "presentation",
+            "in": "query",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/lessonsLessonRequest"
-            }
+            "type": "string"
+          },
+          {
+            "name": "videoLink",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lessonDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "homework",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lecturerId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "groupId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1518,6 +1604,276 @@
             "schema": {
               "type": "object"
             }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/project": {
+      "get": {
+        "summary": "Get projects",
+        "operationId": "Mnemosyne_GetProjects",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/projectProjects"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filter.teamId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "filter.name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filter.deleted",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "post": {
+        "summary": "Create new project",
+        "operationId": "Mnemosyne_CreateProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/projectId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a project.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/projectProjectRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "put": {
+        "summary": "Update project's data",
+        "operationId": "Mnemosyne_UpdateProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a project.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/projectProjectRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/project/{id}": {
+      "get": {
+        "summary": "Get project by id",
+        "operationId": "Mnemosyne_GetProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/projectProjectResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/project/{id}/activate": {
+      "put": {
+        "summary": "Activate project by id",
+        "operationId": "Mnemosyne_ActivateProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/project/{id}/deactivate": {
+      "put": {
+        "summary": "Deactivate project by id",
+        "operationId": "Mnemosyne_DeactivateProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -3019,50 +3375,6 @@
         "id"
       ]
     },
-    "lessonsLessonRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "presentation": {
-          "type": "string"
-        },
-        "videoLink": {
-          "type": "string"
-        },
-        "lessonDate": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "homework": {
-          "type": "string"
-        },
-        "lecturerId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "groupId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "language": {
-          "type": "string"
-        }
-      },
-      "description": "The basic message containing the primary information about a lesson.",
-      "title": "Lesson json schema",
-      "required": [
-        "presentation",
-        "videoLink",
-        "lessonDate",
-        "homework",
-        "lecturerId",
-        "groupId",
-        "language"
-      ]
-    },
     "lessonsLessonResponse": {
       "type": "object",
       "properties": {
@@ -3130,6 +3442,119 @@
       "title": "Lessons json schema",
       "required": [
         "Lessons"
+      ]
+    },
+    "projectFilter": {
+      "type": "object",
+      "properties": {
+        "teamId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "deleted": {
+          "type": "boolean"
+        }
+      },
+      "title": "Filter projects json schema"
+    },
+    "projectId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "Id json schema",
+      "required": [
+        "id"
+      ]
+    },
+    "projectProjectRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "gitUrl": {
+          "type": "string"
+        },
+        "teamId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "description": "The basic message containing the primary information about a project.",
+      "title": "Project json schema",
+      "required": [
+        "name",
+        "description",
+        "teamId"
+      ]
+    },
+    "projectProjectResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "gitUrl": {
+          "type": "string"
+        },
+        "teamId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deleted": {
+          "type": "boolean"
+        }
+      },
+      "description": "The basic message containing the primary information about a project.",
+      "title": "Project json schema",
+      "required": [
+        "name",
+        "description",
+        "teamId"
+      ]
+    },
+    "projectProjects": {
+      "type": "object",
+      "properties": {
+        "projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/projectProjectResponse"
+          }
+        }
+      },
+      "title": "Projects json schema",
+      "required": [
+        "projects"
       ]
     },
     "protobufAny": {

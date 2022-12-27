@@ -254,7 +254,7 @@ func (x *LessonResponse) GetDeleted() bool {
 	return false
 }
 
-//The basic message containing information about all lessons from db
+// The basic message containing information about all lessons from db
 type Lessons struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -302,7 +302,7 @@ func (x *Lessons) GetLessons() []*LessonResponse {
 	return nil
 }
 
-//Basic request/response containing id of the lesson
+// Basic request/response containing id of the lesson
 type Id struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
