@@ -30,7 +30,6 @@ func (l *Lessons) LessonFromProto(protoLesson *lessons.LessonRequest) {
 	l.GroupId = protoLesson.GetGroupId()
 	l.Language = protoLesson.GetLanguage()
 
-	return
 }
 func (l *Lessons) LessonToProto() *lessons.LessonResponse {
 	return &lessons.LessonResponse{
