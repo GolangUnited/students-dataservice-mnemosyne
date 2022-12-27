@@ -6,11 +6,8 @@ import (
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/service/mnemosyne"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
-<<<<<<< HEAD
 	modelLesson "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/lessons"
-=======
 	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
->>>>>>> master
 	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
 	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
@@ -34,11 +31,8 @@ type Mnemosyne interface {
 	Group
 	Role
 	Team
-<<<<<<< HEAD
 	Lesson
-=======
 	Project
->>>>>>> master
 }
 
 type Certificate interface {
@@ -96,7 +90,6 @@ type Team interface {
 	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
 }
 
-<<<<<<< HEAD
 type Lesson interface {
 	GetLesson(context.Context, uint32) (*modelLesson.Lessons, error)
 	GetLessons(context.Context, *modelLesson.Filter) ([]*modelLesson.Lessons, error)
@@ -106,7 +99,8 @@ type Lesson interface {
 	ActivateLesson(context.Context, uint32) error
 	AddUserToLesson(ctx context.Context, userId, lessonId uint32) error
 	DeleteUserFromLesson(ctx context.Context, userId, lessonId uint32) error
-=======
+}
+
 type Project interface {
 	GetProject(context.Context, uint32) (*modelProject.DB, error)
 	GetProjects(context.Context, *modelProject.Filter) ([]*modelProject.DB, error)
@@ -114,7 +108,6 @@ type Project interface {
 	UpdateProject(context.Context, *modelProject.DB) error
 	DeactivateProject(context.Context, uint32) error
 	ActivateProject(context.Context, uint32) error
->>>>>>> master
 }
 
 // Service represents service level
@@ -126,11 +119,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-<<<<<<< HEAD
-		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team, repos.Lesson),
-=======
-		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate,
-			repos.Team, repos.Project),
->>>>>>> master
+		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team, repos.Lesson, repos.Project),
 	}
 }
