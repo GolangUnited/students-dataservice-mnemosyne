@@ -1117,9 +1117,9 @@
         ]
       }
     },
-    "/lessons": {
+    "/lesson": {
       "get": {
-        "summary": "Get all existing lessons",
+        "summary": "Get lessons",
         "operationId": "Mnemosyne_GetLessons",
         "responses": {
           "200": {
@@ -1148,11 +1148,55 @@
         },
         "parameters": [
           {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
             "name": "lecturerId",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "presentation",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "videoLink",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lessonDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "homework",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "deleted",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1160,13 +1204,56 @@
         ]
       },
       "post": {
-        "summary": "Lessons\nCreate new lesson",
+        "summary": "Create new lesson",
         "operationId": "Mnemosyne_CreateLesson",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/lessonsLessonResponse"
+              "$ref": "#/definitions/lessonsId"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "The basic message containing the primary information about a lesson.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/lessonsLessonRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "put": {
+        "summary": "Update lesson's data",
+        "operationId": "Mnemosyne_UpdateLesson",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
             }
           },
           "403": {
@@ -1203,15 +1290,15 @@
         ]
       }
     },
-    "/lessons/{id}": {
-      "put": {
-        "summary": "Update lesson data",
-        "operationId": "Mnemosyne_UpdateLesson",
+    "/lesson/{id}": {
+      "get": {
+        "summary": "Lessons\nGet lesson by id",
+        "operationId": "Mnemosyne_GetLesson",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/commonEmpty"
+              "$ref": "#/definitions/lessonsLessonResponse"
             }
           },
           "403": {
@@ -1239,51 +1326,6 @@
             "required": true,
             "type": "integer",
             "format": "int64"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "presentation": {
-                  "type": "string"
-                },
-                "videoLink": {
-                  "type": "string"
-                },
-                "lessonDate": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "homework": {
-                  "type": "string"
-                },
-                "lecturerId": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "groupId": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "language": {
-                  "type": "string"
-                }
-              },
-              "description": "The basic message containing the primary information about a lesson.",
-              "title": "Lesson json schema",
-              "required": [
-                "presentation",
-                "videoLink",
-                "lessonDate",
-                "homework",
-                "lecturerId",
-                "groupId",
-                "language"
-              ]
-            }
           }
         ],
         "tags": [
@@ -1291,7 +1333,7 @@
         ]
       }
     },
-    "/lessons/{id}/activate": {
+    "/lesson/{id}/activate": {
       "put": {
         "summary": "Activate lesson by id",
         "operationId": "Mnemosyne_ActivateLesson",
@@ -1334,7 +1376,7 @@
         ]
       }
     },
-    "/lessons/{id}/deactivate": {
+    "/lesson/{id}/deactivate": {
       "put": {
         "summary": "Deactivate lesson by id",
         "operationId": "Mnemosyne_DeactivateLesson",
@@ -1370,6 +1412,112 @@
             "required": true,
             "type": "integer",
             "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      }
+    },
+    "/lesson/{lessonId}/{userId}": {
+      "delete": {
+        "summary": "Unbind user from lesson",
+        "operationId": "Mnemosyne_DeleteUserFromLesson",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Mnemosyne"
+        ]
+      },
+      "post": {
+        "summary": "Bind user to lesson",
+        "operationId": "Mnemosyne_AddUserToLesson",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/commonEmpty"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "lessonId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
           }
         ],
         "tags": [
@@ -2856,6 +3004,19 @@
       "title": "Interviews json schema",
       "required": [
         "interviews"
+      ]
+    },
+    "lessonsId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "Id json schema",
+      "required": [
+        "id"
       ]
     },
     "lessonsLessonRequest": {

@@ -2,6 +2,8 @@ package repository
 
 import (
 	"context"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/lessons"
+	modelLesson "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/lessons"
 
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/certificate"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/group"
@@ -88,6 +90,17 @@ type Team interface {
 	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
 }
 
+type Lesson interface {
+	GetLessonById(context.Context, uint32) (*modelLesson.Lessons, error)
+	GetLessons(context.Context, *modelLesson.Filter) ([]*modelLesson.Lessons, error)
+	AddLesson(context.Context, *modelLesson.Lessons) (uint32, error)
+	UpdateLesson(context.Context, *modelLesson.Lessons) error
+	DeactivateLesson(context.Context, uint32) error
+	ActivateLesson(context.Context, uint32) error
+	AddUserToLesson(ctx context.Context, userId, lessonId uint32) error
+	DeleteUserFromLesson(ctx context.Context, userId, lessonId uint32) error
+}
+
 type Repository struct {
 	Role
 	User
@@ -95,6 +108,7 @@ type Repository struct {
 	Certificate
 	Group
 	Team
+	Lesson
 }
 
 // NewRepository created Repository struct
@@ -106,5 +120,6 @@ func NewRepository(db *pgx.Conn) *Repository {
 		Certificate: certificate.NewCertificateRepository(db),
 		Group:       group.NewRepository(db),
 		Team:        team.NewRepository(db),
+		Lesson:      lessons.NewRepository(db),
 	}
 }

@@ -18,6 +18,7 @@ type Service struct {
 	reposGroup       repository.Group
 	reposCertificate repository.Certificate
 	reposTeam        repository.Team
+	reposLesson      repository.Lesson
 }
 
 // NewService created Service struct
@@ -28,6 +29,7 @@ func NewService(
 	reposGroup repository.Group,
 	reposCertificate repository.Certificate,
 	reposTeam repository.Team,
+	reposLesson repository.Lesson,
 ) *Service {
 	return &Service{
 		reposRole:        reposRole,
@@ -36,6 +38,7 @@ func NewService(
 		reposGroup:       reposGroup,
 		reposCertificate: reposCertificate,
 		reposTeam:        reposTeam,
+		reposLesson:      reposLesson,
 	}
 }
 

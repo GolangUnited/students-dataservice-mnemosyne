@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
-
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/service/mnemosyne"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
+	modelLesson "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/lessons"
 	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
 	dbUser "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/user"
@@ -30,6 +30,7 @@ type Mnemosyne interface {
 	Group
 	Role
 	Team
+	Lesson
 }
 
 type Certificate interface {
@@ -87,6 +88,17 @@ type Team interface {
 	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
 }
 
+type Lesson interface {
+	GetLesson(context.Context, uint32) (*modelLesson.Lessons, error)
+	GetLessons(context.Context, *modelLesson.Filter) ([]*modelLesson.Lessons, error)
+	CreateLesson(context.Context, *modelLesson.Lessons) (uint32, error)
+	UpdateLesson(context.Context, *modelLesson.Lessons) error
+	DeactivateLesson(context.Context, uint32) error
+	ActivateLesson(context.Context, uint32) error
+	AddUserToLesson(ctx context.Context, userId, lessonId uint32) error
+	DeleteUserFromLesson(ctx context.Context, userId, lessonId uint32) error
+}
+
 // Service represents service level
 type Service struct {
 	//suggest to move here interfaces User, Group etc. and to remove Mnemosyne interface
@@ -96,6 +108,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team),
+		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team, repos.Lesson),
 	}
 }

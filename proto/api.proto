@@ -429,39 +429,62 @@ service Mnemosyne {
     };
   };
   //  Lessons
-  //Create new lesson
-  rpc CreateLesson (lessons.LessonRequest) returns (lessons.LessonResponse){
+  //Get lesson by id
+  rpc GetLesson (lessons.Id) returns (lessons.LessonResponse){
     option (google.api.http) = {
-      post: "/lessons"
-      body: "*"
+      get: "/lesson/{id}"
     };
   };
 
-  //Get all existing lessons
+  //Get lessons
   rpc GetLessons (lessons.Filter) returns (lessons.Lessons){
     option (google.api.http) = {
-      get: "/lessons"
+      get: "/lesson"
     };
   };
 
-
-  //Update lesson data
-  rpc UpdateLesson (lessons.LessonRequest) returns (common.Empty){
+  //Create new lesson
+  rpc CreateLesson (lessons.LessonRequest) returns (lessons.Id){
     option (google.api.http) = {
-      put: "/lessons/{id}"
+      post: "/lesson"
       body: "*"
     };
   };
-  //Deactivate lesson by id
-  rpc DeactivateLesson(lessons.Id) returns (common.Empty){
+
+  //Update lesson's data
+  rpc UpdateLesson (lessons.LessonRequest) returns (common.Empty){
     option (google.api.http) = {
-      put: "/lessons/{id}/deactivate"
+      put: "/lesson"
+      body: "*"
+    };
+  }
+
+  //Deactivate lesson by id
+  rpc DeactivateLesson (lessons.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/lesson/{id}/deactivate"
     };
   };
+
   //Activate lesson by id
-  rpc ActivateLesson(lessons.Id) returns (common.Empty){
+  rpc ActivateLesson (lessons.Id) returns (common.Empty){
     option (google.api.http) = {
-      put: "/lessons/{id}/activate"
+      put: "/lesson/{id}/activate"
+    };
+  };
+
+  //Bind user to lesson
+  rpc AddUserToLesson (lessons.UserLessonRequest) returns (common.Empty){
+    option (google.api.http) = {
+      post: "/lesson/{lesson_id}/{user_id}"
+      body: "*"
+    };
+  };
+
+  //Unbind user from lesson
+  rpc DeleteUserFromLesson (lessons.UserLessonRequest) returns (common.Empty){
+    option (google.api.http) = {
+      delete: "/lesson/{team_id}/{user_id}"
     };
   };
 }

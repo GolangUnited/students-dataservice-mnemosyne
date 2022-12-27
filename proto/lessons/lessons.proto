@@ -66,11 +66,24 @@ message Id{
   uint32 id = 1;
 }
 
+
 message Filter{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "Lesson filter json schema"
     }
   };
-  optional uint32 lecturer_id = 1;
+  uint32 user_id = 1;
+  uint32 lecturer_id = 2;
+  string presentation = 3;
+  string video_link = 4;
+  google.protobuf.Timestamp lesson_date = 5;
+  string homework =6;
+  string language = 7;
+  bool deleted = 8;
+}
+
+message UserLessonRequest {
+  uint32 user_id = 1;
+  uint32 lesson_id = 2;
 }
