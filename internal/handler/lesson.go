@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (h *Handler) GetLesson(ctx context.Context, in *lessons.Id) (resp *lessons.LessonResponse, err error) {
+func (h *Handler) GetLesson(ctx context.Context, in *lessons.Id) (*lessons.LessonResponse, error) {
 	lessonDB, err := h.services.GetLesson(ctx, in.GetId())
 	if err != nil {
 		return &lessons.LessonResponse{}, status.Error(codes.Internal, err.Error())
