@@ -12,6 +12,7 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.6
 	github.com/pkg/errors v0.9.1
+	github.com/stretchr/testify v1.8.0
 	go.uber.org/zap v1.23.0
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
@@ -19,6 +20,7 @@ require (
 )
 
 require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docker/docker v20.10.17+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
@@ -34,6 +36,7 @@ require (
 	github.com/jackc/pgtype v1.6.2 // indirect
 	github.com/jackc/pgx/v4 v4.10.1 // indirect
 	github.com/moby/term v0.0.0-20220808134915-39b0c02b01ae // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect

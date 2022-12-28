@@ -2,6 +2,9 @@ package handler
 
 import (
 	"context"
+
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/handler/validate"
+
 	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/common"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/project"
@@ -39,6 +42,10 @@ func (h *Handler) GetProjects(ctx context.Context, in *project.ProjectsRequest) 
 func (h *Handler) CreateProject(ctx context.Context, in *project.ProjectRequest) (projectIdProto *project.Id, err error) {
 	projectIdProto = &project.Id{}
 	projectDB := &modelProject.DB{}
+	_, err = validate.IsValid(in)
+	if err != nil {
+		return projectIdProto, status.Error(codes.InvalidArgument, err.Error())
+	}
 	projectDB.FromProtoRequest(in)
 	projectId, err := h.services.CreateProject(ctx, projectDB)
 	if err != nil {
@@ -51,8 +58,12 @@ func (h *Handler) CreateProject(ctx context.Context, in *project.ProjectRequest)
 
 func (h *Handler) UpdateProject(ctx context.Context, in *project.ProjectRequest) (*common.Empty, error) {
 	projectDB := &modelProject.DB{}
+	_, err := validate.IsValid(in)
+	if err != nil {
+		return emptyProto, status.Error(codes.InvalidArgument, err.Error())
+	}
 	projectDB.FromProtoRequest(in)
-	err := h.services.UpdateProject(ctx, projectDB)
+	err = h.services.UpdateProject(ctx, projectDB)
 	if err != nil {
 		return emptyProto, status.Error(codes.Internal, err.Error())
 	}
