@@ -72,7 +72,12 @@ func (r *Repository) GetProjects(ctx context.Context, projectFilter *project.Fil
 }
 
 func (r *Repository) AddProject(ctx context.Context, projectDB *project.DB) (projectId uint32, err error) {
-	row := r.db.QueryRow(ctx, AddProjectQuery, projectDB.Name, projectDB.Description, projectDB.GitUrl, projectDB.TeamId)
+	var row pgx.Row
+	if projectDB.TeamId > 0 {
+		row = r.db.QueryRow(ctx, AddProjectQuery, projectDB.Name, projectDB.Description, projectDB.GitUrl, projectDB.TeamId)
+	} else {
+		row = r.db.QueryRow(ctx, AddProjectQueryWOTeam, projectDB.Name, projectDB.Description, projectDB.GitUrl)
+	}
 	err = row.Scan(&projectId)
 	if err != nil {
 		return 0, errors.Wrap(err, "AddProject error while query executing")
