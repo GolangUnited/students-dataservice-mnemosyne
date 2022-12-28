@@ -41,6 +41,7 @@ func (r *Repository) GetGroups(ctx context.Context, groupFilter *group.Filter) (
 			sb.Equal("sgs.user_id", groupFilter.UserId),
 		)
 	}
+
 	if groupFilter.Name != "" {
 		sb.Where(
 			sb.Like(
@@ -49,6 +50,7 @@ func (r *Repository) GetGroups(ctx context.Context, groupFilter *group.Filter) (
 			),
 		)
 	}
+
 	if groupFilter.StartDate.Unix() != 0 {
 		sb.Where(sb.GreaterEqualThan(
 			"start_date",
@@ -61,6 +63,7 @@ func (r *Repository) GetGroups(ctx context.Context, groupFilter *group.Filter) (
 			groupFilter.EndDate,
 		))
 	}
+
 	sb.Where(sb.Equal("deleted", groupFilter.Deleted))
 	sql, args := sb.BuildWithFlavor(sqlbuilder.PostgreSQL)
 
