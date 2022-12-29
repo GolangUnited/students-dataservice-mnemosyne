@@ -103,15 +103,14 @@ func (u *UserRepository) GetUsers(ctx context.Context, ur *dbUser.UserRequest) (
 	b.WriteString(OrderAsc)
 
 	rows, err = u.db.Query(ctx, b.String())
-
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get users from db")
 	}
+	defer rows.Close()
 	users, err = pgx.CollectRows(rows, pgx.RowToStructByName[dbUser.UserFullStuff])
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to collect rows, no users found")
 	}
-
 	return users, err
 }
 
@@ -124,7 +123,7 @@ func (u *UserRepository) GetUserById(ctx context.Context, userId int) (user *dbU
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get user by id from the db")
 	}
-
+	defer rows.Close()
 	innerUser, err := pgx.CollectOneRow(rows, pgx.RowToStructByName[dbUser.UserFullStuff])
 	if err != nil {
 		return nil, errors.Wrap(err, "GetUserById CollectRows error")
@@ -142,6 +141,7 @@ func (u *UserRepository) GetUserByEmail(ctx context.Context, email string) (user
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to get user by email from the db")
 	}
+	defer rows.Close()
 	innerUser, err := pgx.CollectOneRow(rows, pgx.RowToStructByName[dbUser.UserFullStuff])
 	if err != nil {
 		return nil, errors.Wrap(err, "GetUserByEmail CollectRows error")
@@ -191,19 +191,45 @@ func (u *UserRepository) UpdateUserById(ctx context.Context, user *dbUser.UserFu
 }
 
 func (u *UserRepository) ActivateUserById(ctx context.Context, userId int) (err error) {
-	_, err = u.db.Exec(ctx, ActivateById, userId, time.Now())
+	tr, _ := u.db.Begin(ctx)
+	_, err = tr.Exec(ctx, ActivateById, userId, time.Now())
 	if err != nil {
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as active", userId)
 	}
-	return err
+	err = u.ActivateContact(ctx, userId)
+	if err != nil {
+		_ = tr.Rollback(ctx)
+		return errors.Wrapf(err, "unable to set user %d as active", userId)
+	}
+	err = u.ActivateResume(ctx, userId)
+	if err != nil {
+		_ = tr.Rollback(ctx)
+		return errors.Wrapf(err, "unable to set user %d as active", userId)
+	}
+	_ = tr.Commit(ctx)
+	return nil
 }
 
 func (u *UserRepository) DeactivateUserById(ctx context.Context, userId int) (err error) {
-	_, err = u.db.Exec(ctx, DeactivateById, userId, time.Now())
+	tr, _ := u.db.Begin(ctx)
+	_, err = tr.Exec(ctx, DeactivateById, userId, time.Now())
 	if err != nil {
+		_ = tr.Rollback(ctx)
 		return errors.Wrapf(err, "unable to set user %d as deleted", userId)
 	}
-	return err
+	err = u.DeleteContact(ctx, userId)
+	if err != nil {
+		_ = tr.Rollback(ctx)
+		return errors.Wrapf(err, "unable to set user %d as deleted", userId)
+	}
+	err = u.DeleteResume(ctx, userId)
+	if err != nil {
+		_ = tr.Rollback(ctx)
+		return errors.Wrapf(err, "unable to set user %d as deleted", userId)
+	}
+	_ = tr.Commit(ctx)
+	return nil
 }
 
 func (u *UserRepository) UpdateContact(ctx context.Context, contact *dbUser.Contact) (err error) {
@@ -290,6 +316,22 @@ func (u *UserRepository) DeleteResume(ctx context.Context, id int) (err error) {
 	_, err = u.db.Exec(ctx, DeleteResume, id, time.Now())
 	if err != nil {
 		return errors.Wrap(err, "unable to delete resume info")
+	}
+	return err
+}
+
+func (u *UserRepository) ActivateContact(ctx context.Context, id int) (err error) {
+	_, err = u.db.Exec(ctx, ActivateContact, id, time.Now())
+	if err != nil {
+		return errors.Wrap(err, "unable to make contact info active")
+	}
+	return err
+}
+
+func (u *UserRepository) ActivateResume(ctx context.Context, id int) (err error) {
+	_, err = u.db.Exec(ctx, ActivateResume, id, time.Now())
+	if err != nil {
+		return errors.Wrap(err, "unable to make resume info active")
 	}
 	return err
 }
