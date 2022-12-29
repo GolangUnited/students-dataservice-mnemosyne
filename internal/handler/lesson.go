@@ -77,21 +77,3 @@ func (h *Handler) ActivateLesson(ctx context.Context, in *lessons.Id) (*common.E
 
 	return emptyProto, nil
 }
-
-func (h *Handler) AddUserToLesson(ctx context.Context, in *lessons.UserLessonRequest) (*common.Empty, error) {
-	err := h.services.Mnemosyne.AddUserToLesson(ctx, in.GetUserId(), in.GetLessonId())
-	if err != nil {
-		return emptyProto, status.Error(codes.Internal, err.Error())
-	}
-
-	return emptyProto, nil
-}
-
-func (h *Handler) DeleteUserFromLesson(ctx context.Context, in *lessons.UserLessonRequest) (*common.Empty, error) {
-	err := h.services.Mnemosyne.DeleteUserFromLesson(ctx, in.GetUserId(), in.GetLessonId())
-	if err != nil {
-		return emptyProto, status.Error(codes.Internal, err.Error())
-	}
-
-	return emptyProto, nil
-}

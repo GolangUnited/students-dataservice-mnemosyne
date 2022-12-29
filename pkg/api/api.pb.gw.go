@@ -2533,58 +2533,6 @@ func local_request_Mnemosyne_UpdateLesson_0(ctx context.Context, marshaler runti
 
 }
 
-func request_Mnemosyne_DeactivateLesson_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq lessons.Id
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
-	}
-
-	protoReq.Id, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
-	msg, err := client.DeactivateLesson(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_Mnemosyne_DeactivateLesson_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq lessons.Id
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
-	}
-
-	protoReq.Id, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
-	msg, err := server.DeactivateLesson(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
 func request_Mnemosyne_ActivateLesson_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq lessons.Id
 	var metadata runtime.ServerMetadata
@@ -2637,168 +2585,8 @@ func local_request_Mnemosyne_ActivateLesson_0(ctx context.Context, marshaler run
 
 }
 
-func request_Mnemosyne_AddUserToLesson_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq lessons.UserLessonRequest
-	var metadata runtime.ServerMetadata
-
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["lesson_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "lesson_id")
-	}
-
-	protoReq.LessonId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "lesson_id", err)
-	}
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	msg, err := client.AddUserToLesson(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_Mnemosyne_AddUserToLesson_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq lessons.UserLessonRequest
-	var metadata runtime.ServerMetadata
-
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["lesson_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "lesson_id")
-	}
-
-	protoReq.LessonId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "lesson_id", err)
-	}
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	msg, err := server.AddUserToLesson(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
-func request_Mnemosyne_DeleteUserFromLesson_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq lessons.UserLessonRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["lesson_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "lesson_id")
-	}
-
-	protoReq.LessonId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "lesson_id", err)
-	}
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	msg, err := client.DeleteUserFromLesson(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_Mnemosyne_DeleteUserFromLesson_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq lessons.UserLessonRequest
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["lesson_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "lesson_id")
-	}
-
-	protoReq.LessonId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "lesson_id", err)
-	}
-
-	val, ok = pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-
-	protoReq.UserId, err = runtime.Uint32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
-	}
-
-	msg, err := server.DeleteUserFromLesson(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
-func request_Mnemosyne_DeactivateProject_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq project.Id
+func request_Mnemosyne_DeactivateLesson_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq lessons.Id
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2818,13 +2606,13 @@ func request_Mnemosyne_DeactivateProject_0(ctx context.Context, marshaler runtim
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
-	msg, err := client.DeactivateProject(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.DeactivateLesson(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Mnemosyne_DeactivateProject_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq project.Id
+func local_request_Mnemosyne_DeactivateLesson_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq lessons.Id
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -2844,7 +2632,7 @@ func local_request_Mnemosyne_DeactivateProject_0(ctx context.Context, marshaler 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
-	msg, err := server.DeactivateProject(ctx, &protoReq)
+	msg, err := server.DeactivateLesson(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -3053,6 +2841,58 @@ func local_request_Mnemosyne_ActivateProject_0(ctx context.Context, marshaler ru
 	}
 
 	msg, err := server.ActivateProject(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_Mnemosyne_DeactivateProject_0(ctx context.Context, marshaler runtime.Marshaler, client MnemosyneClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq project.Id
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.Uint32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+
+	msg, err := client.DeactivateProject(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Mnemosyne_DeactivateProject_0(ctx context.Context, marshaler runtime.Marshaler, server MnemosyneServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq project.Id
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.Uint32(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+
+	msg, err := server.DeactivateProject(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -4288,31 +4128,6 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("PUT", pattern_Mnemosyne_DeactivateLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/DeactivateLesson", runtime.WithHTTPPathPattern("/lesson/{id}/deactivate"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_Mnemosyne_DeactivateLesson_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Mnemosyne_DeactivateLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("PUT", pattern_Mnemosyne_ActivateLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -4338,7 +4153,7 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("POST", pattern_Mnemosyne_AddUserToLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_Mnemosyne_DeactivateLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -4346,12 +4161,12 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/AddUserToLesson", runtime.WithHTTPPathPattern("/lesson/{lesson_id}/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/DeactivateLesson", runtime.WithHTTPPathPattern("/lesson/{id}/deactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Mnemosyne_AddUserToLesson_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Mnemosyne_DeactivateLesson_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -4359,57 +4174,7 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 			return
 		}
 
-		forward_Mnemosyne_AddUserToLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("DELETE", pattern_Mnemosyne_DeleteUserFromLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/DeleteUserFromLesson", runtime.WithHTTPPathPattern("/lesson/{lesson_id}/{user_id}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_Mnemosyne_DeleteUserFromLesson_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Mnemosyne_DeleteUserFromLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("PUT", pattern_Mnemosyne_DeactivateProject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/DeactivateProject", runtime.WithHTTPPathPattern("/project/{id}/deactivate"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_Mnemosyne_DeactivateProject_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Mnemosyne_DeactivateProject_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Mnemosyne_DeactivateLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -4535,6 +4300,31 @@ func RegisterMnemosyneHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		}
 
 		forward_Mnemosyne_ActivateProject_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_Mnemosyne_DeactivateProject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.Mnemosyne/DeactivateProject", runtime.WithHTTPPathPattern("/project/{id}/deactivate"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Mnemosyne_DeactivateProject_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Mnemosyne_DeactivateProject_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -5657,28 +5447,6 @@ func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("PUT", pattern_Mnemosyne_DeactivateLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/DeactivateLesson", runtime.WithHTTPPathPattern("/lesson/{id}/deactivate"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_Mnemosyne_DeactivateLesson_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Mnemosyne_DeactivateLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("PUT", pattern_Mnemosyne_ActivateLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -5701,69 +5469,25 @@ func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
-	mux.Handle("POST", pattern_Mnemosyne_AddUserToLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_Mnemosyne_DeactivateLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/AddUserToLesson", runtime.WithHTTPPathPattern("/lesson/{lesson_id}/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/DeactivateLesson", runtime.WithHTTPPathPattern("/lesson/{id}/deactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Mnemosyne_AddUserToLesson_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Mnemosyne_DeactivateLesson_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Mnemosyne_AddUserToLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("DELETE", pattern_Mnemosyne_DeleteUserFromLesson_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/DeleteUserFromLesson", runtime.WithHTTPPathPattern("/lesson/{lesson_id}/{user_id}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_Mnemosyne_DeleteUserFromLesson_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Mnemosyne_DeleteUserFromLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("PUT", pattern_Mnemosyne_DeactivateProject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/DeactivateProject", runtime.WithHTTPPathPattern("/project/{id}/deactivate"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_Mnemosyne_DeactivateProject_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_Mnemosyne_DeactivateProject_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Mnemosyne_DeactivateLesson_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -5877,6 +5601,28 @@ func RegisterMnemosyneHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 	})
 
+	mux.Handle("PUT", pattern_Mnemosyne_DeactivateProject_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/api.Mnemosyne/DeactivateProject", runtime.WithHTTPPathPattern("/project/{id}/deactivate"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Mnemosyne_DeactivateProject_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Mnemosyne_DeactivateProject_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -5979,15 +5725,9 @@ var (
 
 	pattern_Mnemosyne_UpdateLesson_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"lesson"}, ""))
 
-	pattern_Mnemosyne_DeactivateLesson_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"lesson", "id", "deactivate"}, ""))
-
 	pattern_Mnemosyne_ActivateLesson_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"lesson", "id", "activate"}, ""))
 
-	pattern_Mnemosyne_AddUserToLesson_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2}, []string{"lesson", "lesson_id", "user_id"}, ""))
-
-	pattern_Mnemosyne_DeleteUserFromLesson_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2}, []string{"lesson", "lesson_id", "user_id"}, ""))
-
-	pattern_Mnemosyne_DeactivateProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"project", "id", "deactivate"}, ""))
+	pattern_Mnemosyne_DeactivateLesson_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"lesson", "id", "deactivate"}, ""))
 
 	pattern_Mnemosyne_GetProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"project", "id"}, ""))
 
@@ -5998,6 +5738,8 @@ var (
 	pattern_Mnemosyne_UpdateProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"project"}, ""))
 
 	pattern_Mnemosyne_ActivateProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"project", "id", "activate"}, ""))
+
+	pattern_Mnemosyne_DeactivateProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"project", "id", "deactivate"}, ""))
 )
 
 var (
@@ -6099,15 +5841,9 @@ var (
 
 	forward_Mnemosyne_UpdateLesson_0 = runtime.ForwardResponseMessage
 
-	forward_Mnemosyne_DeactivateLesson_0 = runtime.ForwardResponseMessage
-
 	forward_Mnemosyne_ActivateLesson_0 = runtime.ForwardResponseMessage
 
-	forward_Mnemosyne_AddUserToLesson_0 = runtime.ForwardResponseMessage
-
-	forward_Mnemosyne_DeleteUserFromLesson_0 = runtime.ForwardResponseMessage
-
-	forward_Mnemosyne_DeactivateProject_0 = runtime.ForwardResponseMessage
+	forward_Mnemosyne_DeactivateLesson_0 = runtime.ForwardResponseMessage
 
 	forward_Mnemosyne_GetProject_0 = runtime.ForwardResponseMessage
 
@@ -6118,4 +5854,6 @@ var (
 	forward_Mnemosyne_UpdateProject_0 = runtime.ForwardResponseMessage
 
 	forward_Mnemosyne_ActivateProject_0 = runtime.ForwardResponseMessage
+
+	forward_Mnemosyne_DeactivateProject_0 = runtime.ForwardResponseMessage
 )

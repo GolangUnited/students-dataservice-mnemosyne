@@ -35,12 +35,7 @@ func (r *Repository) GetLessonById(ctx context.Context, lessonId uint32) (*lesso
 
 func (r *Repository) GetLessons(ctx context.Context, lessonFilter *lessons.Filter) ([]*lessons.Lessons, error) {
 	sb := sqlbuilder.Select("less.*").From("lessons less")
-	if lessonFilter.UserId > 0 {
-		sb.Join("user_lessons ut",
-			"less.id = ut.lesson_id",
-			sb.Equal("ut.user_id", lessonFilter.UserId),
-		)
-	}
+
 	if lessonFilter.Presentation != "" {
 		sb.Where(
 			sb.Like(
@@ -76,6 +71,14 @@ func (r *Repository) GetLessons(ctx context.Context, lessonFilter *lessons.Filte
 			sb.Equal(
 				"lecturer_id",
 				lessonFilter.LecturerId,
+			),
+		)
+	}
+	if lessonFilter.GroupId > 0 {
+		sb.Where(
+			sb.Equal(
+				"group_id",
+				lessonFilter.GroupId,
 			),
 		)
 	}
@@ -150,7 +153,7 @@ func (r *Repository) UpdateLesson(ctx context.Context, lessonDB *lessons.Lessons
 func (r *Repository) DeactivateLesson(ctx context.Context, lessonId uint32) error {
 	_, err := r.db.Exec(ctx, DeactivateLessonByIdQuery, time.Now(), lessonId)
 	if err != nil {
-		return errors.Wrapf(err, "DeactivateLesson - unable to set team %d as deleted", lessonId)
+		return errors.Wrapf(err, "DeactivateLesson - unable to set lesson %d as deleted", lessonId)
 	}
 
 	return err
@@ -159,25 +162,7 @@ func (r *Repository) DeactivateLesson(ctx context.Context, lessonId uint32) erro
 func (r *Repository) ActivateLesson(ctx context.Context, lessonId uint32) error {
 	_, err := r.db.Exec(ctx, ActivateLessonByIdQuery, time.Now(), lessonId)
 	if err != nil {
-		return errors.Wrapf(err, "ActivateTeam - unable to set team %d as active", lessonId)
-	}
-
-	return err
-}
-
-func (r *Repository) AddUserToLesson(ctx context.Context, userId, lessonId uint32) error {
-	_, err := r.db.Exec(ctx, AddUserToLessonQuery, userId, lessonId)
-	if err != nil {
-		return errors.Wrap(err, "AddUserToTeam - unable to execute")
-	}
-
-	return err
-}
-
-func (r *Repository) DeleteUserFromLesson(ctx context.Context, userId, lessonId uint32) error {
-	_, err := r.db.Exec(ctx, DeleteUserFromLessonQuery, userId, lessonId)
-	if err != nil {
-		return errors.Wrap(err, "DeleteUserFromTeam - unable to execute")
+		return errors.Wrapf(err, "ActivateLesson - unable to set lesson %d as active", lessonId)
 	}
 
 	return err

@@ -1148,7 +1148,7 @@
         },
         "parameters": [
           {
-            "name": "userId",
+            "name": "groupId",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -1498,112 +1498,6 @@
             "required": true,
             "type": "integer",
             "format": "int64"
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      }
-    },
-    "/lesson/{lessonId}/{userId}": {
-      "delete": {
-        "summary": "Unbind user from lesson",
-        "operationId": "Mnemosyne_DeleteUserFromLesson",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/commonEmpty"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "lessonId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "Mnemosyne"
-        ]
-      },
-      "post": {
-        "summary": "Bind user to lesson",
-        "operationId": "Mnemosyne_AddUserToLesson",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/commonEmpty"
-            }
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "type": "string",
-              "format": "string"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "lessonId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object"
-            }
           }
         ],
         "tags": [

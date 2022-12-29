@@ -15,6 +15,4 @@ const (
 								    WHERE id = $9`
 	DeactivateLessonByIdQuery = `UPDATE lessons SET deleted = true, updated_at = $1 WHERE id = $2`
 	ActivateLessonByIdQuery   = `UPDATE lessons SET deleted = false, updated_at = $1 WHERE id = $2`
-	AddUserToLessonQuery      = `INSERT INTO user_lessons (user_id, lesson_id) VALUES ($1, $2)`
-	DeleteUserFromLessonQuery = `DELETE FROM user_lessons WHERE user_id = $1 AND lesson_id = $2`
 )

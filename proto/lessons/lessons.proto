@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package lessons;
 import "protoc-gen-openapiv2/options/annotations.proto";
-import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 option go_package = "github.com/GolangUnited/students-dataservice-mnemosyne/pkg/api/lessons";
 
@@ -73,7 +72,7 @@ message Filter{
       title: "Lesson filter json schema"
     }
   };
-  uint32 user_id = 1;
+  uint32 group_id = 1;
   uint32 lecturer_id = 2;
   string presentation = 3;
   string video_link = 4;
@@ -81,9 +80,4 @@ message Filter{
   string homework =6;
   string language = 7;
   bool deleted = 8;
-}
-
-message UserLessonRequest {
-  uint32 user_id = 1;
-  uint32 lesson_id = 2;
 }

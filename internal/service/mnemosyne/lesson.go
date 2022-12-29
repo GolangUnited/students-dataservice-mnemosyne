@@ -21,18 +21,10 @@ func (s *Service) UpdateLesson(ctx context.Context, lessonDB *modelLesson.Lesson
 	return s.reposLesson.UpdateLesson(ctx, lessonDB)
 }
 
-func (s *Service) DeactivateLesson(ctx context.Context, teamId uint32) error {
-	return s.reposLesson.DeactivateLesson(ctx, teamId)
+func (s *Service) DeactivateLesson(ctx context.Context, lessonId uint32) error {
+	return s.reposLesson.DeactivateLesson(ctx, lessonId)
 }
 
-func (s *Service) ActivateLesson(ctx context.Context, teamId uint32) error {
-	return s.reposLesson.ActivateLesson(ctx, teamId)
-}
-
-func (s *Service) AddUserToLesson(ctx context.Context, userId, teamId uint32) error {
-	return s.reposLesson.AddUserToLesson(ctx, userId, teamId)
-}
-
-func (s *Service) DeleteUserFromLesson(ctx context.Context, userId, teamId uint32) error {
-	return s.reposLesson.DeleteUserFromLesson(ctx, userId, teamId)
+func (s *Service) ActivateLesson(ctx context.Context, lessonId uint32) error {
+	return s.reposLesson.ActivateLesson(ctx, lessonId)
 }

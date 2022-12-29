@@ -135,16 +135,10 @@ type MnemosyneClient interface {
 	CreateLesson(ctx context.Context, in *lessons.LessonRequest, opts ...grpc.CallOption) (*lessons.Id, error)
 	// Update lesson's data
 	UpdateLesson(ctx context.Context, in *lessons.LessonRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Deactivate lesson by id
-	DeactivateLesson(ctx context.Context, in *lessons.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Activate lesson by id
 	ActivateLesson(ctx context.Context, in *lessons.Id, opts ...grpc.CallOption) (*common.Empty, error)
-	// Bind user to lesson
-	AddUserToLesson(ctx context.Context, in *lessons.UserLessonRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Unbind user from lesson
-	DeleteUserFromLesson(ctx context.Context, in *lessons.UserLessonRequest, opts ...grpc.CallOption) (*common.Empty, error)
-	// Deactivate project by id
-	DeactivateProject(ctx context.Context, in *project.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Deactivate lesson by id
+	DeactivateLesson(ctx context.Context, in *lessons.Id, opts ...grpc.CallOption) (*common.Empty, error)
 	// Get project by id
 	GetProject(ctx context.Context, in *project.Id, opts ...grpc.CallOption) (*project.ProjectResponse, error)
 	// Get projects
@@ -155,6 +149,8 @@ type MnemosyneClient interface {
 	UpdateProject(ctx context.Context, in *project.ProjectRequest, opts ...grpc.CallOption) (*common.Empty, error)
 	// Activate project by id
 	ActivateProject(ctx context.Context, in *project.Id, opts ...grpc.CallOption) (*common.Empty, error)
+	// Deactivate project by id
+	DeactivateProject(ctx context.Context, in *project.Id, opts ...grpc.CallOption) (*common.Empty, error)
 }
 
 type mnemosyneClient struct {
@@ -606,15 +602,6 @@ func (c *mnemosyneClient) UpdateLesson(ctx context.Context, in *lessons.LessonRe
 	return out, nil
 }
 
-func (c *mnemosyneClient) DeactivateLesson(ctx context.Context, in *lessons.Id, opts ...grpc.CallOption) (*common.Empty, error) {
-	out := new(common.Empty)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateLesson", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *mnemosyneClient) ActivateLesson(ctx context.Context, in *lessons.Id, opts ...grpc.CallOption) (*common.Empty, error) {
 	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateLesson", in, out, opts...)
@@ -624,27 +611,9 @@ func (c *mnemosyneClient) ActivateLesson(ctx context.Context, in *lessons.Id, op
 	return out, nil
 }
 
-func (c *mnemosyneClient) AddUserToLesson(ctx context.Context, in *lessons.UserLessonRequest, opts ...grpc.CallOption) (*common.Empty, error) {
+func (c *mnemosyneClient) DeactivateLesson(ctx context.Context, in *lessons.Id, opts ...grpc.CallOption) (*common.Empty, error) {
 	out := new(common.Empty)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/AddUserToLesson", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mnemosyneClient) DeleteUserFromLesson(ctx context.Context, in *lessons.UserLessonRequest, opts ...grpc.CallOption) (*common.Empty, error) {
-	out := new(common.Empty)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeleteUserFromLesson", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *mnemosyneClient) DeactivateProject(ctx context.Context, in *project.Id, opts ...grpc.CallOption) (*common.Empty, error) {
-	out := new(common.Empty)
-	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateProject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateLesson", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -690,6 +659,15 @@ func (c *mnemosyneClient) UpdateProject(ctx context.Context, in *project.Project
 func (c *mnemosyneClient) ActivateProject(ctx context.Context, in *project.Id, opts ...grpc.CallOption) (*common.Empty, error) {
 	out := new(common.Empty)
 	err := c.cc.Invoke(ctx, "/api.Mnemosyne/ActivateProject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mnemosyneClient) DeactivateProject(ctx context.Context, in *project.Id, opts ...grpc.CallOption) (*common.Empty, error) {
+	out := new(common.Empty)
+	err := c.cc.Invoke(ctx, "/api.Mnemosyne/DeactivateProject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -804,16 +782,10 @@ type MnemosyneServer interface {
 	CreateLesson(context.Context, *lessons.LessonRequest) (*lessons.Id, error)
 	// Update lesson's data
 	UpdateLesson(context.Context, *lessons.LessonRequest) (*common.Empty, error)
-	// Deactivate lesson by id
-	DeactivateLesson(context.Context, *lessons.Id) (*common.Empty, error)
 	// Activate lesson by id
 	ActivateLesson(context.Context, *lessons.Id) (*common.Empty, error)
-	// Bind user to lesson
-	AddUserToLesson(context.Context, *lessons.UserLessonRequest) (*common.Empty, error)
-	// Unbind user from lesson
-	DeleteUserFromLesson(context.Context, *lessons.UserLessonRequest) (*common.Empty, error)
-	// Deactivate project by id
-	DeactivateProject(context.Context, *project.Id) (*common.Empty, error)
+	// Deactivate lesson by id
+	DeactivateLesson(context.Context, *lessons.Id) (*common.Empty, error)
 	// Get project by id
 	GetProject(context.Context, *project.Id) (*project.ProjectResponse, error)
 	// Get projects
@@ -824,6 +796,8 @@ type MnemosyneServer interface {
 	UpdateProject(context.Context, *project.ProjectRequest) (*common.Empty, error)
 	// Activate project by id
 	ActivateProject(context.Context, *project.Id) (*common.Empty, error)
+	// Deactivate project by id
+	DeactivateProject(context.Context, *project.Id) (*common.Empty, error)
 }
 
 // UnimplementedMnemosyneServer should be embedded to have forward compatible implementations.
@@ -977,20 +951,11 @@ func (UnimplementedMnemosyneServer) CreateLesson(context.Context, *lessons.Lesso
 func (UnimplementedMnemosyneServer) UpdateLesson(context.Context, *lessons.LessonRequest) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLesson not implemented")
 }
-func (UnimplementedMnemosyneServer) DeactivateLesson(context.Context, *lessons.Id) (*common.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeactivateLesson not implemented")
-}
 func (UnimplementedMnemosyneServer) ActivateLesson(context.Context, *lessons.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateLesson not implemented")
 }
-func (UnimplementedMnemosyneServer) AddUserToLesson(context.Context, *lessons.UserLessonRequest) (*common.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddUserToLesson not implemented")
-}
-func (UnimplementedMnemosyneServer) DeleteUserFromLesson(context.Context, *lessons.UserLessonRequest) (*common.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserFromLesson not implemented")
-}
-func (UnimplementedMnemosyneServer) DeactivateProject(context.Context, *project.Id) (*common.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeactivateProject not implemented")
+func (UnimplementedMnemosyneServer) DeactivateLesson(context.Context, *lessons.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateLesson not implemented")
 }
 func (UnimplementedMnemosyneServer) GetProject(context.Context, *project.Id) (*project.ProjectResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProject not implemented")
@@ -1006,6 +971,9 @@ func (UnimplementedMnemosyneServer) UpdateProject(context.Context, *project.Proj
 }
 func (UnimplementedMnemosyneServer) ActivateProject(context.Context, *project.Id) (*common.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ActivateProject not implemented")
+}
+func (UnimplementedMnemosyneServer) DeactivateProject(context.Context, *project.Id) (*common.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeactivateProject not implemented")
 }
 
 // UnsafeMnemosyneServer may be embedded to opt out of forward compatibility for this service.
@@ -1901,24 +1869,6 @@ func _Mnemosyne_UpdateLesson_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_DeactivateLesson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(lessons.Id)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).DeactivateLesson(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeactivateLesson",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeactivateLesson(ctx, req.(*lessons.Id))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Mnemosyne_ActivateLesson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(lessons.Id)
 	if err := dec(in); err != nil {
@@ -1937,56 +1887,20 @@ func _Mnemosyne_ActivateLesson_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Mnemosyne_AddUserToLesson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(lessons.UserLessonRequest)
+func _Mnemosyne_DeactivateLesson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(lessons.Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MnemosyneServer).AddUserToLesson(ctx, in)
+		return srv.(MnemosyneServer).DeactivateLesson(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Mnemosyne/AddUserToLesson",
+		FullMethod: "/api.Mnemosyne/DeactivateLesson",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).AddUserToLesson(ctx, req.(*lessons.UserLessonRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Mnemosyne_DeleteUserFromLesson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(lessons.UserLessonRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).DeleteUserFromLesson(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeleteUserFromLesson",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeleteUserFromLesson(ctx, req.(*lessons.UserLessonRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Mnemosyne_DeactivateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(project.Id)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MnemosyneServer).DeactivateProject(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.Mnemosyne/DeactivateProject",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MnemosyneServer).DeactivateProject(ctx, req.(*project.Id))
+		return srv.(MnemosyneServer).DeactivateLesson(ctx, req.(*lessons.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2077,6 +1991,24 @@ func _Mnemosyne_ActivateProject_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MnemosyneServer).ActivateProject(ctx, req.(*project.Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Mnemosyne_DeactivateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(project.Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MnemosyneServer).DeactivateProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Mnemosyne/DeactivateProject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MnemosyneServer).DeactivateProject(ctx, req.(*project.Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2285,24 +2217,12 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Mnemosyne_UpdateLesson_Handler,
 		},
 		{
-			MethodName: "DeactivateLesson",
-			Handler:    _Mnemosyne_DeactivateLesson_Handler,
-		},
-		{
 			MethodName: "ActivateLesson",
 			Handler:    _Mnemosyne_ActivateLesson_Handler,
 		},
 		{
-			MethodName: "AddUserToLesson",
-			Handler:    _Mnemosyne_AddUserToLesson_Handler,
-		},
-		{
-			MethodName: "DeleteUserFromLesson",
-			Handler:    _Mnemosyne_DeleteUserFromLesson_Handler,
-		},
-		{
-			MethodName: "DeactivateProject",
-			Handler:    _Mnemosyne_DeactivateProject_Handler,
+			MethodName: "DeactivateLesson",
+			Handler:    _Mnemosyne_DeactivateLesson_Handler,
 		},
 		{
 			MethodName: "GetProject",
@@ -2323,6 +2243,10 @@ var Mnemosyne_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ActivateProject",
 			Handler:    _Mnemosyne_ActivateProject_Handler,
+		},
+		{
+			MethodName: "DeactivateProject",
+			Handler:    _Mnemosyne_DeactivateProject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -7,7 +7,7 @@ import (
 )
 
 type Filter struct {
-	UserId       uint32
+	GroupId      uint32
 	Presentation string
 	VideoLink    string
 	LessonDate   time.Time
@@ -21,7 +21,7 @@ func (f *Filter) FromProto(lf *lessons.Filter) {
 	if lf == nil {
 		return
 	}
-	f.UserId = lf.GetUserId()
+	f.GroupId = lf.GetGroupId()
 	f.Presentation = lf.GetPresentation()
 	f.VideoLink = lf.GetVideoLink()
 	f.LessonDate = lf.LessonDate.AsTime()
@@ -32,7 +32,7 @@ func (f *Filter) FromProto(lf *lessons.Filter) {
 
 func (f *Filter) ToProto() *lessons.Filter {
 	return &lessons.Filter{
-		UserId:       f.UserId,
+		GroupId:      f.GroupId,
 		Presentation: f.Presentation,
 		VideoLink:    f.VideoLink,
 		LessonDate:   timestamppb.New(f.LessonDate),

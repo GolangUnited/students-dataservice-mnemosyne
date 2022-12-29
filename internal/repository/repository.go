@@ -98,8 +98,6 @@ type Lesson interface {
 	UpdateLesson(context.Context, *modelLesson.Lessons) error
 	DeactivateLesson(context.Context, uint32) error
 	ActivateLesson(context.Context, uint32) error
-	AddUserToLesson(ctx context.Context, userId, lessonId uint32) error
-	DeleteUserFromLesson(ctx context.Context, userId, lessonId uint32) error
 }
 
 type Project interface {
