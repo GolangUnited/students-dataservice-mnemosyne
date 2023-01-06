@@ -2,16 +2,17 @@ package repository
 
 import (
 	"context"
-	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/project"
-
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/certificate"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/group"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/interview"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/lessons"
+	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/project"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/role"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/team"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/repository/user"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
+	modelLesson "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/lessons"
 	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
 	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
@@ -90,6 +91,15 @@ type Team interface {
 	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
 }
 
+type Lesson interface {
+	GetLessonById(context.Context, uint32) (*modelLesson.Lessons, error)
+	GetLessons(context.Context, *modelLesson.Filter) ([]*modelLesson.Lessons, error)
+	AddLesson(context.Context, *modelLesson.Lessons) (uint32, error)
+	UpdateLesson(context.Context, *modelLesson.Lessons) error
+	DeactivateLesson(context.Context, uint32) error
+	ActivateLesson(context.Context, uint32) error
+}
+
 type Project interface {
 	GetProjectById(context.Context, uint32) (*modelProject.DB, error)
 	GetProjects(context.Context, *modelProject.Filter) ([]*modelProject.DB, error)
@@ -106,6 +116,7 @@ type Repository struct {
 	Certificate
 	Group
 	Team
+	Lesson
 	Project
 }
 
@@ -118,6 +129,7 @@ func NewRepository(db *pgx.Conn) *Repository {
 		Certificate: certificate.NewCertificateRepository(db),
 		Group:       group.NewRepository(db),
 		Team:        team.NewRepository(db),
+		Lesson:      lessons.NewRepository(db),
 		Project:     project.NewRepository(db),
 	}
 }

@@ -6,6 +6,7 @@ import "google/protobuf/wrappers.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "user/user.proto";
 import "interview/interview.proto";
+import "lessons/lessons.proto";
 import "team/team.proto";
 import "certificate/certificate.proto";
 import "group/group.proto";
@@ -428,6 +429,47 @@ service Mnemosyne {
       delete: "/role/{role_id}/{user_id}"
     };
   };
+  //  Lessons
+  //Get lesson by id
+  rpc GetLesson (lessons.Id) returns (lessons.LessonResponse){
+    option (google.api.http) = {
+      get: "/lesson/{id}"
+    };
+  };
+
+  //Get lessons
+  rpc GetLessons (lessons.Filter) returns (lessons.Lessons){
+    option (google.api.http) = {
+      get: "/lesson"
+    };
+  };
+
+  //Create new lesson
+  rpc CreateLesson (lessons.LessonRequest) returns (lessons.Id){
+    option (google.api.http) = {
+      post: "/lesson"
+    };
+  };
+
+  //Update lesson's data
+  rpc UpdateLesson (lessons.LessonRequest) returns (common.Empty){
+      option (google.api.http) = {
+      put: "/lesson"
+          };
+  };
+  //Activate lesson by id
+  rpc ActivateLesson (lessons.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/lesson/{id}/activate"
+    };
+  };
+  //Deactivate lesson by id
+  rpc DeactivateLesson (lessons.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/lesson/{id}/deactivate"
+    };
+  };
+
 
   //Get project by id
   rpc GetProject (project.Id) returns (project.ProjectResponse){
@@ -450,7 +492,6 @@ service Mnemosyne {
       body: "*"
     };
   };
-
   //Update project's data
   rpc UpdateProject (project.ProjectRequest) returns (common.Empty){
     option (google.api.http) = {
@@ -458,18 +499,17 @@ service Mnemosyne {
       body: "*"
     };
   }
+  //Activate project by id
+  rpc ActivateProject (project.Id) returns (common.Empty){
+    option (google.api.http) = {
+      put: "/project/{id}/activate"
+    };
+  };
 
   //Deactivate project by id
   rpc DeactivateProject (project.Id) returns (common.Empty){
     option (google.api.http) = {
       put: "/project/{id}/deactivate"
-    };
-  };
-
-  //Activate project by id
-  rpc ActivateProject (project.Id) returns (common.Empty){
-    option (google.api.http) = {
-      put: "/project/{id}/activate"
     };
   };
 }

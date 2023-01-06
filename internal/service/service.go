@@ -6,6 +6,7 @@ import (
 	"github.com/GolangUnited/students-dataservice-mnemosyne/internal/service/mnemosyne"
 	"github.com/GolangUnited/students-dataservice-mnemosyne/models/database"
 	modelGroup "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/group"
+	modelLesson "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/lessons"
 	modelProject "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/project"
 	modelRole "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/role"
 	modelTeam "github.com/GolangUnited/students-dataservice-mnemosyne/models/database/team"
@@ -30,6 +31,7 @@ type Mnemosyne interface {
 	Group
 	Role
 	Team
+	Lesson
 	Project
 }
 
@@ -88,6 +90,15 @@ type Team interface {
 	DeleteUserFromTeam(ctx context.Context, userId, teamId uint32) error
 }
 
+type Lesson interface {
+	GetLesson(context.Context, uint32) (*modelLesson.Lessons, error)
+	GetLessons(context.Context, *modelLesson.Filter) ([]*modelLesson.Lessons, error)
+	CreateLesson(context.Context, *modelLesson.Lessons) (uint32, error)
+	UpdateLesson(context.Context, *modelLesson.Lessons) error
+	DeactivateLesson(context.Context, uint32) error
+	ActivateLesson(context.Context, uint32) error
+}
+
 type Project interface {
 	GetProject(context.Context, uint32) (*modelProject.DB, error)
 	GetProjects(context.Context, *modelProject.Filter) ([]*modelProject.DB, error)
@@ -106,7 +117,6 @@ type Service struct {
 // NewService created new service with repository
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate,
-			repos.Team, repos.Project),
+		Mnemosyne: mnemosyne.NewService(repos.Role, repos.User, repos.Interview, repos.Group, repos.Certificate, repos.Team, repos.Lesson, repos.Project),
 	}
 }
